@@ -67,8 +67,9 @@ A Habit tracking app which allows users to establish and monitor their daily hab
 
 ### Pages
 
-- Home: 1-3 sentences describing what the page displays and what a user can do
-- Shopping cart: ...
+- Login page for users to authenticate themselves
+- The home page is where users can get an overview of their current habits in the form of cards (cardview). They can press the habits/card to enlarge them and see more information. The user can also create new habits, with some example templates to help them.
+- In the user page the user can edit their information such as name, profile picture and how many points they got. They also get an overview of their progress by seeing the habit log, where they can see start and end date of their habit in a schedule form.
 
 ### Entity-Relationship (ER) Diagram
 
