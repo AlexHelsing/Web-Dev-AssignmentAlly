@@ -63,17 +63,25 @@ Open the `server` and `client` in separate VSCode workspaces or open the combine
 
 ### Purpose
 
-A Habit tracking app which allows users to establish and monitor their daily habits, earning points for consistent completion. Users create habits, setting their desired frequency and associated points. As they complete/progress these habits, they accumulate points that can be exchanged for rewards.
+Our app allows you to effortlessly organize your assignments by creating dedicated groups for each project(assignmentGroup), ensuring all pertinent information is at your fingertips. Inside these assignment groups, you can schedule meetings at your convenience, whether it's via Zoom or on campus rooms for in-person discussions.
+You can assign tasks to other members in your group, for example "member X shall complete this part of the assignment" and prioritise the tasks with labels.
+Each group stores all resources that could be nessesary, diagram links, assignment pdf, links to discord and so forth.
+The current user then has a dashboard allowing him to see everything thats on the agena for every group he is currently apart of.
 
 ### Pages
 
-- Login page for users to authenticate themselves
-- The home page is where users can get an overview of their current habits in the form of cards (cardview). They can press the habits/card to enlarge them and see more information. The user can also create new habits, with some example templates to help them.
-- In the user page the user can edit their information such as name, profile picture and how many points they got. They also get an overview of their progress by seeing the habit log, where they can see start and end date of their habit in a schedule form.
+- Login page for users to authorise themselves
+- Dashboard: A page allowing current user to see an overview on all his ongoing assignments, including all meetings and tasks assigned to him, with options to CRUD groups, meetings and tasks.
+- Assignment(group page): A page for each assignment, allowing the user to see all the information about the assignment, including all meetings, tasks, resources and members.
+
+<div style="display: flex;">
+    <img src="./images/dashboard.png" alt="Image 1" style="width: 50%; margin-right: 10px;">
+    <img src="./images/grouppage.png" alt="Image 2" style="width: 50%;">
+</div>
 
 ### Entity-Relationship (ER) Diagram
 
-![ER Diagram](./images/ER-DV1.drawio.png)
+![ER Diagram](./images/er%20v3.jpg)
 
 ## Teaser (MS3)
 
