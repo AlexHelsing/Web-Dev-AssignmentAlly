@@ -4,13 +4,12 @@ var morgan = require('morgan');
 var path = require('path');
 var cors = require('cors');
 var history = require('connect-history-api-fallback');
-var dotenv = require('dotenv').config();
+require('dotenv').config()
 
 const UserRouter = require('./routes/User.router');
 
 // Variables
-var mongoURI =
-  process.env.MONGODB_URI || 'mongodb://localhost:27017/animalDevelopmentDs';
+var mongoURI = process.env.DATABASE_URL;
 var port = process.env.PORT || 3000;
 
 // Connect to MongoDB
