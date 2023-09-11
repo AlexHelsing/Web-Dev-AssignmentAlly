@@ -9,7 +9,7 @@ require('dotenv').config()
 const UserRouter = require('./routes/User.router');
 
 // Variables
-var mongoURI = process.env.DATABASE_URL;
+var mongoURI = process.env.DATABASE_URL || 'mongodb://localhost:27017/animalDevelopmentDs';
 var port = process.env.PORT || 3000;
 
 // Connect to MongoDB
