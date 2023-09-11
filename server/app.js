@@ -3,9 +3,12 @@ var mongoose = require('mongoose');
 var morgan = require('morgan');
 var path = require('path');
 var cors = require('cors');
+var session = require('express-session');
 var history = require('connect-history-api-fallback');
 var dotenv = require('dotenv').config();
+var passport = require('passport');
 
+const AuthRouter = require('./routes/Auth.router');
 const UserRouter = require('./routes/User.router');
 
 // Variables
@@ -34,12 +37,27 @@ app.use(morgan('dev'));
 app.options('*', cors());
 app.use(cors());
 
+app.use(
+  session({
+    secret: 'secretKey',
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+// initialize passport
+app.use(passport.initialize());
+
+app.use(passport.session());
+
 // Import routes
 app.get('/api', function (req, res) {
   res.json({ message: 'Welcome to your DIT342 backend ExpressJS project!' });
 });
 // User router
 app.use('/api/users', UserRouter);
+// Auth router
+app.use('/api/auth', AuthRouter);
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use('/api/*', function (req, res) {
