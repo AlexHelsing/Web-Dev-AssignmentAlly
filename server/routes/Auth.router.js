@@ -36,35 +36,33 @@ passport.deserializeUser(function (user, done) {
 
 var router = express.Router();
 
-router.post('/login/', function (req, res, next) {
-  passport.authenticate('local', function (err, user, info) {
-    if (err) {
-      return res.status(500).json({ message: 'Authentication error' });
-    }
-    if (!user) {
-      return res.status(401).json({ message: 'Authentication failed' });
-    }
-    return res
-      .status(200)
-      .json({ message: 'Authentication successful', user: user });
-  })(req, res, next);
-});
+router.post(
+  '/login',
+  passport.authenticate('local', {
+    // redirect to dashboard or whatever route we got later on
+    successReturnToOrRedirect: '/dashboard',
+    failureRedirect: '/login',
+    failureMessage: true,
+  })
+);
 
 router.post('/logout', function (req, res, next) {
   req.logout(function (err) {
     if (err) {
-      return res.status(500).json({ message: 'Logout error' });
+      return next(err);
     }
-
-    return res.status(200).json({ message: 'Logout successful' });
+    res.send({ message: 'Logout successful' });
   });
 });
 
-router.get('/current-user', function (req, res, next) {
+router.get('/current-user', function (req, res) {
+  // Check if the user is authenticated
   if (req.isAuthenticated()) {
-    res.json(req.user);
+    // Send the user information to the frontend
+    res.json({ user: req.user });
   } else {
-    res.json({ message: 'No user in session' });
+    // If the user is not authenticated, send an empty object or an error message
+    res.json({ error: 'User not authenticated' });
   }
 });
 
