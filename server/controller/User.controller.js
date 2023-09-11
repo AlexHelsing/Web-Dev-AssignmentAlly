@@ -35,7 +35,6 @@ async function deleteUser(req, res){
 
 module.exports = {
   getAllUsers,
-  registerUser,
   getUser,
   deleteUser,
 };
