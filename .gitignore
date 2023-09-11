@@ -149,6 +149,8 @@ dist/
 npm-debug.log
 yarn-error.log
 
+npm-cache --global
+
 ### Windows ###
 # Windows thumbnail cache files
 Thumbs.db
