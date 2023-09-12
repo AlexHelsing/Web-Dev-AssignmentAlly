@@ -1,6 +1,4 @@
-const { json } = require('body-parser');
 const User = require('../models/User.mongo');
-const bcrypt = require("bcrypt");
 
 async function getAllUsers(req, res) {
   try {
@@ -11,27 +9,24 @@ async function getAllUsers(req, res) {
   }
 }
 
-async function getUser(req, res){
-  try{
+async function getUser(req, res) {
+  try {
     const user = await User.findOne(req.params.username);
     res.json(user);
-  }
-  catch(err){
-    res.status(400).json({message: err.message});
+  } catch (err) {
+    res.status(400).json({ message: err.message });
   }
 }
 
-async function deleteUser(req, res){
-  try{
+async function deleteUser(req, res) {
+  try {
     const deleteUser = req.body.username;
-    await User.findOneAndDelete({username: deleteUser})
-    console.log("Deleted User: ")
-  }
-  catch(err){
-    res.status(400).json({message: err.message})
+    await User.findOneAndDelete({ username: deleteUser });
+    console.log('Deleted User: ');
+  } catch (err) {
+    res.status(400).json({ message: err.message });
   }
 }
-
 
 module.exports = {
   getAllUsers,

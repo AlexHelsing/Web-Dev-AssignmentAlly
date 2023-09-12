@@ -3,13 +3,17 @@ var mongoose = require('mongoose');
 var morgan = require('morgan');
 var path = require('path');
 var cors = require('cors');
+var session = require('express-session');
 var history = require('connect-history-api-fallback');
-require('dotenv').config()
+var dotenv = require('dotenv').config();
+var passport = require('passport');
 
+const AuthRouter = require('./routes/Auth.router');
 const UserRouter = require('./routes/User.router');
 
 // Variables
-var mongoURI = process.env.DATABASE_URL || 'mongodb://localhost:27017/animalDevelopmentDs';
+var mongoURI =
+  process.env.MONGODB_URI || 'mongodb://localhost:27017/animalDevelopmentDs';
 var port = process.env.PORT || 3000;
 
 // Connect to MongoDB
@@ -33,12 +37,27 @@ app.use(morgan('dev'));
 app.options('*', cors());
 app.use(cors());
 
+app.use(
+  session({
+    secret: 'secretKey',
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+// initialize passport
+app.use(passport.initialize());
+
+app.use(passport.session());
+
 // Import routes
 app.get('/api', function (req, res) {
   res.json({ message: 'Welcome to your DIT342 backend ExpressJS project!' });
 });
 // User router
 app.use('/api/users', UserRouter);
+// Auth router
+app.use('/api/auth', AuthRouter);
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use('/api/*', function (req, res) {
