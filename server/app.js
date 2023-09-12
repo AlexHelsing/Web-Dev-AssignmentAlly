@@ -10,11 +10,12 @@ var passport = require('passport');
 
 const AuthRouter = require('./routes/Auth.router');
 const UserRouter = require('./routes/User.router');
+const GroupRouter = require('./routes/GroupRouter');
 const MongoStore = require('connect-mongo');
 
 // Variables
 var mongoURI =
-  process.env.MONGODB_URI || 'mongodb://localhost:27017/animalDevelopmentDs';
+  process.env.MONGODB_URI || 'mongodb://localhost:27017/animalDevelopmentDB';
 var port = process.env.PORT || 3000;
 
 // Connect to MongoDB
@@ -65,6 +66,8 @@ app.get('/api', function (req, res) {
 app.use('/api/users', UserRouter);
 // Auth router
 app.use('/api/auth', AuthRouter);
+// Group router
+app.use('/api/groups', GroupRouter);
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use('/api/*', function (req, res) {
