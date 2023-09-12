@@ -10,6 +10,7 @@ var passport = require('passport');
 
 const AuthRouter = require('./routes/Auth.router');
 const UserRouter = require('./routes/User.router');
+const MongoStore = require('connect-mongo');
 
 // Variables
 var mongoURI =
@@ -42,6 +43,12 @@ app.use(
     secret: 'secretKey',
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      maxAge: 1000 * 60 * 60,
+    },
+    store: MongoStore.create({
+      mongoUrl: mongoURI,
+    }),
   })
 );
 
