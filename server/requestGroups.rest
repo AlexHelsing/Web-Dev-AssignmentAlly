@@ -11,7 +11,9 @@ POST http://localhost:3000/api/groups/create-group
 Content-Type: application/json
 
 {
-    "course": "architecture"
+    "course": "algo"
 }
 
 ### 
+
+POST http://localhost:3000/api/groups/algo/delete-group

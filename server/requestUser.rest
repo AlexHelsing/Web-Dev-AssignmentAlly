@@ -40,12 +40,8 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/api/users/deleteUser
-Content-Type: application/json
+POST http://localhost:3000/api/users/alextest1/deleteUser
 
-{
-    "username": "alextest1"
-}
 
 ###
 
