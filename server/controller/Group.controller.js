@@ -37,4 +37,14 @@ async function getGroup(req, res) {
   }
 }
 
-module.exports = { createGroup, getAllGroups, getGroup };
+async function deleteGroup(req, res) {
+  try {
+    const deleteGroup = req.params.course;
+    await Group.findOneAndDelete({ course: deleteGroup });
+    console.log('Deleted Group ');
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+}
+
+module.exports = { createGroup, getAllGroups, getGroup, deleteGroup };
