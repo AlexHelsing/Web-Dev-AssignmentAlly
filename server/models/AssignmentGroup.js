@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 
 const AssignmentGroupSchema = new mongoose.Schema({
-  Course: {
+  course: {
     type: String,
     required: true,
+    unique: true,
   },
 
-  Members: [
+  members: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
