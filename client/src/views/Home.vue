@@ -1,33 +1,21 @@
 <template>
   <div>
-    <b-jumbotron header="DIT342 Frontend" lead="Welcome to your DIT342 Frontend Vue.js App">
-      <b-button class="btn_message" variant="primary" v-on:click="getMessage()" >Get Message from Server</b-button>
-      <p>Message from the server:<br/>
-      {{ message }}</p>
-    </b-jumbotron>
+    <div v-if="user">
+      <h1>Dashboard</h1>
+      <p>Welcome, {{ user.user.username }}</p>
+      <form action="http://localhost:3000/api/auth/logout" method="post">
+        <button type="submit" class="btn_message">Logout</button>
+      </form>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import { Api } from '@/Api'
-
+import { store } from '../store/store'
 export default {
-  name: 'home',
-  data() {
-    return {
-      message: 'none'
-    }
-  },
-  methods: {
-    getMessage() {
-      Api.get('/')
-        .then(response => {
-          this.message = response.data.message
-        })
-        .catch(error => {
-          this.message = error
-        })
+  computed: {
+    user() {
+      return store.user
     }
   }
 }

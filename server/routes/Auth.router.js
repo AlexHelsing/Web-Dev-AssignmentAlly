@@ -40,7 +40,7 @@ router.post(
   '/login',
   passport.authenticate('local', {
     // redirect to dashboard or whatever route we got later on
-    successReturnToOrRedirect: '/dashboard',
+    successReturnToOrRedirect: 'http://localhost:8080/dashboard',
     failureRedirect: '/login',
     failureMessage: true,
   })
@@ -51,7 +51,8 @@ router.post('/logout', function (req, res, next) {
     if (err) {
       return next(err);
     }
-    res.send({ message: 'Logout successful' });
+    // Redirect to /login after a successful logout
+    res.redirect('http://localhost:8080/');
   });
 });
 
@@ -62,7 +63,7 @@ router.get('/current-user', function (req, res) {
     res.json({ user: req.user });
   } else {
     // If the user is not authenticated, send an empty object or an error message
-    res.json({ error: 'User not authenticated' });
+    return res.status(401).json({ message: 'Not authorized' });
   }
 });
 
