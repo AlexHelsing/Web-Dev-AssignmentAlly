@@ -36,15 +36,22 @@ passport.deserializeUser(function (user, done) {
 
 var router = express.Router();
 
-router.post(
-  '/login',
-  passport.authenticate('local', {
-    // redirect to dashboard or whatever route we got later on
-    successReturnToOrRedirect: '/dashboard',
-    failureRedirect: '/login',
-    failureMessage: true,
-  })
-);
+router.post('/login', function (req, res, next) {
+  passport.authenticate('local', function (err, user, info) {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.status(401).json({ success: false, message: info.message });
+    }
+    req.logIn(user, function (err) {
+      if (err) {
+        return next(err);
+      }
+      return res.json({ success: true, user: user });
+    });
+  })(req, res, next);
+});
 
 router.post('/logout', function (req, res, next) {
   req.logout(function (err) {
