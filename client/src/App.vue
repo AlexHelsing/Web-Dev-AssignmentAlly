@@ -4,23 +4,30 @@
       <router-link to="/">Home</router-link>
     </div>
     <h1>Sign in</h1>
-    <form @submit.prevent="handleSubmit">
+    <form action="http://localhost:3000/api/auth/login" method="post">
       <section>
         <label for="username">Username</label>
-        <input v-model="username" id="username" type="text" autocomplete="username" required autofocus>
+        <input id="username" name="username" type="text" autocomplete="username" required autofocus>
       </section>
       <section>
         <label for="current-password">Password</label>
-        <input v-model="password" id="current-password" type="password" autocomplete="current-password" required>
+        <input id="current-password" name="password" type="password" autocomplete="current-password" required>
       </section>
       <button type="submit">Sign in</button>
     </form>
+
+    <button @click="getCurrentUser">Get current user</button>
+    <div v-if="user">
+      <h1>Dashboard</h1>
+      <p>Welcome, {{ user.username }}</p>
+    </div>
     <router-view />
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import { store, mutations } from './stores/store'
 
 export default {
   data() {
@@ -29,21 +36,53 @@ export default {
       password: ''
     }
   },
+  computed: {
+    user() {
+      console.log('user', store.user)
+      return store.user
+    }
+  },
   methods: {
     async handleSubmit() {
       try {
-        const response = await axios.post('http://localhost:3000/api/auth/login', {
-          username: this.username,
-          password: this.password
+        console.log(this.username, this.password)
+        const response = await fetch('http://localhost:3000/api/auth/login', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            username: this.username,
+            password: this.password
+          })
         })
-
-        if (response.data.success) {
-          this.$router.push('/dashboard')
+        const data = await response.json()
+        console.log('data', data)
+        if (data.user) {
+          mutations.setUser(data.user)
         } else {
-          alert(response.data.message || 'Login failed')
+          mutations.setUser(null)
         }
       } catch (error) {
-        console.error('Error during login:', error)
+        console.error('Error logging in:', error)
+        mutations.setUser(null)
+      }
+    },
+    async getCurrentUser() {
+      try {
+        const response = await axios.get(
+          'http://localhost:3000/api/auth/current-user'
+        )
+        if (response.data.user) {
+          console.log('Current user:', response.data.user)
+          mutations.setUser(response.data.user)
+        } else {
+          mutations.setUser(null)
+        }
+      } catch (error) {
+        console.error('Error fetching current user:', error)
+        mutations.setUser(null)
       }
     }
   }

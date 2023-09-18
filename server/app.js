@@ -30,14 +30,19 @@ mongoose.connect(mongoURI).catch(function (err) {
 
 // Create Express app
 var app = express();
+app.use(
+  cors({
+    origin: 'http://localhost:8080',
+    credentials: true,
+  })
+);
+
 // Parse requests of content-type 'application/json'
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // HTTP request logger
 app.use(morgan('dev'));
 // Enable cross-origin resource sharing for frontend must be registered before api
-app.options('*', cors());
-app.use(cors());
 
 app.use(
   session({
@@ -45,7 +50,10 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      maxAge: 1000 * 60 * 60,
+      maxAge: 10000000000000,
+      httpOnly: true,
+      secure: false, // set this to true if you're running over HTTPS
+      sameSite: 'none', // important when working cross-origin
     },
     store: MongoStore.create({
       mongoUrl: mongoURI,
