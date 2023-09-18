@@ -1,0 +1,19 @@
+
+GET http://localhost:3000/api/groups/getAllGroups
+
+###
+
+GET http://localhost:3000/api/groups/webdev
+
+###
+
+POST http://localhost:3000/api/groups/create-group
+Content-Type: application/json
+
+{
+    "course": "algo"
+}
+
+### 
+
+POST http://localhost:3000/api/groups/algo/delete-group

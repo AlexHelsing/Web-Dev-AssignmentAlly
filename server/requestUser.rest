@@ -1,0 +1,54 @@
+
+GET http://localhost:3000/api/users/getAllUsers
+
+###
+
+GET http://localhost:3000/api/users/alextest1
+
+
+
+###
+
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "username": "alextest1",
+    "password": "alex1"
+}
+
+###
+
+
+POST http://localhost:3000/api/auth/signup
+Content-Type: application/json
+
+{
+    "username": "alextest1",
+    "password": "alex1"
+}
+
+### 
+
+POST http://localhost:3000/api/auth/logout
+Content-Type: application/json
+
+{
+    "username": "Alextest5",
+    "password": "alex1"
+}
+
+###
+
+POST http://localhost:3000/api/users/alextest1/deleteUser
+
+
+###
+
+POST http://localhost:3000/api/users/alextest1/changePassword
+Content-Type: application/json
+
+{
+    "password": "alex2",
+    "newPassword": "alex3"
+}
