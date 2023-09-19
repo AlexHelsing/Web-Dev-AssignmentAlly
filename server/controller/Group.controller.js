@@ -42,8 +42,9 @@ async function getMyGroups(req, res) {
 }
 
 async function getGroup(req, res) {
+  // will need to check if user is in group here later but i cba right now
   try {
-    const group = await Group.findOne({ course: req.params.course });
+    const group = await Group.findById(req.params.id);
     res.json(group);
   } catch (err) {
     res.status(400).json({ message: err.message });

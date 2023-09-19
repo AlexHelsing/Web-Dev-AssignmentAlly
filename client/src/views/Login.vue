@@ -1,5 +1,4 @@
 <template>
-  <div id="app">
     <div class="fullscreen-container">
       <div class="login-container">
         <h1 class="login-title">Welcome {{ message }}</h1>
@@ -22,11 +21,10 @@
         </form>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
-import { store, mutations } from '../store/store'
+import { store } from '../store/store'
 
 export default {
   data() {
@@ -58,14 +56,8 @@ export default {
         })
         const data = await response.json()
         console.log('data', data)
-        if (data.user) {
-          mutations.setUser(data.user)
-        } else {
-          mutations.setUser(null)
-        }
       } catch (error) {
         console.error('Error logging in:', error)
-        mutations.setUser(null)
       }
     }
   }
@@ -95,6 +87,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: brown;
 }
 
 .login-container {

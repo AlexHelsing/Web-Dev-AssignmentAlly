@@ -79,7 +79,7 @@ router.post('/signup', function (req, res, next) {
     salt: salt,
   });
 
-  // Assuming you have a save or create method for your User model
+  // Save the user to the database
   user.save();
 
   // Log the user in after successful registration
