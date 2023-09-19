@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { store, mutations } from '../store/store'
+import { store } from '../store/store'
 
 export default {
   data() {
@@ -58,14 +58,8 @@ export default {
         })
         const data = await response.json()
         console.log('data', data)
-        if (data.user) {
-          mutations.setUser(data.user)
-        } else {
-          mutations.setUser(null)
-        }
       } catch (error) {
         console.error('Error logging in:', error)
-        mutations.setUser(null)
       }
     }
   }

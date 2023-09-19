@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { store, mutations } from '../store/store'
+import { store } from '../store/store'
 
 export default {
   data() {
@@ -53,14 +53,8 @@ export default {
         })
         const data = await response.json()
         console.log('data', data)
-        if (data.user) {
-          mutations.setUser(data.user)
-        } else {
-          mutations.setUser(null)
-        }
       } catch (error) {
-        console.error('Error signing up:', error)
-        mutations.setUser(null)
+        console.error('Error logging in:', error)
       }
     }
   }
@@ -68,18 +62,18 @@ export default {
 </script>
 
 <style>
-
-*::before, *::after{
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-body{
+body {
   margin: 0;
 }
 
 :root {
   --primary-light-hsl: 200, 100%, 91%;
-  --primary-hsl:200, 100%, 50%;
+  --primary-hsl: 200, 100%, 50%;
   --primary-dark-hsl: 200, 100%, 6%;
 }
 
@@ -92,16 +86,16 @@ body{
   align-items: center;
 }
 
-.signup-container{
-  background-color:hsl(var(--primary-dark-hsl), .7);
-  box-shadow:0 0 15px 0 black;
+.signup-container {
+  background-color: hsl(var(--primary-dark-hsl), .7);
+  box-shadow: 0 0 15px 0 black;
   padding: 30px 40px;
   width: 80%;
   max-width: 600px;
   border-radius: 20px;
 }
 
-.signup-title{
+.signup-title {
   margin: 0;
   color: white;
   text-align: center;
@@ -109,41 +103,41 @@ body{
   font-weight: normal;
 }
 
-.form{
+.form {
   display: flex;
   flex-direction: column;
   gap: 20px;
   margin-top: 40px;
 }
 
-.input-group{
+.input-group {
   display: flex;
   flex-direction: column;
   gap: 5px;
 }
 
-.input-group label{
+.input-group label {
   color: white;
   font-weight: normal;
   font-size: 1.3em;
 }
 
-.input-group input{
+.input-group input {
   font-size: 1.25rem;
   padding: .5em;
   background-color: hsl(var(--primary-light-hsl), .3);
   border: none;
   outline: none;
   border-radius: .25em;
-  color:white;
+  color: white;
   font-weight: lighter;
 }
 
-.input-group input:focus{
+.input-group input:focus {
   box-shadow: 0 0 0 1px hsl(var(--primary-hsl));
 }
 
-.signup-button{
+.signup-button {
   padding: .5em 1em;
   font-size: 1.5rem;
   font-weight: lighter;
@@ -156,18 +150,17 @@ body{
 }
 
 .signup-button:hover,
-.signup-button:focus{
+.signup-button:focus {
   background-color: hsl(var(--primary-hsl), .4);
 }
 
-.register-group{
-  display:flex;
+.register-group {
+  display: flex;
   flex-direction: vertical;
   color: white;
 }
 
-.register-group span{
+.register-group span {
   margin: 2px;
 }
-
 </style>
