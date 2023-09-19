@@ -14,6 +14,10 @@ const AssignmentGroupSchema = new mongoose.Schema({
       // max: 3,
     },
   ],
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
 });
 
 module.exports = mongoose.model('AssignmentGroup', AssignmentGroupSchema);

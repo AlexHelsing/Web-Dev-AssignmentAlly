@@ -37,7 +37,12 @@ app.use(express.json());
 app.use(morgan('dev'));
 // Enable cross-origin resource sharing for frontend must be registered before api
 app.options('*', cors());
-app.use(cors());
+app.use(
+  cors({
+    origin: 'http://localhost:8080',
+    credentials: true,
+  })
+);
 
 app.use(
   session({
@@ -45,7 +50,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      maxAge: 1000 * 60 * 60,
+      maxAge: 1000 * 60 * 60 * 24 * 7,
     },
     store: MongoStore.create({
       mongoUrl: mongoURI,
