@@ -17,16 +17,44 @@
     <b-navbar-nav class="ml-auto">
       <b-nav-item>{{ user ? user.username : "fetching user..." }}</b-nav-item>
     </b-navbar-nav>
+    <b-dropdown>
+    <template #button-content>{{ user.username }}</template>
+    <b-dropdown-item-button v-on:click="logout">Logout</b-dropdown-item-button>
+  </b-dropdown>
   </b-navbar>
 </template>
 
 <script>
 import { store } from '../store/store'
+
 export default {
   computed: {
     user() {
       return store.user
     }
+  },
+  methods: {
+    logout: async function (event) {
+      try {
+        console.log(this.username, this.password)
+        const response = await fetch('http://localhost:3000/api/auth/logout', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            username: this.username,
+            password: this.password
+          })
+        })
+        const data = await response.json()
+        console.log('data', data)
+      } catch (error) {
+        console.error('Error logging in:', error)
+      }
+    }
+
   }
 }
 </script>
