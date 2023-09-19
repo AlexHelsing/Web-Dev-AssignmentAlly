@@ -13,12 +13,18 @@
             {{ group.course }}
           </b-card-text>
         </b-card>
-        <b-card class="create-group-card">
-          <b-card-text>
-            Create a new group
-          </b-card-text>
-        </b-card>
+        <b-button v-b-modal.modal-1>Create New Group</b-button>
       </div>
+      <b-modal id="modal-1" title="Create an assignment group" centered>
+        <div class="mb-3">
+          <label for="course-name" class="form-label">Course Name</label>
+          <input type="text" id="course-name" class="form-control" v-model="courseName" placeholder="Enter course name">
+
+        </div>
+        <div slot="modal-footer" class="w-100 d-flex justify-content-end">
+          <b-button variant="primary" @click="createGroup">Create</b-button>
+        </div>
+      </b-modal>
     </div>
   </div>
 </template>
@@ -28,7 +34,8 @@ import { store } from '../store/store'
 export default {
   data() {
     return {
-      groups: []
+      groups: [],
+      courseName: ''
     }
   },
   methods: {
@@ -40,6 +47,28 @@ export default {
       console.log('data', data)
       this.groups = data
       console.log('groups', this.groups)
+    },
+    async createGroup() {
+      try {
+        const response = await fetch('http://localhost:3000/api/groups/create-group', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            course: this.courseName
+          })
+        })
+        const data = await response.json()
+        if (response.ok) {
+          this.groups.push(data)
+        } else {
+          console.error('Error creating group:', data.message || 'Unknown error')
+        }
+      } catch (error) {
+        console.error('Error creating group:', error)
+      }
     }
   },
   mounted() {
@@ -79,7 +108,7 @@ export default {
   padding: 10px;
   font-size: larger;
   font-style: italic;
-  font-weight:500;
+  font-weight: 500;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   cursor: pointer;
