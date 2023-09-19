@@ -1,10 +1,21 @@
 <template>
   <div id="app">
-    <div id="nav">
-    </div>
+    <Navbar v-if="this.$route.path !== '/login'" />
     <router-view></router-view>
   </div>
 </template>
+
+<script>
+import Navbar from './components/NavBar'
+
+export default {
+  name: 'App',
+  components: {
+    Navbar
+  }
+}
+
+</script>
 
 <style>
 #app {
