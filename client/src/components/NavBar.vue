@@ -13,7 +13,7 @@
     </b-collapse>
 
     <b-navbar-nav class="ml-auto">
-      <b-nav-item>{{ user.user.username }}</b-nav-item>
+      <b-nav-item>{{ user.username }}</b-nav-item>
     </b-navbar-nav>
   </b-navbar>
 </template>

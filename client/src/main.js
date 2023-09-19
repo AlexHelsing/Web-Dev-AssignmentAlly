@@ -27,7 +27,7 @@ new Vue({
         console.log('Current user:', response.data)
 
         if (response.data) {
-          mutations.setUser(response.data)
+          mutations.setUser(response.data.user)
         } else {
           mutations.setUser(null)
           this.$router.push('/login')

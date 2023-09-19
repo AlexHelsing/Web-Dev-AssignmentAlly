@@ -2,7 +2,7 @@
   <div>
     <div v-if="user">
       <h1>Dashboard</h1>
-      <p>Welcome, {{ user.user.username }}</p>
+      <p>Welcome, {{ user.username }}</p>
       <form action="http://localhost:3000/api/auth/logout" method="post">
         <button type="submit" class="btn_message">Logout</button>
       </form>
