@@ -34,7 +34,12 @@ const router = new Router({
 router.beforeEach(async (to, from, next) => {
   const user = await getCurrentUser()
 
-  if (!to.matched.some((record) => record.meta.requiresNoAuth) && !user) {
+  if (to.matched.some((record) => record.meta.requiresNoAuth) && user) {
+    next('/dashboard')
+  } else if (
+    !to.matched.some((record) => record.meta.requiresNoAuth) &&
+    !user
+  ) {
     next('/login')
   } else {
     next()
