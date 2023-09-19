@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <div class="fullscreen-container">
-      <div class="login-container">
-        <h1 class="login-title">Welcome {{ message }}</h1>
-        <form class="form" action="http://localhost:3000/api/auth/login" method="post">
+      <div class="signup-container">
+        <h1 class="signup-title">Sign up</h1>
+        <form class="form" action="http://localhost:3000/api/auth/signup" method="post">
           <div class="input-group">
             <label for="username">Username</label>
             <input type="username" name="username" id="username">
@@ -13,12 +13,7 @@
             <input type="password" name="password" id="password">
           </div>
 
-          <button type="submit" class="login-button">Login</button>
-          <div class="register-group">
-            <p class="registerparagraph">Don't have an account?</p>
-            <span></span>
-            <a href="http://localhost:8080/signup">Sign up here!</a>
-          </div>
+          <button type="submit" class="signup-button">Sign up</button>
         </form>
       </div>
     </div>
@@ -45,7 +40,7 @@ export default {
     async handleSubmit() {
       try {
         console.log(this.username, this.password)
-        const response = await fetch('http://localhost:3000/api/auth/login', {
+        const response = await fetch('http://localhost:3000/api/auth/signup', {
           method: 'POST',
           credentials: 'include',
           headers: {
@@ -64,7 +59,7 @@ export default {
           mutations.setUser(null)
         }
       } catch (error) {
-        console.error('Error logging in:', error)
+        console.error('Error signing up:', error)
         mutations.setUser(null)
       }
     }
@@ -97,7 +92,7 @@ body{
   align-items: center;
 }
 
-.login-container{
+.signup-container{
   background-color:hsl(var(--primary-dark-hsl), .7);
   box-shadow:0 0 15px 0 black;
   padding: 30px 40px;
@@ -106,7 +101,7 @@ body{
   border-radius: 20px;
 }
 
-.login-title{
+.signup-title{
   margin: 0;
   color: white;
   text-align: center;
@@ -148,7 +143,7 @@ body{
   box-shadow: 0 0 0 1px hsl(var(--primary-hsl));
 }
 
-.login-button{
+.signup-button{
   padding: .5em 1em;
   font-size: 1.5rem;
   font-weight: lighter;
@@ -160,8 +155,8 @@ body{
   cursor: pointer;
 }
 
-.login-button:hover,
-.login-button:focus{
+.signup-button:hover,
+.signup-button:focus{
   background-color: hsl(var(--primary-hsl), .4);
 }
 
