@@ -1,5 +1,4 @@
 <template>
-  <div id="app">
     <div class="fullscreen-container">
       <div class="signup-container">
         <h1 class="signup-title">Sign up</h1>
@@ -17,7 +16,6 @@
         </form>
       </div>
     </div>
-  </div>
 </template>
 
 <script>

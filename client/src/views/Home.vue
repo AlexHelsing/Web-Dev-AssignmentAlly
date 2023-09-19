@@ -89,19 +89,25 @@ export default {
   background-color: #2c3e50;
   display: flex;
   flex-direction: column;
+
 }
 
 .section {
+  max-width: 1200px;
+  /* maximum width for the content */
+  width: 90%;
+  /* occupy 90% of viewport width */
   color: blueviolet;
   padding: 20px;
   display: flex;
   flex-direction: column;
+  align-items: start;
 }
 
 .section-title {
   color: white;
   font-size: 2em;
-  margin: 0;
+  margin-bottom: 16px;
 }
 
 .group-card {
@@ -114,26 +120,41 @@ export default {
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-}
-
-.create-group-card {
-  color: black;
-  padding: 10px;
-  font-size: larger;
-  font-size: x-large;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .section-content-1 {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  padding-top: 6px;
+  grid-template-columns: repeat(4, 1fr);
   grid-gap: 10px;
+}
 
-  @media screen and (max-width: 768px) {
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .section-content-1 {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .section-content-1 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .section-content-1 {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+  .section {
+    align-items: center;
+  }
+  .main {
+    align-items: center;
   }
 }
 </style>

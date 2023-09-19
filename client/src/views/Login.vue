@@ -1,5 +1,4 @@
 <template>
-  <div id="app">
     <div class="fullscreen-container">
       <div class="login-container">
         <h1 class="login-title">Welcome {{ message }}</h1>
@@ -22,7 +21,6 @@
         </form>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -89,6 +87,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: brown;
 }
 
 .login-container {
