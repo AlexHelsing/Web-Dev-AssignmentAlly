@@ -79,10 +79,18 @@ router.post('/signup', function (req, res, next) {
     salt: salt,
   });
 
-  // Save the new user, callbacks dont work anymore
+  // Assuming you have a save or create method for your User model
   user.save();
 
-  res.status(200).json({ message: 'Signup successful' });
+  // Log the user in after successful registration
+  req.login(user, function (err) {
+    if (err) {
+      return next(err);
+    }
+
+    // Redirect to dashboard after successful login
+    res.redirect('http://localhost:8080/dashboard');
+  });
 });
 
 module.exports = router;
