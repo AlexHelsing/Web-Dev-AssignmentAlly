@@ -17,7 +17,7 @@
           <div class="register-group">
             <p class="registerparagraph">Don't have an account?</p>
             <span></span>
-            <a href="http://localhost:8080/signup">Sign up here!</a>
+            <router-link to="/signup" tag="a">Sign up here!</router-link>
           </div>
         </form>
       </div>
@@ -73,18 +73,18 @@ export default {
 </script>
 
 <style>
-
-*::before, *::after{
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-body{
+body {
   margin: 0;
 }
 
 :root {
   --primary-light-hsl: 200, 100%, 91%;
-  --primary-hsl:200, 100%, 50%;
+  --primary-hsl: 200, 100%, 50%;
   --primary-dark-hsl: 200, 100%, 6%;
 }
 
@@ -97,16 +97,16 @@ body{
   align-items: center;
 }
 
-.login-container{
-  background-color:hsl(var(--primary-dark-hsl), .7);
-  box-shadow:0 0 15px 0 black;
+.login-container {
+  background-color: hsl(var(--primary-dark-hsl), .7);
+  box-shadow: 0 0 15px 0 black;
   padding: 30px 40px;
   width: 80%;
   max-width: 600px;
   border-radius: 20px;
 }
 
-.login-title{
+.login-title {
   margin: 0;
   color: white;
   text-align: center;
@@ -114,41 +114,41 @@ body{
   font-weight: normal;
 }
 
-.form{
+.form {
   display: flex;
   flex-direction: column;
   gap: 20px;
   margin-top: 40px;
 }
 
-.input-group{
+.input-group {
   display: flex;
   flex-direction: column;
   gap: 5px;
 }
 
-.input-group label{
+.input-group label {
   color: white;
   font-weight: normal;
   font-size: 1.3em;
 }
 
-.input-group input{
+.input-group input {
   font-size: 1.25rem;
   padding: .5em;
   background-color: hsl(var(--primary-light-hsl), .3);
   border: none;
   outline: none;
   border-radius: .25em;
-  color:white;
+  color: white;
   font-weight: lighter;
 }
 
-.input-group input:focus{
+.input-group input:focus {
   box-shadow: 0 0 0 1px hsl(var(--primary-hsl));
 }
 
-.login-button{
+.login-button {
   padding: .5em 1em;
   font-size: 1.5rem;
   font-weight: lighter;
@@ -161,18 +161,17 @@ body{
 }
 
 .login-button:hover,
-.login-button:focus{
+.login-button:focus {
   background-color: hsl(var(--primary-hsl), .4);
 }
 
-.register-group{
-  display:flex;
+.register-group {
+  display: flex;
   flex-direction: vertical;
   color: white;
 }
 
-.register-group span{
+.register-group span {
   margin: 2px;
 }
-
 </style>
