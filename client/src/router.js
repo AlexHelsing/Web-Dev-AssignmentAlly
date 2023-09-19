@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from './views/Login.vue'
 import Dashboard from './views/Home.vue'
 import Signup from './views/Signup.vue'
+import Group from './views/Group.vue'
 import { getCurrentUser } from './auth'
 
 Vue.use(Router)
@@ -21,6 +22,11 @@ const router = new Router({
       path: '/dashboard',
       name: 'dashboard',
       component: Dashboard
+    },
+    {
+      path: '/group/:id',
+      name: 'group',
+      component: Group
     },
     {
       path: '/signup',

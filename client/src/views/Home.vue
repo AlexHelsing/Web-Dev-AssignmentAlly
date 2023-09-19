@@ -8,18 +8,20 @@
     <div class="section">
       <h1 class="section-title">Assignment Group</h1>
       <div class="section-content-1">
-        <b-card class="group-card" v-for="group in groups" :key="group.id">
-          <b-card-text>
-            {{ group.course }}
-          </b-card-text>
-        </b-card>
+        <router-link v-for="group in groups" :key="group.id" :to="'/group/' + group._id" tag="div"
+          class="router-link-wrapper">
+          <b-card class="group-card">
+            <b-card-text>
+              {{ group.course }}
+            </b-card-text>
+          </b-card>
+        </router-link>
         <b-button v-b-modal.modal-1>Create New Group</b-button>
       </div>
       <b-modal id="modal-1" title="Create an assignment group" centered>
         <div class="mb-3">
           <label for="course-name" class="form-label">Course Name</label>
           <input type="text" id="course-name" class="form-control" v-model="courseName" placeholder="Enter course name">
-
         </div>
         <div slot="modal-footer" class="w-100 d-flex justify-content-end">
           <b-button variant="primary" @click="createGroup">Create</b-button>
