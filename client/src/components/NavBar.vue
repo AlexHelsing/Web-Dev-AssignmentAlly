@@ -11,12 +11,6 @@
         <b-nav-item to="/tasks">Tasks</b-nav-item>
       </b-navbar-nav>
     </b-collapse>
-    <form action="http://localhost:3000/api/auth/logout" method="post">
-      <button type="submit" style="font-size: 10px; padding: 2px 6px;">Logout</button>
-    </form>
-    <b-navbar-nav class="ml-auto">
-      <b-nav-item>{{ user ? user.username : "fetching user..." }}</b-nav-item>
-    </b-navbar-nav>
     <b-dropdown>
     <template #button-content>{{ user.username }}</template>
     <b-dropdown-item-button v-on:click="logout">Logout</b-dropdown-item-button>
@@ -48,7 +42,9 @@ export default {
             password: this.password
           })
         })
-        const data = await response.json()
+        const data = await response.json().then(() => {
+          this.$router.push('/login')
+        })
         console.log('data', data)
       } catch (error) {
         console.error('Error logging in:', error)
