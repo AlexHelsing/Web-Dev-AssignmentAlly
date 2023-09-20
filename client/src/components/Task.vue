@@ -52,9 +52,7 @@ export default {
 }
 .task-item:hover {
   background-color: #070808;
-  transform: scale(1.03);
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  border: 1px solid #3a3f4b;
 }
 
 .task-code {

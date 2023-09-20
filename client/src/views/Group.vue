@@ -1,13 +1,13 @@
 <template>
   <main>
     <header class="header">
-      <h1>{{ course }}</h1>
       <b-avatar-group class="member-container">
         <b-avatar></b-avatar>
         <b-avatar></b-avatar>
         <b-avatar></b-avatar>
-        <button class="invite-button">Invite member</button>
       </b-avatar-group>
+      <h1 class="groupName">{{ course }}</h1>
+      <button class="invite-button">Invite member</button>
     </header>
 
     <div class="task-resource-container">
@@ -16,8 +16,10 @@
         <div class="task-list">
           <Task task-code="DIT444" task-description="Complete task 4" task-label="URGENT" task-date="3 AUG" />
           <Task task-code="DIT444" task-description="Task 2" task-label="CHILL" task-date="3 AUG" />
-          <button class="newTaskButton"> New Task </button>
+          <Task task-code="DIT444" task-description="Task 2" task-label="CHILL" task-date="3 AUG" />
+          <Task task-code="DIT444" task-description="Task 2" task-label="CHILL" task-date="3 AUG" />
         </div>
+        <button class="newTaskButton"> New Task </button>
       </section>
       <section class="right">
         <div class="right-header">Resources & Info</div>
@@ -40,7 +42,10 @@
       </section>
     </div>
 
-    <div class="meetings-container">meetings</div>
+    <div class="meetings-container">
+      <h2>Upcoming Meetings or some shit</h2>
+
+    </div>
   </main>
 </template>
 
@@ -83,6 +88,18 @@ export default {
   align-items: center;
 }
 
+.groupName {
+  order: 2;
+  font-weight: bold;
+  flex-grow: 1;
+  text-align: center;
+}
+
+.member-container {
+  order: 1;
+  margin-right: 20px;
+}
+
 .invite-button {
   background-color: #2c3e50;
   color: white;
@@ -91,6 +108,7 @@ export default {
   border-radius: 5px;
   font-size: 14px;
   cursor: pointer;
+  order: 3;
 }
 
 .newTaskButton {
@@ -130,9 +148,12 @@ export default {
 }
 
 .left {
-  width: 50%;
+  width: 55%;
   background-color: #1b263b;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   @media screen and (max-width: 768px) {
     width: 100%;
@@ -140,7 +161,7 @@ export default {
 }
 
 .right {
-  width: 50%;
+  width: 45%;
   padding: 20px;
   background-color: #0c0b15;
   color: #dddfd8;
@@ -187,14 +208,17 @@ export default {
 }
 
 .meetings-container {
-  background-color: #3a3a3a;
-  color: white;
   padding: 20px;
+  background-color: #f3f4f6;
 }
 
 .task-list {
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
   gap: 10px;
-}
-</style>
+  height: 250px;
+  overflow-y: auto;
+  padding-right: 10px;
+  margin-bottom: 20px;
+}</style>
