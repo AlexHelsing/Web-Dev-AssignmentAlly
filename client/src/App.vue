@@ -18,11 +18,24 @@ export default {
 </script>
 
 <style>
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+:root {
+  --primary-light-hsl: 200, 100%, 91%;
+  --primary-hsl: 200, 100%, 50%;
+  --primary-dark-hsl: 200, 100%, 6%;
+}
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-
 }
 </style>

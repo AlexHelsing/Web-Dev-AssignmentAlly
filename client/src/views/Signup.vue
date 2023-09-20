@@ -60,21 +60,6 @@ export default {
 </script>
 
 <style>
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-}
-
-:root {
-  --primary-light-hsl: 200, 100%, 91%;
-  --primary-hsl: 200, 100%, 50%;
-  --primary-dark-hsl: 200, 100%, 6%;
-}
-
 .fullscreen-container {
   height: 100vh;
   width: 100vw;
