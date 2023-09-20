@@ -2,16 +2,24 @@
   <div id="app">
     <Navbar v-if="this.$route.path !== '/login' && this.$route.path !== '/signup'" />
     <router-view></router-view>
+    <EditTaskModal :task="selectedTask" />
   </div>
 </template>
 
 <script>
 import Navbar from './components/NavBar'
+import EditTaskModal from './components/EditTaskModal'
 
 export default {
   name: 'App',
   components: {
-    Navbar
+    Navbar,
+    EditTaskModal
+  },
+  data() {
+    return {
+      selectedTask: null
+    }
   }
 }
 

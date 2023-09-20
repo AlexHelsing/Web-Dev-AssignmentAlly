@@ -1,16 +1,17 @@
 <template>
-    <div class="task-item">
-        <span class="task-code">{{ taskCode }}</span>
-        <span class="task-description">{{ taskDescription }}</span>
-        <span class="task-details">
-            <TaskLabel :label="taskLabel" />
-            <span class="task-date">{{ taskDate }}</span>
-        </span>
-    </div>
+  <div @click="handleTaskClick" class="task-item">
+    <span class="task-code">{{ taskCode }}</span>
+    <span class="task-description">{{ taskDescription }}</span>
+    <span class="task-details">
+      <TaskLabel :label="taskLabel" />
+      <span class="task-date">{{ taskDate }}</span>
+    </span>
+  </div>
 </template>
 
 <script>
 import TaskLabel from './TaskLabel'
+import { EventBus } from '../event-bus'
 
 export default {
   name: 'Task',
@@ -34,8 +35,19 @@ export default {
       type: String,
       default: ''
     }
+  },
+  methods: {
+    handleTaskClick() {
+      EventBus.$emit('task-clicked', {
+        taskCode: this.taskCode,
+        taskDescription: this.taskDescription,
+        taskLabel: this.taskLabel,
+        taskDate: this.taskDate
+      })
+    }
   }
 }
+
 </script>
 
 <style scoped>
@@ -50,24 +62,25 @@ export default {
   cursor: pointer;
   border: 1px solid transparent;
 }
+
 .task-item:hover {
   background-color: #070808;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .task-code {
-    flex: 1;
+  flex: 1;
   text-align: left;
   font-weight: bold;
 }
 
 .task-description {
-    flex: 2;
+  flex: 2;
   text-align: center;
 }
 
 .task-details {
-    flex: 1;
+  flex: 1;
   justify-content: flex-end;
   display: flex;
   align-items: center;
