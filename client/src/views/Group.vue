@@ -19,8 +19,28 @@
           <button class="newTaskButton"> New Task </button>
         </div>
       </section>
-      <section class="right">IDK wtf to put on this shit</section>
+      <section class="right">
+        <div class="right-header">Resources & Info</div>
+        <div class="resource-item">
+          <span class="resource-icon">[Icon]</span>
+          <a href="#">Assignment File</a>
+        </div>
+        <div class="resource-item">
+          <span class="resource-icon">[Icon]</span>
+          <a href="#">Reference Material</a>
+        </div>
+        <div class="resource-item" href="#">
+          <span class="resource-icon">[Icon]</span>
+          <a href="#">Discord</a>
+        </div>
+        <div class="deadline">
+          <span class="resource-icon">[Icon]</span>
+          Deadline: 25th December
+        </div>
+      </section>
     </div>
+
+    <div class="meetings-container">meetings</div>
   </main>
 </template>
 
@@ -101,7 +121,7 @@ export default {
 .task-resource-container {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: stretch;
   color: aliceblue;
 
   @media screen and (max-width: 768px) {
@@ -119,18 +139,62 @@ export default {
   }
 }
 
+.right {
+  width: 50%;
+  padding: 20px;
+  background-color: #0c0b15;
+  color: #dddfd8;
+  font-family: Arial, sans-serif;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
+}
+
+.right-header {
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  border-bottom: 2px solid #e0e1dd;
+  padding-bottom: 10px;
+}
+
+.resource-item {
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+}
+
+.resource-icon {
+  margin-right: 10px;
+}
+
+.deadline {
+  color: red;
+  margin: 20px 0;
+  font-weight: bold;
+}
+
+.discord-link {
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  background-color: #7289da;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  color: white;
+}
+
+.meetings-container {
+  background-color: #3a3a3a;
+  color: white;
+  padding: 20px;
+}
+
 .task-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-
-.right {
-  width: 50%;
-  height: 300px;
-  background-color: #434249;
-
-  @media screen and (max-width: 768px) {
-    width: 100%;
-  }
-}</style>
+</style>
