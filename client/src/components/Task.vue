@@ -50,25 +50,34 @@ export default {
   cursor: pointer;
   border: 1px solid transparent;
 }
+.task-item:hover {
+  background-color: #070808;
+  transform: scale(1.03);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  border: 1px solid #3a3f4b;
+}
 
 .task-code {
-
+    flex: 1;
   text-align: left;
+  font-weight: bold;
 }
 
 .task-description {
-
+    flex: 2;
   text-align: center;
 }
 
 .task-details {
-
+    flex: 1;
+  justify-content: flex-end;
   display: flex;
-  align-items: center;  /* Center vertically */
+  align-items: center;
 }
 
 .task-label,
 .task-date {
-  margin: 0 2px;  /* Reduced margin for closer placement */
+  margin: 0 7px;
+  font-weight: bold;
 }
 </style>

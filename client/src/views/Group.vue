@@ -14,11 +14,12 @@
       <section class="left">
         <h1>Tasks</h1>
         <div class="task-list">
-          <Task task-code="1" task-description="Task 1" task-label="URGENT" task-date="3 AUG" />
-          <Task task-code="2" task-description="Task 2" task-label="CHILL" task-date="3 AUG" />
+          <Task task-code="DIT444" task-description="Complete task 4" task-label="URGENT" task-date="3 AUG" />
+          <Task task-code="DIT444" task-description="Task 2" task-label="CHILL" task-date="3 AUG" />
+          <button class="newTaskButton"> New Task </button>
         </div>
       </section>
-      <section class="right">X</section>
+      <section class="right">IDK wtf to put on this shit</section>
     </div>
   </main>
 </template>
@@ -72,51 +73,64 @@ export default {
   cursor: pointer;
 }
 
+.newTaskButton {
+  background-color: #34a8eb;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  text-align: center;
+  margin-top: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+}
+
+.newTaskButton:hover {
+  background-color: #2c90d4;
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.newTaskButton:active {
+  transform: translateY(0px);
+}
+
 .task-resource-container {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   color: aliceblue;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
 }
 
 .left {
   width: 50%;
   background-color: #1b263b;
   padding: 20px;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 }
 
 .task-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  /* This creates space between tasks. */
-}
-
-.task-item {
-  background-color: #0d1319;
-  padding: 10px 15px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: background-color 0.2s, box-shadow 0.2s;
-  cursor: pointer;
-  border: 1px solid transparent;
-  /* Prepare for hover effect. */
-}
-
-.task-item:hover {
-  background-color: #070808;
-  /* Slightly darker background on hover. */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  /* Subtle shadow for depth. */
-
-  /* Light border on hover. */
 }
 
 .right {
   width: 50%;
   height: 300px;
   background-color: #434249;
-}
-</style>
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
+}</style>

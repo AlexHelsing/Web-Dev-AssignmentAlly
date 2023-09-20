@@ -32,6 +32,7 @@ export default {
     padding: 2px 10px;
     color: white;
     font-size: 0.8em;
+    font-weight: bold;
     display: inline-block;
   }
 
