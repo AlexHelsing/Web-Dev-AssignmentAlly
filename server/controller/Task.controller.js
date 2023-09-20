@@ -1,17 +1,18 @@
 const Task = require('../models/Task.Model');
 
 async function createTask(req, res) {
-  const taskId = req.params.taskId;
-  const { taskName, description, assignee, dueDate, priority, status } = req.body;
+  const groupId = req.params.groupId;
+  const { taskName, description, assignee, dueDate, priority, status } =
+    req.body;
 
   const newTask = new Task({
-    TaskId: taskId,
     TaskName: taskName,
     Description: description,
     Assignee: assignee,
     DueDate: dueDate,
     Priority: priority,
     Status: status,
+    GroupId: groupId,
   });
 
   try {
@@ -21,25 +22,38 @@ async function createTask(req, res) {
     res.status(400).json({ message: err.message });
   }
 }
-async function getTask(req, res) {
-    const taskId = req.params.taskId;
-  
-    try {
-      const task = await Task.findById(taskId);
-      
-      if (!task) {
-        return res.status(404).json({ message: 'Task not found' });
-      }
-  
-      res.json(task);
-    } catch (err) {
-      res.status(500).json({ message: 'Internal server error' });
-    }
+
+async function getTasksByGroup(req, res) {
+  const groupId = req.params.groupId;
+
+  try {
+    const tasks = await Task.find({ GroupId: groupId });
+    res.json(tasks);
+  } catch (err) {
+    res.status(500).json({ message: 'Internal server error' });
   }
+}
+
+async function getTask(req, res) {
+  const taskId = req.params.taskId;
+
+  try {
+    const task = await Task.findById(taskId);
+
+    if (!task) {
+      return res.status(404).json({ message: 'Task not found' });
+    }
+
+    res.json(task);
+  } catch (err) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
 
 async function updateTask(req, res) {
   const taskId = req.params.taskId;
-  const { taskName, description, assignee, dueDate, priority, status } = req.body;
+  const { taskName, description, assignee, dueDate, priority, status } =
+    req.body;
 
   try {
     const updatedTask = await Task.findByIdAndUpdate(
@@ -65,20 +79,20 @@ async function updateTask(req, res) {
   }
 }
 async function deleteTask(req, res) {
-    const taskId = req.params.taskId;
-  
-    try {
-      const deletedTask = await Task.findByIdAndRemove(taskId);
-      
-      if (!deletedTask) {
-        return res.status(404).json({ message: 'Task not found' });
-      }
-  
-      res.json(deletedTask);
-    } catch (err) {
-      res.status(500).json({ message: 'Internal server error' });
+  const taskId = req.params.taskId;
+
+  try {
+    const deletedTask = await Task.findByIdAndRemove(taskId);
+
+    if (!deletedTask) {
+      return res.status(404).json({ message: 'Task not found' });
     }
+
+    res.json(deletedTask);
+  } catch (err) {
+    res.status(500).json({ message: 'Internal server error' });
   }
+}
 
 async function assignTaskToUser(req, res) {
   const taskId = req.params.taskId;
@@ -129,4 +143,5 @@ module.exports = {
   deleteTask,
   assignTaskToUser,
   changeTaskStatus,
+  getTasksByGroup,
 };

@@ -15,9 +15,8 @@
         <h1>Tasks</h1>
         <div class="task-list">
           <Task task-code="DIT444" task-description="Complete task 4" task-label="URGENT" task-date="3 AUG" />
-          <Task task-code="DIT444" task-description="Task 2" task-label="CHILL" task-date="3 AUG" />
-          <Task task-code="DIT444" task-description="Task 2" task-label="CHILL" task-date="3 AUG" />
-          <Task task-code="DIT444" task-description="Task 2" task-label="CHILL" task-date="3 AUG" />
+          <Task v-for="task in tasks" :key="task.id" task-code="DIT444" :task-description="task.TaskName"
+            :task-label="task.status" task-date="3 AUG" />
         </div>
         <button class="newTaskButton"> New Task </button>
       </section>
@@ -59,7 +58,8 @@ export default {
   data() {
     return {
       groupId: this.$route.params.id,
-      course: ''
+      course: '',
+      tasks: []
     }
   },
   methods: {
@@ -70,10 +70,19 @@ export default {
       const data = await response.json()
       console.log('data', data)
       this.course = data.course
+    },
+    async getGroupTasks() {
+      const response = await fetch(`http://localhost:3000/api/tasks/getTasksByGroup/${this.groupId}`, {
+        credentials: 'include'
+      })
+      const data = await response.json()
+      console.log(data)
+      this.tasks = data
     }
   },
   mounted() {
     this.fetchGroup()
+    this.getGroupTasks()
   }
 }
 </script>
@@ -221,4 +230,5 @@ export default {
   overflow-y: auto;
   padding-right: 10px;
   margin-bottom: 20px;
-}</style>
+}
+</style>

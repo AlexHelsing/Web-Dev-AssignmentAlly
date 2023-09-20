@@ -72,6 +72,8 @@ app.use('/api/users', UserRouter);
 app.use('/api/auth', AuthRouter);
 // Group router
 app.use('/api/groups', GroupRouter);
+// Task router
+app.use('/api/tasks', require('./routes/Task.router'));
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use('/api/*', function (req, res) {
