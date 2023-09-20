@@ -18,7 +18,16 @@
           <Task v-for="task in tasks" :key="task.id" task-code="DIT444" :task-description="task.TaskName"
             :task-label="task.status" task-date="3 AUG" />
         </div>
-        <button class="newTaskButton"> New Task </button>
+        <button v-b-modal.modal-1 class="newTaskButton"> New Task </button>
+        <b-modal id="modal-1" title="Create a task " centered>
+          <div class="mb-3">
+            <label for="task-name" class="form-label">Task Name, gotta specify our data better</label>
+            <input type="text" id="task-name" class="form-control" v-model="taskName" placeholder="taskname">
+          </div>
+          <div slot="modal-footer" class="w-100 d-flex justify-content-end">
+            <b-button variant="primary" @click="createGroupTask">Create</b-button>
+          </div>
+        </b-modal>
       </section>
       <section class="right">
         <div class="right-header">Resources & Info</div>
@@ -59,7 +68,8 @@ export default {
     return {
       groupId: this.$route.params.id,
       course: '',
-      tasks: []
+      tasks: [],
+      taskName: ''
     }
   },
   methods: {
@@ -78,6 +88,21 @@ export default {
       const data = await response.json()
       console.log(data)
       this.tasks = data
+    },
+    async createGroupTask() {
+      const response = await fetch(`http://localhost:3000/api/tasks/create-task/${this.groupId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          taskName: this.taskName
+        })
+      })
+      const data = await response.json()
+      console.log(data)
+      this.tasks.push(data)
     }
   },
   mounted() {

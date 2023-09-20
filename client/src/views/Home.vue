@@ -18,7 +18,7 @@
         </router-link>
         <b-button v-b-modal.modal-1>Create New Group</b-button>
       </div>
-      <b-modal id="modal-1" title="Create an assignment group" centered>
+      <b-modal id="modal-2" title="Create an assignment group" centered>
         <div class="mb-3">
           <label for="course-name" class="form-label">Course Name</label>
           <input type="text" id="course-name" class="form-control" v-model="courseName" placeholder="Enter course name">
@@ -150,9 +150,11 @@ export default {
     grid-template-columns: 1fr;
     width: 100%;
   }
+
   .section {
     align-items: center;
   }
+
   .main {
     align-items: center;
   }
