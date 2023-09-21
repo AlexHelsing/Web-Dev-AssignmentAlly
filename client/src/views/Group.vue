@@ -2,7 +2,8 @@
   <main>
     <header class="header">
       <b-avatar-group v-if="group" class="member-container">
-        <b-avatar variant="secondary" v-for="member in group.members" :key="member.id">{{ initials(member).toUpperCase() }}</b-avatar>
+        <b-avatar variant="secondary" v-for="member in group.members" :key="member.id">{{ initials(member).toUpperCase()
+        }}</b-avatar>
       </b-avatar-group>
       <h1 class="groupName">{{ group ? group.assignmentGroupName : "..." }}</h1>
       <button v-b-modal.modal-4 class="invite-button">Invite member</button>
@@ -178,9 +179,8 @@ export default {
 </script>
 
 <style>
-
-main{
- background-color: #1b263b;
+main {
+  background-color: #1b263b;
 }
 
 .header {
@@ -190,7 +190,6 @@ main{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-radius: 20px;
   height: 70px;
 }
 
@@ -218,7 +217,7 @@ main{
   order: 3;
 }
 
-.invite-button:hover{
+.invite-button:hover {
   scale: 1.025;
 }
 
@@ -337,5 +336,4 @@ main{
   justify-content: space-between;
   height: 70px;
 }
-
 </style>
