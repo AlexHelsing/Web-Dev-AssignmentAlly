@@ -22,7 +22,7 @@
       <section class="left">
         <h1>Tasks</h1>
         <div class="task-list">
-          <Task v-for="task in tasks" :task-id="task._id" :key="task._id" :task-course="group ? group.course : '...'"
+          <Task v-for="task in tasks" :task-id="task._id" :key="task._id" :task-course="task.TaskName"
             :task-description="task.Description" :task-label="task.Priority" :task-date="task.DueDate" />
         </div>
         <button v-b-modal.modal-1 class="newTaskButton"> New Task </button>
