@@ -4,7 +4,7 @@
     <span class="task-description">{{ taskDescription }}</span>
     <span class="task-details">
       <TaskLabel :label="taskLabel" />
-      <span class="task-date">{{ taskDate }}</span>
+      <span class="task-date">{{ convertDateToReadableFormat(taskDate) }}</span>
     </span>
   </div>
 </template>
@@ -44,6 +44,13 @@ export default {
         taskLabel: this.taskLabel,
         taskDate: this.taskDate
       })
+    },
+    convertDateToReadableFormat(date) {
+      const dateObj = new Date(date)
+      // i want it to look like this: 3 AUG, 6 FEB and so on
+      const month = dateObj.toLocaleString('default', { month: 'short' })
+      const day = dateObj.getDate()
+      return `${day} ${month}`
     }
   }
 }

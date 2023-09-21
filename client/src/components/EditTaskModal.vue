@@ -1,5 +1,5 @@
 <template>
-  <b-modal id="task-detail-modal" ref="taskModal" title="Task Details" centered>
+  <b-modal id="task-detail-modal" ref="taskModal" title="Edit task" centered>
     <div v-if="localTask">
       <label class="d-block mb-2">Title:</label>
       <b-form-input v-model="localTask.taskCode"></b-form-input>

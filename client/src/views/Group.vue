@@ -23,17 +23,17 @@
         <div class="task-list">
           <Task task-code="DIT444" task-description="Complete task 4" task-label="Medium" task-date="3 AUG" />
           <Task v-for="task in tasks" :key="task.id" :task-code="group.course" :task-description="task.TaskName"
-            :task-label="task.Priority" task-date="3 AUG" />
+            :task-label="task.Priority" :task-date="task.DueDate" />
         </div>
         <button v-b-modal.modal-1 class="newTaskButton"> New Task </button>
         <b-modal id="modal-1" title="Create a task " centered>
           <div class="mb-3">
             <label for="task-name" class="form-label">Task Name, gotta specify our data better</label>
-            <input type="text" id="task-name" class="form-control" v-model="taskName" placeholder="taskname">
+            <input required type="text" id="task-name" class="form-control" v-model="taskName" placeholder="taskname">
           </div>
           <div class="mb-3">
             <label for="task-description" class="form-label">description</label>
-            <input type="text" id="task-description" class="form-control" v-model="taskDescription"
+            <input required type="text" id="task-description" class="form-control" v-model="taskDescription"
               placeholder="description">
           </div>
           <div class="mb-3">
@@ -43,6 +43,10 @@
               <option value="Medium">Medium</option>
               <option value="High">High</option>
             </select>
+          </div>
+          <div class="mb-3">
+            <label required for="task-due-date" class="form-label">Due Date</label>
+            <input type="date" id="task-due-date" class="form-control" v-model="taskDueDate">
           </div>
           <div slot="modal-footer" class="w-100 d-flex justify-content-end">
             <b-button variant="primary" @click="createGroupTask">Create</b-button>
@@ -92,7 +96,8 @@ export default {
       taskName: '',
       taskDescription: '',
       memberName: '',
-      taskPriority: 'Low'
+      taskPriority: 'Low',
+      taskDueDate: ''
     }
   },
   methods: {
@@ -113,6 +118,10 @@ export default {
       this.tasks = data
     },
     async createGroupTask() {
+      if (!this.taskName || !this.taskDescription || !this.taskPriority || !this.taskDueDate) {
+        alert('Please fill out all fields')
+        return
+      }
       const response = await fetch(`http://localhost:3000/api/tasks/create-task/${this.groupId}`, {
         method: 'POST',
         credentials: 'include',
@@ -123,7 +132,8 @@ export default {
           taskName: this.taskName,
           course: this.group.course,
           description: this.taskDescription,
-          priority: this.taskPriority
+          priority: this.taskPriority,
+          dueDate: this.taskDueDate
         })
       })
       const data = await response.json()
