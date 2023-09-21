@@ -11,10 +11,10 @@
         <b-nav-item to="/tasks">Tasks</b-nav-item>
       </b-navbar-nav>
     </b-collapse>
-    <b-dropdown>
-    <template #button-content>{{ user.username }}</template>
-    <b-dropdown-item-button v-on:click="logout">Logout</b-dropdown-item-button>
-  </b-dropdown>
+    <b-dropdown right>
+      <template #button-content>{{ user.username }}</template>
+      <b-dropdown-item-button v-on:click="logout">Logout</b-dropdown-item-button>
+    </b-dropdown>
   </b-navbar>
 </template>
 
