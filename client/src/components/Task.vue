@@ -1,6 +1,6 @@
 <template>
   <div @click="handleTaskClick" class="task-item">
-    <span class="task-code">{{ taskCode }}</span>
+    <span class="task-code">{{ taskCourse }}</span>
     <span class="task-description">{{ taskDescription }}</span>
     <span class="task-details">
       <TaskLabel :label="taskLabel" />
@@ -19,7 +19,7 @@ export default {
     TaskLabel
   },
   props: {
-    taskCode: {
+    taskCourse: {
       type: String,
       default: ''
     },
@@ -34,15 +34,20 @@ export default {
     taskDate: {
       type: String,
       default: ''
+    },
+    taskId: {
+      type: String,
+      default: ''
     }
   },
   methods: {
     handleTaskClick() {
       EventBus.$emit('task-clicked', {
-        taskCode: this.taskCode,
+        taskCourse: this.taskCourse,
         taskDescription: this.taskDescription,
         taskLabel: this.taskLabel,
-        taskDate: this.taskDate
+        taskDate: this.taskDate,
+        taskId: this.taskId
       })
     },
     convertDateToReadableFormat(date) {

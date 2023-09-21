@@ -5,8 +5,6 @@ async function createTask(req, res) {
   const { taskName, description, assignee, dueDate, priority, status } =
     req.body;
 
- 
-
   try {
     const newTask = new Task({
       TaskName: taskName,
@@ -30,7 +28,7 @@ async function getTasksByGroup(req, res) {
   try {
     const tasks = await Task.find({ GroupId: groupId });
 
-    // 
+    //
     res.json(tasks);
   } catch (err) {
     res.status(500).json({ message: 'Internal server error' });
@@ -58,19 +56,19 @@ async function updateTask(req, res) {
   const { taskName, description, assignee, dueDate, priority, status } =
     req.body;
 
+  // only update fields that were actually passed...
+  const updateFields = {};
+  if (taskName) updateFields.TaskName = taskName;
+  if (description) updateFields.Description = description;
+  if (assignee) updateFields.Assignee = assignee;
+  if (dueDate) updateFields.DueDate = dueDate;
+  if (priority) updateFields.Priority = priority;
+  if (status) updateFields.Status = status;
+
   try {
-    const updatedTask = await Task.findByIdAndUpdate(
-      taskId,
-      {
-        TaskName: taskName,
-        Description: description,
-        Assignee: assignee,
-        DueDate: dueDate,
-        Priority: priority,
-        Status: status,
-      },
-      { new: true }
-    );
+    const updatedTask = await Task.findByIdAndUpdate(taskId, updateFields, {
+      new: true,
+    });
 
     if (!updatedTask) {
       return res.status(404).json({ message: 'Task not found' });
