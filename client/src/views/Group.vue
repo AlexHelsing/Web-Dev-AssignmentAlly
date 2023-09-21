@@ -21,7 +21,6 @@
       <section class="left">
         <h1>Tasks</h1>
         <div class="task-list">
-          <Task  task-description="Complete task 4" task-label="Medium" task-date="3 AUG" />
           <Task v-for="task in tasks" :task-id="task._id" :key="task._id" :task-course="group ? group.course : '...'"
             :task-description="task.Description" :task-label="task.Priority" :task-date="task.DueDate" />
         </div>
@@ -83,6 +82,7 @@
 
 <script>
 import Task from '../components/Task.vue'
+import { EventBus } from '../event-bus'
 
 export default {
   components: {
@@ -161,6 +161,11 @@ export default {
   mounted() {
     this.fetchGroup()
     this.getGroupTasks()
+  },
+  created() {
+    EventBus.$on('task-updated', function () {
+      this.getGroupTasks()
+    }.bind(this))
   }
 }
 </script>

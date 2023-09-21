@@ -75,7 +75,7 @@ export default {
         const data = await response.json()
         if (response.ok) {
           this.$bvModal.hide('task-detail-modal')
-          this.$emit('task-updated', this.localTask)
+          EventBus.$emit('task-updated')
         } else {
           console.error('Error updating task:', data.message || 'Unknown error')
         }

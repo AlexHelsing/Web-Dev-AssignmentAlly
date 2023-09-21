@@ -43,6 +43,7 @@ export default {
   methods: {
     handleTaskClick() {
       EventBus.$emit('task-clicked', {
+        // Should convert this to a task type but idk how to do that in javascript :)
         taskCourse: this.taskCourse,
         taskDescription: this.taskDescription,
         taskLabel: this.taskLabel,
