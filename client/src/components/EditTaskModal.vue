@@ -1,5 +1,5 @@
 <template>
-  <b-modal id="task-detail-modal" ref="taskModal" title="Edit task" centered>
+  <b-modal size="lg" id="task-detail-modal" ref="taskModal" title="Edit task" centered>
     <div v-if="localTask">
       <label class="d-block mb-2">Description:</label>
       <b-form-textarea id="task-description" v-model="localTask.taskDescription"></b-form-textarea>
@@ -21,8 +21,8 @@
     <div slot="modal-footer" class="w-100 d-flex justify-content-between">
       <b-button variant="secondary" @click="closeModal">Cancel</b-button>
       <div>
+        <b-button class="mr-1" variant="primary" @click="closeModal">Close</b-button>
         <b-button variant="success" @click="saveTask">Save</b-button>
-        <b-button variant="primary" @click="closeModal">Close</b-button>
       </div>
     </div>
   </b-modal>

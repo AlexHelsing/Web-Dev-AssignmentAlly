@@ -26,7 +26,7 @@
             :task-description="task.Description" :task-label="task.Priority" :task-date="task.DueDate" />
         </div>
         <button v-b-modal.modal-1 class="newTaskButton"> New Task </button>
-        <b-modal id="modal-1" title="Create a task " centered>
+        <b-modal size="lg" id="modal-1" title="Create a task " centered>
           <div class="mb-3">
             <label for="task-name" class="form-label">Task Name, gotta specify our data better</label>
             <input required type="text" id="task-name" class="form-control" v-model="taskName" placeholder="taskname">
