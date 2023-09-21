@@ -52,7 +52,7 @@ router.post('/logout', function (req, res, next) {
       return next(err);
     }
     // Redirect to /login after a successful logout
-    res.redirect('http://localhost:8080/');
+    res.status(200).json({message: "Successfully logged out"})
   });
 });
 
