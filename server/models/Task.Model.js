@@ -1,21 +1,16 @@
 const mongoose = require('mongoose');
 
 const TaskSchema = new mongoose.Schema({
-  TaskID: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   TaskName: {
     type: String,
-    required: true,
   },
   Description: {
     type: String,
+    required: true,
   },
   Assignee: {
-    type: String,
-    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
   },
   DueDate: {
     type: Date,
@@ -29,6 +24,14 @@ const TaskSchema = new mongoose.Schema({
     enum: ['To Do', 'In Progress', 'Completed'],
     default: 'To Do',
   },
+  GroupId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Group',
+    required: true,
+  },
+  
 });
+
+
 
 module.exports = mongoose.model('Task', TaskSchema);

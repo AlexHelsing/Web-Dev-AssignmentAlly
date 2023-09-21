@@ -1,6 +1,6 @@
 <template>
-  <b-navbar toggleable="lg" type="light" variant="light">
-    <b-navbar-brand to="/">LOGO</b-navbar-brand>
+  <b-navbar type="light" class="custom-navbar">
+    <b-navbar-brand variant="dark" type="primary" to="/">LOGO</b-navbar-brand>
 
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -11,10 +11,10 @@
         <b-nav-item to="/tasks">Tasks</b-nav-item>
       </b-navbar-nav>
     </b-collapse>
-    <b-dropdown>
-    <template #button-content>{{ user.username }}</template>
-    <b-dropdown-item-button v-on:click="logout">Logout</b-dropdown-item-button>
-  </b-dropdown>
+    <b-dropdown right>
+      <template #button-content>{{ user.username }}</template>
+      <b-dropdown-item-button v-on:click="logout">Logout</b-dropdown-item-button>
+    </b-dropdown>
   </b-navbar>
 </template>
 
@@ -54,3 +54,41 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.custom-navbar {
+  background-color: #0d1321;
+  color: #ffffff;
+}
+
+/* Style for the links */
+.custom-navbar .nav-item a.nav-link {
+  color: #e5e5e5;
+  /* Slightly brighter than the text color */
+  transition: color 0.2s;
+  /* Smooth transition */
+}
+
+.custom-navbar a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* Hover effect for the links */
+.custom-navbar .nav-item a.nav-link:hover {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* Style for the active link */
+.custom-navbar .nav-item a.nav-link.router-link-active {
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.custom-navbar .navbar-brand:hover {
+  color: #ffffff;
+  text-decoration: none;
+
+}
+</style>
