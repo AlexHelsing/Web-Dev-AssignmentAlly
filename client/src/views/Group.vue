@@ -2,7 +2,8 @@
   <main>
     <header class="header">
       <b-avatar-group v-if="group" class="member-container">
-        <b-avatar v-for="member in group.members" :key="member.id">{{ member }}</b-avatar>
+        <b-avatar variant="secondary" v-for="member in group.members" :key="member.id">{{ initials(member).toUpperCase()
+        }}</b-avatar>
       </b-avatar-group>
       <h1 class="groupName">{{ group ? group.assignmentGroupName : "..." }}</h1>
       <button v-b-modal.modal-4 class="invite-button">Invite member</button>
@@ -74,7 +75,10 @@
     </div>
 
     <div class="meetings-container">
-      <h2>Upcoming Meetings or some shit</h2>
+      <h2 class="meetingsheader">Meetings</h2>
+      <div class="meetings-list">
+
+      </div>
 
     </div>
   </main>
@@ -156,6 +160,10 @@ export default {
       } else {
         console.error('Error inviting member:', data.message || 'Unknown error')
       }
+    },
+    initials(member) {
+      const name = member
+      return `${name[0].charAt(0)}${name[1] ? name[1].charAt(0) : ''}`
     }
   },
   mounted() {
@@ -171,17 +179,23 @@ export default {
 </script>
 
 <style>
+main {
+  background-color: #1b263b;
+}
+
 .header {
-  background-color: #e0e1dd;
+  background-color: #e5e5e5;
   padding: 20px;
-  border-bottom: 1px solid #e3e3e3;
+  border: 1px solid black;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 70px;
 }
 
 .groupName {
   order: 2;
+  padding-top: 13px;
   font-weight: bold;
   flex-grow: 1;
   text-align: center;
@@ -193,14 +207,18 @@ export default {
 }
 
 .invite-button {
-  background-color: #2c3e50;
-  color: white;
+  background-color: #6c757d;
+  color: whitesmoke;
   border: none;
   padding: 10px 20px;
-  border-radius: 5px;
+  border-radius: 15px;
   font-size: 14px;
   cursor: pointer;
   order: 3;
+}
+
+.invite-button:hover {
+  scale: 1.025;
 }
 
 .newTaskButton {
@@ -240,7 +258,7 @@ export default {
 }
 
 .left {
-  width: 55%;
+  width: 75%;
   background-color: #1b263b;
   padding: 20px;
   display: flex;
@@ -299,11 +317,6 @@ export default {
   color: white;
 }
 
-.meetings-container {
-  padding: 20px;
-  background-color: #f3f4f6;
-}
-
 .task-list {
   display: flex;
   flex-grow: 1;
@@ -313,5 +326,14 @@ export default {
   overflow-y: auto;
   padding-right: 10px;
   margin-bottom: 20px;
+}
+
+.meetings-container {
+  color: aliceblue;
+  padding: 20px;
+  border-top: 2px solid #0c0b15;
+  display: flex;
+  justify-content: space-between;
+  height: 70px;
 }
 </style>

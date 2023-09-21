@@ -1,6 +1,6 @@
 <template>
   <b-navbar type="light" class="custom-navbar">
-    <b-navbar-brand variant="dark" type="primary" to="/">LOGO</b-navbar-brand>
+    <b-navbar-brand variant="dark" type="primary" to="/dashboard">LOGO</b-navbar-brand>
 
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -11,7 +11,7 @@
         <b-nav-item to="/tasks">Tasks</b-nav-item>
       </b-navbar-nav>
     </b-collapse>
-    <b-dropdown right>
+    <b-dropdown variant="secondary" right class="dropdownmenu">
       <template #button-content>{{ user.username }}</template>
       <b-dropdown-item-button v-on:click="logout">Logout</b-dropdown-item-button>
     </b-dropdown>
@@ -78,6 +78,7 @@ export default {
 .custom-navbar .nav-item a.nav-link:hover {
   color: #ffffff;
   text-decoration: none;
+  scale: 1.05;
 }
 
 /* Style for the active link */
