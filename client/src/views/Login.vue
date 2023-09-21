@@ -87,7 +87,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: brown;
+  background-color: #09203f;
 }
 
 .login-container {

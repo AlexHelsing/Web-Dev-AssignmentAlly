@@ -13,6 +13,11 @@
           </div>
 
           <button type="submit" class="signup-button">Sign up</button>
+          <div class="login-group">
+            <p class="loginparagraph">Already have an account?</p>
+            <span></span>
+            <router-link to="/login" tag="a">Login here!</router-link>
+          </div>
         </form>
       </div>
     </div>
@@ -137,13 +142,13 @@ export default {
   background-color: hsl(var(--primary-hsl), .4);
 }
 
-.register-group {
+.login-group {
   display: flex;
   flex-direction: vertical;
   color: white;
 }
 
-.register-group span {
+.login-group span {
   margin: 2px;
 }
 </style>

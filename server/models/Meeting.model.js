@@ -1,11 +1,6 @@
 const mongoose = require('mongoose');
 
 const MeetingSchema = new mongoose.Schema({
-  MeetingID: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   MeetingName: {
     type: String,
     required: true,
@@ -16,7 +11,6 @@ const MeetingSchema = new mongoose.Schema({
   },
   MeetingLocation: {
     type: String,
-    required: true,
   },
   MeetingAgenda: {
     type: String,

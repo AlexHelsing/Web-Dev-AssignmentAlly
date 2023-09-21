@@ -74,7 +74,10 @@
     </div>
 
     <div class="meetings-container">
-      <h2>Upcoming Meetings or some shit</h2>
+      <h2 class="meetingsheader">Meetings</h2>
+      <div class="meetings-list">
+
+      </div>
 
     </div>
   </main>
@@ -175,17 +178,25 @@ export default {
 </script>
 
 <style>
+
+main{
+ background-color: #1b263b;
+}
+
 .header {
-  background-color: #e0e1dd;
+  background-color: #e5e5e5;
   padding: 20px;
-  border-bottom: 1px solid #e3e3e3;
+  border: 1px solid black;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-radius: 20px;
+  height: 70px;
 }
 
 .groupName {
   order: 2;
+  padding-top: 13px;
   font-weight: bold;
   flex-grow: 1;
   text-align: center;
@@ -198,13 +209,18 @@ export default {
 
 .invite-button {
   background-color: #2c3e50;
-  color: white;
+  color: #e5e5e5;
   border: none;
   padding: 10px 20px;
-  border-radius: 5px;
+  border-radius: 15px;
   font-size: 14px;
   cursor: pointer;
   order: 3;
+}
+
+.invite-button:hover{
+  scale: 1.025;
+  color: white;
 }
 
 .newTaskButton {
@@ -244,7 +260,7 @@ export default {
 }
 
 .left {
-  width: 55%;
+  width: 75%;
   background-color: #1b263b;
   padding: 20px;
   display: flex;
@@ -303,11 +319,6 @@ export default {
   color: white;
 }
 
-.meetings-container {
-  padding: 20px;
-  background-color: #f3f4f6;
-}
-
 .task-list {
   display: flex;
   flex-grow: 1;
@@ -318,4 +329,14 @@ export default {
   padding-right: 10px;
   margin-bottom: 20px;
 }
+
+.meetings-container {
+  color: aliceblue;
+  padding: 20px;
+  border-top: 2px solid #0c0b15;
+  display: flex;
+  justify-content: space-between;
+  height: 70px;
+}
+
 </style>
