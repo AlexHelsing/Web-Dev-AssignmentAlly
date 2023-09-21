@@ -2,7 +2,7 @@
   <main>
     <header class="header">
       <b-avatar-group v-if="group" class="member-container">
-        <b-avatar v-for="member in group.members" :key="member.id">{{ member }}</b-avatar>
+        <b-avatar v-for="member in group.members" :key="member.id">{{ initials(member).toUpperCase() }}</b-avatar>
       </b-avatar-group>
       <h1 class="groupName">{{ group ? group.assignmentGroupName : "..." }}</h1>
       <button v-b-modal.modal-4 class="invite-button">Invite member</button>
@@ -156,6 +156,10 @@ export default {
       } else {
         console.error('Error inviting member:', data.message || 'Unknown error')
       }
+    },
+    initials(member) {
+      const name = member
+      return `${name[0].charAt(0)}${name[1] ? name[1].charAt(0) : ''}`
     }
   },
   mounted() {
