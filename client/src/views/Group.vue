@@ -21,9 +21,9 @@
       <section class="left">
         <h1>Tasks</h1>
         <div class="task-list">
-          <Task task-code="DIT444" task-description="Complete task 4" task-label="Medium" task-date="3 AUG" />
-          <Task v-for="task in tasks" :key="task.id" :task-code="group.course" :task-description="task.TaskName"
-            :task-label="task.Priority" :task-date="task.DueDate" />
+          <Task task-code="coursecode" task-description="Complete task 4" task-label="Medium" task-date="3 AUG" />
+          <Task v-for="task in tasks" :key="task.id" :task-code="group ? group.course : '...'"
+            :task-description="task.TaskName" :task-label="task.Priority" :task-date="task.DueDate" />
         </div>
         <button v-b-modal.modal-1 class="newTaskButton"> New Task </button>
         <b-modal id="modal-1" title="Create a task " centered>
