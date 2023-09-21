@@ -97,7 +97,7 @@ export default {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          TaskName: this.taskName
+          taskName: this.taskName
         })
       })
       const data = await response.json()
