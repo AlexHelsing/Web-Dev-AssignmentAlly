@@ -1,28 +1,48 @@
 <template>
   <main>
     <header class="header">
-      <b-avatar-group class="member-container">
-        <b-avatar></b-avatar>
-        <b-avatar></b-avatar>
-        <b-avatar></b-avatar>
+      <b-avatar-group v-if="group" class="member-container">
+        <b-avatar v-for="member in group.members" :key="member.id">{{ member }}</b-avatar>
       </b-avatar-group>
-      <h1 class="groupName">{{ course }}</h1>
-      <button class="invite-button">Invite member</button>
+      <h1 class="groupName">{{ group ? group.assignmentGroupName : "..." }}</h1>
+      <button v-b-modal.modal-4 class="invite-button">Invite member</button>
+      <b-modal id="modal-4" title="invite member" centered>
+        <div class="mb-3">
+          <label for="member-name" class="form-label">Member Name</label>
+          <input type="text" id="member-name" class="form-control" v-model="memberName" placeholder="Enter member name">
+        </div>
+        <div slot="modal-footer" class="w-100 d-flex justify-content-end">
+          <b-button variant="primary" @click="inviteMember">Invite</b-button>
+        </div>
+      </b-modal>
     </header>
 
     <div class="task-resource-container">
       <section class="left">
         <h1>Tasks</h1>
         <div class="task-list">
-          <Task task-code="DIT444" task-description="Complete task 4" task-label="URGENT" task-date="3 AUG" />
-          <Task v-for="task in tasks" :key="task.id" task-code="DIT444" :task-description="task.TaskName"
-            :task-label="task.status" task-date="3 AUG" />
+          <Task task-code="DIT444" task-description="Complete task 4" task-label="Medium" task-date="3 AUG" />
+          <Task v-for="task in tasks" :key="task.id" :task-code="group.course" :task-description="task.TaskName"
+            :task-label="task.Priority" task-date="3 AUG" />
         </div>
         <button v-b-modal.modal-1 class="newTaskButton"> New Task </button>
         <b-modal id="modal-1" title="Create a task " centered>
           <div class="mb-3">
             <label for="task-name" class="form-label">Task Name, gotta specify our data better</label>
             <input type="text" id="task-name" class="form-control" v-model="taskName" placeholder="taskname">
+          </div>
+          <div class="mb-3">
+            <label for="task-description" class="form-label">description</label>
+            <input type="text" id="task-description" class="form-control" v-model="taskDescription"
+              placeholder="description">
+          </div>
+          <div class="mb-3">
+            <label for="task-priority" class="form-label">Priority</label>
+            <select id="task-priority" class="form-control" v-model="taskPriority">
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+            </select>
           </div>
           <div slot="modal-footer" class="w-100 d-flex justify-content-end">
             <b-button variant="primary" @click="createGroupTask">Create</b-button>
@@ -67,9 +87,12 @@ export default {
   data() {
     return {
       groupId: this.$route.params.id,
-      course: '',
+      group: null,
       tasks: [],
-      taskName: ''
+      taskName: '',
+      taskDescription: '',
+      memberName: '',
+      taskPriority: 'Low'
     }
   },
   methods: {
@@ -79,7 +102,7 @@ export default {
       })
       const data = await response.json()
       console.log('data', data)
-      this.course = data.course
+      this.group = data
     },
     async getGroupTasks() {
       const response = await fetch(`http://localhost:3000/api/tasks/getTasksByGroup/${this.groupId}`, {
@@ -97,12 +120,32 @@ export default {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          taskName: this.taskName
+          taskName: this.taskName,
+          course: this.group.course,
+          description: this.taskDescription,
+          priority: this.taskPriority
         })
       })
       const data = await response.json()
       console.log(data)
       this.tasks.push(data)
+    },
+    async inviteMember() {
+      const response = await fetch(`http://localhost:3000/api/groups/${this.groupId}/invite/${this.memberName}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      const data = await response.json()
+      console.log(data)
+
+      if (response.ok) {
+        this.group.members.push(this.memberName)
+      } else {
+        console.error('Error inviting member:', data.message || 'Unknown error')
+      }
     }
   },
   mounted() {

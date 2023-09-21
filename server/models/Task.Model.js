@@ -3,13 +3,14 @@ const mongoose = require('mongoose');
 const TaskSchema = new mongoose.Schema({
   TaskName: {
     type: String,
-    required: true,
   },
   Description: {
     type: String,
+    required: true,
   },
   Assignee: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
   },
   DueDate: {
     type: Date,
@@ -25,9 +26,12 @@ const TaskSchema = new mongoose.Schema({
   },
   GroupId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'AssignmentGroup',
+    ref: 'Group',
     required: true,
-  }
+  },
+  
 });
+
+
 
 module.exports = mongoose.model('Task', TaskSchema);

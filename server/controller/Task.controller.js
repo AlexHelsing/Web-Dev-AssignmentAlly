@@ -5,17 +5,18 @@ async function createTask(req, res) {
   const { taskName, description, assignee, dueDate, priority, status } =
     req.body;
 
-  const newTask = new Task({
-    TaskName: taskName,
-    Description: description,
-    Assignee: assignee,
-    DueDate: dueDate,
-    Priority: priority,
-    Status: status,
-    GroupId: groupId,
-  });
+ 
 
   try {
+    const newTask = new Task({
+      TaskName: taskName,
+      Description: description,
+      Assignee: assignee,
+      DueDate: dueDate,
+      Priority: priority,
+      Status: status,
+      GroupId: groupId,
+    });
     const savedTask = await newTask.save();
     res.json(savedTask);
   } catch (err) {
@@ -28,6 +29,8 @@ async function getTasksByGroup(req, res) {
 
   try {
     const tasks = await Task.find({ GroupId: groupId });
+
+    // 
     res.json(tasks);
   } catch (err) {
     res.status(500).json({ message: 'Internal server error' });

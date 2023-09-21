@@ -29,7 +29,7 @@ export default {
     },
     taskLabel: {
       type: String,
-      default: 'chill'
+      default: ''
     },
     taskDate: {
       type: String,

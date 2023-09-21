@@ -12,7 +12,7 @@
           class="router-link-wrapper">
           <b-card class="group-card">
             <b-card-text>
-              {{ group.course }}
+              {{ group.assignmentGroupName }}
             </b-card-text>
           </b-card>
         </router-link>
@@ -20,8 +20,13 @@
       </div>
       <b-modal id="modal-1" title="Create an assignment group" centered>
         <div class="mb-3">
-          <label for="course-name" class="form-label">Course Name</label>
-          <input type="text" id="course-name" class="form-control" v-model="courseName" placeholder="Enter course name">
+          <label for="assignment-group-name" class="form-label">assignmentGroupName</label>
+          <input type="text" id="assignment-group-name" class="form-control" v-model="assignmentGroupName"
+            placeholder="Enter assignmentGroupName">
+        </div>
+        <div class="mb-3">
+          <label for="course" class="form-label">CourseCode</label>
+          <input type="text" id="course" class="form-control" v-model="course" placeholder="Enter course name">
         </div>
         <div slot="modal-footer" class="w-100 d-flex justify-content-end">
           <b-button variant="primary" @click="createGroup">Create</b-button>
@@ -37,7 +42,8 @@ export default {
   data() {
     return {
       groups: [],
-      courseName: ''
+      assignmentGroupName: '',
+      course: ''
     }
   },
   methods: {
@@ -46,9 +52,7 @@ export default {
         credentials: 'include'
       })
       const data = await response.json()
-      console.log('data', data)
       this.groups = data
-      console.log('groups', this.groups)
     },
     async createGroup() {
       try {
@@ -59,7 +63,8 @@ export default {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            course: this.courseName
+            assignmentGroupName: this.assignmentGroupName,
+            course: this.course
           })
         })
         const data = await response.json()

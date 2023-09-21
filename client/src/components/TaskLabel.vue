@@ -1,7 +1,6 @@
-<!-- TaskLabel.vue -->
 <template>
-    <span class="label" :class="labelClass">{{ label }}</span>
-  </template>
+  <span class="label" :class="labelClass">{{ label }}</span>
+</template>
 
 <script>
 export default {
@@ -13,38 +12,41 @@ export default {
   },
   computed: {
     labelClass() {
+      console.log('label', this.label)
       switch (this.label.toLowerCase()) {
-        case 'urgent':
-          return 'urgent'
-        case 'chill':
-          return 'chill'
+        case 'high':
+          return 'high'
+        case 'medium':
+          return 'medium'
+        case 'low':
+          return 'low'
         default:
-          return 'default-label'
+          return ''
       }
     }
   }
 }
 </script>
 
-  <style scoped>
-  .label {
-    border-radius: 15px;
-    padding: 2px 10px;
-    color: white;
-    font-size: 0.8em;
-    font-weight: bold;
-    display: inline-block;
-  }
+<style scoped>
+.label {
+  border-radius: 15px;
+  padding: 2px 10px;
+  color: white;
+  font-size: 0.8em;
+  font-weight: bold;
+  display: inline-block;
+}
 
-  .urgent {
-    background-color: red;
-  }
+.high {
+  background-color: red;
+}
 
-  .chill {
-    background-color: #3498db;
-  }
+.medium {
+  background-color: #3498db;
+}
 
-  .default-label {
-    background-color: grey;
-  }
-  </style>
+.low {
+  background-color: grey;
+}
+</style>

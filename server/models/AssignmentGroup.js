@@ -1,17 +1,21 @@
 const mongoose = require('mongoose');
 
 const AssignmentGroupSchema = new mongoose.Schema({
-  course: {
+  assignmentGroupName: {
     type: String,
     required: true,
     unique: true,
+  },
+  course: {
+    type: String,
+    required: true,
+    unique: false,
   },
 
   members: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      // max: 3,
     },
   ],
   createdBy: {
