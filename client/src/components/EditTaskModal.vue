@@ -11,7 +11,7 @@
 
     <div v-if="localTask" class="mt-3">
       <label for="task-assignee" class="form-label">Assignee</label>
-      <b-form-select id="task-assignee" v-model="localTask.taskAssignee" :options="members"></b-form-select>
+      <b-form-select id="task-assignee" v-model="localTask.taskAssignee" :options="localTask.belongsToGroup.members"></b-form-select>
     </div>
 
     <div v-if="localTask" class="mt-3">
@@ -54,7 +54,7 @@ export default {
     return {
       localTask: { ...this.task },
       members: ['John Doe', 'Jane Doe', 'Mike Doe'],
-      statuses: ['Not started', 'In progress', 'Completed']
+      statuses: ['To Do', 'In progress', 'Completed']
     }
   },
   watch: {
@@ -103,6 +103,7 @@ export default {
         taskDate: this.formatDate(task.taskDate)
       }
       this.$bvModal.show('task-detail-modal')
+      console.log('task', task)
     },
 
     formatDate(date) {

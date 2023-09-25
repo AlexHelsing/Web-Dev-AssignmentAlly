@@ -1,14 +1,14 @@
 <template>
   <div @click="handleTaskClick" class="task-item">
     <span class="task-code-container">
-      <span class="task-code">{{ taskCourse }}</span>
+      <span class="task-code">COURSECODE</span>
       <span class="separator">|</span>
       <span class="task-name">{{ taskName }}</span>
     </span>
 
     <span class="task-description">{{ taskDescription }}</span>
     <span class="task-details">
-      <b-avatar class="avatar" variant="light" text="BV"></b-avatar>
+      <b-avatar class="avatar" variant="light" text="taskAssignee">{{ taskAssignee }}</b-avatar>
       <TaskLabel :label="taskLabel" />
       <span class="task-date">{{ convertDateToReadableFormat(taskDate) }}</span>
     </span>
@@ -30,14 +30,26 @@ export default {
       default: ''
     },
     taskCourse: {
-      type: String,
+      type: String || null,
       default: ''
     },
     taskDescription: {
       type: String,
       default: ''
     },
+    taskAssignee: {
+      type: String,
+      default: ''
+    },
+    belongsToGroup: {
+      type: Object,
+      default: () => ({})
+    },
     taskLabel: {
+      type: String,
+      default: ''
+    },
+    taskStatus: {
       type: String,
       default: ''
     },
@@ -53,13 +65,15 @@ export default {
   methods: {
     handleTaskClick() {
       EventBus.$emit('task-clicked', {
-        // Should convert this to a task type but idk how to do that in javascript :)
+        // Should convert this to a task type but its impossible in this shity language
         taskName: this.taskName,
         taskCourse: this.taskCourse,
         taskDescription: this.taskDescription,
+        taskStatus: this.taskStatus,
         taskLabel: this.taskLabel,
         taskDate: this.taskDate,
-        taskId: this.taskId
+        taskId: this.taskId,
+        belongsToGroup: this.belongsToGroup
       })
     },
     convertDateToReadableFormat(date) {
@@ -90,6 +104,7 @@ export default {
   background-color: #070808;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
+
 .avatar {
   margin-right: 10px;
   height: 30px;

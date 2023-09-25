@@ -22,8 +22,9 @@
       <section class="left">
         <h1>Tasks</h1>
         <div class="task-list">
-          <Task v-for="task in tasks" :task-id="task._id" :key="task._id" :task-course="group.course" :task-name="task.TaskName"
-            :task-description="task.Description" :task-label="task.Priority" :task-date="task.DueDate" />
+          <Task v-for="task in tasks" :task-id="task._id" :key="task._id" taskAssignee="jim"
+            :task-name="task.TaskName" :belongs-to-group="group" :task-description="task.Description" :task-status="task.Status" :task-label="task.Priority"
+            :task-date="task.DueDate" />
         </div>
         <button v-b-modal.modal-1 class="newTaskButton"> New Task </button>
         <b-modal size="lg" id="modal-1" title="Create a task " centered>

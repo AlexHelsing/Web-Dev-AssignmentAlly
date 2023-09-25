@@ -12,7 +12,7 @@
       </b-navbar-nav>
     </b-collapse>
     <b-dropdown variant="secondary" right class="dropdownmenu">
-      <template #button-content>{{ user.username }}</template>
+      <template #button-content>{{ user ? user.username : "..." }}</template>
       <b-dropdown-item-button v-on:click="logout">Logout</b-dropdown-item-button>
     </b-dropdown>
   </b-navbar>
