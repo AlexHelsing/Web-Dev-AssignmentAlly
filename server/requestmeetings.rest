@@ -1,0 +1,20 @@
+
+POST http://localhost:3000/api/meetings/create-meeting/6512050c7652f89480b1087e
+Content-Type: application/json
+
+{
+    "meetingName": "Testing",
+    "date": "2023-09-27",
+    "time": "2pm",
+    "meetingLocation": "Svea",
+    "meetingAgenda": "Discuss tests"
+}
+
+
+
+const groupId = req.params.groupId;
+  const MeetingName = req.body.meetingName;
+  const MeetingDate = req.body.date;
+  const MeetingTime = req.body.time;
+  const MeetingLocation = req.body.meetingLocation;
+  const MeetingAgenda = req.body.meetingAgenda;

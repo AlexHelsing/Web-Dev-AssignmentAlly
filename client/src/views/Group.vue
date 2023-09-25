@@ -84,7 +84,9 @@
     <div class="meetings-container">
       <h2 class="meetingsheader">Meetings</h2>
       <div class="meetings-list">
-
+        <Meeting v-for="meeting in meetings" :meeting-id="meeting._id" :key="meeting._id"
+            :task-name="meeting.MeetingName" :belongs-to-group="meeting.GroupId" :meeting-agenda="meeting.MeetingAgenda"
+            :meeting-location="meeting.MeetingLocation" :meeting-date="meeting.MeetingDate" :meeting-time="meeting.MeetingTime" />
       </div>
 
     </div>
@@ -94,10 +96,12 @@
 <script>
 import Task from '../components/Task.vue'
 import { EventBus } from '../event-bus'
+import Meeting from '../components/Meeting.vue'
 
 export default {
   components: {
-    Task
+    Task,
+    Meeting
   },
   data() {
     return {
@@ -186,11 +190,11 @@ export default {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          taskName: this.taskName,
-          course: this.group.course,
-          description: this.taskDescription,
-          priority: this.taskPriority,
-          dueDate: this.taskDueDate
+          MeetingName: this.meetingName,
+          MeetingDate: this.meetingDate,
+          MeetingAgenda: this.meetingAgenda,
+          MeetingTime: this.meetingTime,
+          MeetingLocation: this.meetingLocation
         })
       })
       const data = await response.json()
@@ -259,6 +263,7 @@ export default {
   mounted() {
     this.fetchGroup()
     this.getGroupTasks()
+    this.getGroupMeetings()
   },
   created() {
     EventBus.$on('task-updated', function () {
