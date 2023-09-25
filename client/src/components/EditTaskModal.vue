@@ -4,8 +4,8 @@
       <label for="task-name" class="form-label">Task Name</label>
       <input required type="text" id="task-name" class="form-control" v-model="localTask.taskName">
     </div>
-    <div v-if="localTask">
-      <label class="d-block mb-2">Description:</label>
+    <div v-if="localTask" class="mt-3">
+      <label class="d-block ">Description</label>
       <b-form-textarea id="task-description" v-model="localTask.taskDescription"></b-form-textarea>
     </div>
 
