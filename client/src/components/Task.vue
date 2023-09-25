@@ -1,8 +1,14 @@
 <template>
   <div @click="handleTaskClick" class="task-item">
-    <span class="task-code">{{ taskCourse }}</span>
+    <span class="task-code-container">
+      <span class="task-code">{{ belongsToGroup.course }}</span>
+      <span class="separator">|</span>
+      <span class="task-name">{{ taskName }}</span>
+    </span>
+
     <span class="task-description">{{ taskDescription }}</span>
     <span class="task-details">
+      <b-avatar class="avatar" variant="light" text="taskAssignee">{{ initials(taskAssignee) }}</b-avatar>
       <TaskLabel :label="taskLabel" />
       <span class="task-date">{{ convertDateToReadableFormat(taskDate) }}</span>
     </span>
@@ -19,15 +25,31 @@ export default {
     TaskLabel
   },
   props: {
-    taskCourse: {
+    taskName: {
       type: String,
+      default: ''
+    },
+    taskCourse: {
+      type: String || null,
       default: ''
     },
     taskDescription: {
       type: String,
       default: ''
     },
+    taskAssignee: {
+      type: String,
+      default: ''
+    },
+    belongsToGroup: {
+      type: Object,
+      default: () => ({})
+    },
     taskLabel: {
+      type: String,
+      default: ''
+    },
+    taskStatus: {
       type: String,
       default: ''
     },
@@ -43,20 +65,32 @@ export default {
   methods: {
     handleTaskClick() {
       EventBus.$emit('task-clicked', {
-        // Should convert this to a task type but idk how to do that in javascript :)
+        // Should convert this to a task type but its impossible in this shity language
+        taskName: this.taskName,
         taskCourse: this.taskCourse,
         taskDescription: this.taskDescription,
+        taskStatus: this.taskStatus,
         taskLabel: this.taskLabel,
+        taskAssignee: this.taskAssignee,
         taskDate: this.taskDate,
-        taskId: this.taskId
+        taskId: this.taskId,
+        belongsToGroup: this.belongsToGroup
       })
     },
     convertDateToReadableFormat(date) {
       const dateObj = new Date(date)
-      // i want it to look like this: 3 AUG, 6 FEB and so on
       const month = dateObj.toLocaleString('default', { month: 'short' })
       const day = dateObj.getDate()
       return `${day} ${month}`
+    },
+    initials(member) {
+      if (!member) return ''
+      const name = member
+      // should prolly create a avatar component for this shit instead of doing magic on the name in every component
+      return name
+        .split(' ')
+        .map((word) => word.charAt(0).toUpperCase())
+        .join('')
     }
   }
 }
@@ -81,9 +115,26 @@ export default {
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.task-code {
+.avatar {
+  margin-right: 10px;
+  height: 30px;
+}
+
+.task-code-container {
   flex: 1;
-  text-align: left;
+  display: flex;
+  align-items: center;
+}
+
+.task-name {
+  font-size: 0.8rem;
+}
+
+.separator {
+  margin: 0 5px;
+}
+
+.task-code {
   font-weight: bold;
 }
 

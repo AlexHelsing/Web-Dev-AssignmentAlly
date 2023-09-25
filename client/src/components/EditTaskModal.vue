@@ -1,18 +1,31 @@
 <template>
   <b-modal size="lg" id="task-detail-modal" ref="taskModal" title="Edit task" centered>
     <div v-if="localTask">
-      <label class="d-block mb-2">Description:</label>
+      <label for="task-name" class="form-label">Task Name</label>
+      <input required type="text" id="task-name" class="form-control" v-model="localTask.taskName">
+    </div>
+    <div v-if="localTask" class="mt-3">
+      <label class="d-block ">Description</label>
       <b-form-textarea id="task-description" v-model="localTask.taskDescription"></b-form-textarea>
+    </div>
+
+    <div v-if="localTask.belongsToGroup" class="mt-3">
+      <label for="task-assignee" class="form-label">Assignee</label>
+      <b-form-select id="task-assignee" v-model="localTask.taskAssignee"
+        :options="localTask.belongsToGroup.members"></b-form-select>
+    </div>
+
+    <div v-if="localTask" class="mt-3">
+      <label for="task-status" class="form-label">Status</label>
+      <b-form-select id="task-status" v-model="localTask.taskStatus" :options="statuses"></b-form-select>
     </div>
 
     <div v-if="localTask" class="mt-3">
       <label for="task-priority" class="form-label">Priority</label>
-      <select id="task-priority" class="form-control" v-model="localTask.taskLabel">
-        <option value="Low">Low</option>
-        <option value="Medium">Medium</option>
-        <option value="High">High</option>
-      </select>
+      <b-form-select id="task-priority" v-model="localTask.taskLabel"
+        :options="['Low', 'Medium', 'High']"></b-form-select>
     </div>
+
     <div v-if="localTask" class="mt-3">
       <label required for="task-due-date" class="form-label">Due Date</label>
       <input type="date" id="task-due-date" class="form-control" v-model="localTask.taskDate">
@@ -40,7 +53,8 @@ export default {
   },
   data() {
     return {
-      localTask: { ...this.task }
+      localTask: { ...this.task },
+      statuses: ['To Do', 'In Progress', 'Completed']
     }
   },
   watch: {
@@ -60,6 +74,7 @@ export default {
     },
     async saveTask() {
       try {
+        console.log(this.localTask)
         const response = await fetch(`http://localhost:3000/api/tasks/update-task/${this.localTask.taskId}`, {
           method: 'PUT',
           credentials: 'include',
@@ -67,9 +82,12 @@ export default {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
+            taskName: this.localTask.taskName,
             description: this.localTask.taskDescription,
+            assignee: this.localTask.taskAssignee,
             priority: this.localTask.taskLabel,
-            dueDate: this.localTask.taskDate
+            dueDate: this.localTask.taskDate,
+            status: this.localTask.taskStatus
           })
         })
         const data = await response.json()
@@ -89,6 +107,7 @@ export default {
         taskDate: this.formatDate(task.taskDate)
       }
       this.$bvModal.show('task-detail-modal')
+      console.log('task', task)
     },
 
     formatDate(date) {
