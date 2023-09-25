@@ -1,8 +1,14 @@
 <template>
   <div @click="handleTaskClick" class="task-item">
-    <span class="task-code">{{ taskCourse }}</span>
+    <span class="task-code-container">
+      <span class="task-code">{{ taskCourse }}</span>
+      <span class="separator">|</span>
+      <span class="task-name">{{ taskName }}</span>
+    </span>
+
     <span class="task-description">{{ taskDescription }}</span>
     <span class="task-details">
+      <b-avatar class="avatar" variant="light" text="BV"></b-avatar>
       <TaskLabel :label="taskLabel" />
       <span class="task-date">{{ convertDateToReadableFormat(taskDate) }}</span>
     </span>
@@ -19,6 +25,10 @@ export default {
     TaskLabel
   },
   props: {
+    taskName: {
+      type: String,
+      default: ''
+    },
     taskCourse: {
       type: String,
       default: ''
@@ -44,6 +54,7 @@ export default {
     handleTaskClick() {
       EventBus.$emit('task-clicked', {
         // Should convert this to a task type but idk how to do that in javascript :)
+        taskName: this.taskName,
         taskCourse: this.taskCourse,
         taskDescription: this.taskDescription,
         taskLabel: this.taskLabel,
@@ -53,7 +64,6 @@ export default {
     },
     convertDateToReadableFormat(date) {
       const dateObj = new Date(date)
-      // i want it to look like this: 3 AUG, 6 FEB and so on
       const month = dateObj.toLocaleString('default', { month: 'short' })
       const day = dateObj.getDate()
       return `${day} ${month}`
@@ -80,10 +90,26 @@ export default {
   background-color: #070808;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
+.avatar {
+  margin-right: 10px;
+  height: 30px;
+}
+
+.task-code-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.task-name {
+  font-size: 0.8rem;
+}
+
+.separator {
+  margin: 0 5px;
+}
 
 .task-code {
-  flex: 1;
-  text-align: left;
   font-weight: bold;
 }
 
