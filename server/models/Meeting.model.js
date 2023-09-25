@@ -9,11 +9,16 @@ const MeetingSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  MeetingTime: {
+    type: String,
+  },
   MeetingLocation: {
     type: String,
+    required: true
   },
   MeetingAgenda: {
     type: String,
+    required: true,
   },
   //   MeetingAttendees: [
   //     {
@@ -22,7 +27,7 @@ const MeetingSchema = new mongoose.Schema({
   //     },
   //   ],
 
-  GroupID: {
+  GroupId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'AssignmentGroup',
   },

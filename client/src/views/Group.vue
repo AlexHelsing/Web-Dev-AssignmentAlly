@@ -110,7 +110,14 @@ export default {
       taskPriority: 'Low',
       taskDueDate: '',
       editingDiscordLink: false,
-      discordLink: null
+      discordLink: null,
+      meetings: [],
+      meetingName: '',
+      meetingAgenda: '',
+      meetingLocation: '',
+      meetingDate: '',
+      meetingTime: ''
+
     }
   },
   methods: {
@@ -158,6 +165,39 @@ export default {
       console.log(data)
       this.tasks.push(data)
     },
+    async getGroupMeetings() {
+      const response = await fetch(`http://localhost:3000/api/meetings/getMeetingsByGroup/${this.groupIdParam}`, {
+        credentials: 'include'
+      })
+      const data = await response.json()
+      console.log(data)
+      this.meetings = data
+    },
+
+    async createGroupMeetings() {
+      if (!this.meetingName || !this.meetingAgenda || !this.meetingDate || !this.meetingLocation) {
+        alert('Please fill out all required fields')
+        return
+      }
+      const response = await fetch(`http://localhost:3000/api/tasks/create-task/${this.groupIdParam}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          taskName: this.taskName,
+          course: this.group.course,
+          description: this.taskDescription,
+          priority: this.taskPriority,
+          dueDate: this.taskDueDate
+        })
+      })
+      const data = await response.json()
+      console.log(data)
+      this.tasks.push(data)
+    },
+
     async inviteMember() {
       const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}/invite/${this.memberName}`, {
         method: 'POST',
