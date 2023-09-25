@@ -69,7 +69,7 @@ app.get('/api', function (req, res) {
 });
 
 // Meetings router
-app.get('/api/meetings', MeetingRouter);
+app.use('/api/meetings', MeetingRouter);
 // User router
 app.use('/api/users', UserRouter);
 // Auth router
