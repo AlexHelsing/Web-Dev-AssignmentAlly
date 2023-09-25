@@ -11,8 +11,8 @@
 
     <div v-if="localTask.belongsToGroup" class="mt-3">
       <label for="task-assignee" class="form-label">Assignee</label>
-      <b-form-select id="task-assignee" v-model="localTask.taskAssignee"
-        :options="localTask.belongsToGroup.members"></b-form-select>
+      <b-form-select id="task-assignee" :options="this.localTask.belongsToGroup.members.map(member => member.username)"
+        v-model="localTask.taskAssignee"></b-form-select>
     </div>
 
     <div v-if="localTask" class="mt-3">
@@ -107,9 +107,8 @@ export default {
         taskDate: this.formatDate(task.taskDate)
       }
       this.$bvModal.show('task-detail-modal')
-      console.log('task', task)
+      console.log('task', task.belongsToGroup.members[0].username)
     },
-
     formatDate(date) {
       if (!date) return null
       const [year, month, day] = new Date(date).toISOString().split('T')[0].split('-')

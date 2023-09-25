@@ -27,14 +27,42 @@ async function getTasksByGroup(req, res) {
   const groupId = req.params.groupId;
 
   try {
-    const tasks = await Task.find({ GroupId: groupId }).populate('Assignee', [
-      'username',
-    ]);
+    const tasks = await Task.find({ GroupId: groupId })
+      .populate('Assignee', ['username'])
+      .populate({
+        path: 'GroupId',
+        populate: {
+          path: 'members',
+          select: 'username',
+        },
+      });
 
     //
     res.json(tasks);
   } catch (err) {
     res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+async function getUserTasks(req, res) {
+  const { id } = req.user;
+
+  console.log(id);
+
+  try {
+    const tasks = await Task.find({ Assignee: id })
+      .populate('Assignee', ['username'])
+      .populate({
+        path: 'GroupId',
+        populate: {
+          path: 'members',
+          select: 'username',
+        },
+      });
+
+    res.json(tasks);
+  } catch (err) {
+    console.log(err);
   }
 }
 
@@ -155,4 +183,5 @@ module.exports = {
   assignTaskToUser,
   changeTaskStatus,
   getTasksByGroup,
+  getUserTasks,
 };

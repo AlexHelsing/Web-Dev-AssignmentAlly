@@ -24,7 +24,7 @@
         <div class="task-list">
           <Task v-for="task in tasks" :task-id="task._id" :key="task._id"
             :task-assignee="task.Assignee && task.Assignee.username ? task.Assignee.username : ''"
-            :task-name="task.TaskName" :belongs-to-group="group" :task-description="task.Description"
+            :task-name="task.TaskName" :belongs-to-group="task.GroupId" :task-description="task.Description"
             :task-status="task.Status" :task-label="task.Priority" :task-date="task.DueDate" />
         </div>
         <button v-b-modal.modal-1 class="newTaskButton"> New Task </button>

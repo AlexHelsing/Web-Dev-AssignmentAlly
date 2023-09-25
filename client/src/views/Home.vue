@@ -33,18 +33,33 @@
         </div>
       </b-modal>
     </div>
+
+    <div class="section">
+      <h1 class="section-title">My Tasks</h1>
+      <div class="section-content-tasks">
+        <Task v-for="task in tasks" :key="task._id" :task-name="task.TaskName" :task-description="task.Description"
+          :task-assignee="task.Assignee.username" :belongs-to-group="task.GroupId" :task-label="task.Priority"
+          :task-status="task.Status" :task-date="task.DueDate" :task-id="task._id" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { store } from '../store/store'
+import { EventBus } from '../event-bus'
+import Task from '../components/Task.vue'
 export default {
   data() {
     return {
       groups: [],
+      tasks: [],
       assignmentGroupName: '',
       course: ''
     }
+  },
+  components: {
+    Task
   },
   methods: {
     async fetchMyGroups() {
@@ -53,6 +68,14 @@ export default {
       })
       const data = await response.json()
       this.groups = data
+    },
+    async fetchMyTasks() {
+      const response = await fetch('http://localhost:3000/api/tasks/getUserTasks', {
+        credentials: 'include'
+      })
+      const data = await response.json()
+      this.tasks = data
+      console.log(this.tasks)
     },
     async createGroup() {
       try {
@@ -80,6 +103,10 @@ export default {
   },
   mounted() {
     this.fetchMyGroups()
+    this.fetchMyTasks()
+  },
+  created() {
+    EventBus.$on('task-updated', this.fetchMyTasks)
   },
   computed: {
     user() {
@@ -102,11 +129,9 @@ export default {
   /* maximum width for the content */
   width: 90%;
   /* occupy 90% of viewport width */
-  color: blueviolet;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: start;
 }
 
 .section-title {
@@ -135,6 +160,12 @@ export default {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 10px;
+}
+
+.section-content-tasks {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
 }
 
 /* Responsive adjustments */
