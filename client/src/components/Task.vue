@@ -95,6 +95,7 @@ export default {
 <style scoped>
 .task-item {
   background-color: #0d1319;
+  color: white;
   padding: 10px 15px;
   border-radius: 8px;
   display: flex;

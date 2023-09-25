@@ -36,7 +36,7 @@
 
     <div class="section">
       <h1 class="section-title">My Tasks</h1>
-      <div class="section-content-1">
+      <div class="section-content-tasks">
         <Task v-for="task in tasks" :key="task._id" :task-name="task.TaskName" :task-description="task.Description"
           :task-assignee="task.Assignee.username" :belongs-to-group="task.GroupId" :task-label="task.Priority"
           :task-status="task.Status" :task-date="task.DueDate" :task-id="task._id" />
@@ -129,11 +129,9 @@ export default {
   /* maximum width for the content */
   width: 90%;
   /* occupy 90% of viewport width */
-  color: blueviolet;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: start;
 }
 
 .section-title {
@@ -162,6 +160,12 @@ export default {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 10px;
+}
+
+.section-content-tasks {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
 }
 
 /* Responsive adjustments */
