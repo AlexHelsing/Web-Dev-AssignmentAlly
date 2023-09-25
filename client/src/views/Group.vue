@@ -65,13 +65,18 @@
           <span class="resource-icon">[Icon]</span>
           <a href="#">Reference Material</a>
         </div>
-        <div class="resource-item" href="#">
-          <span class="resource-icon">[Icon]</span>
-          <a href="#">Discord</a>
-        </div>
-        <div class="deadline">
-          <span class="resource-icon">[Icon]</span>
-          Deadline: 25th December
+        <div class="resource-item">
+          <img src="../../public/discord-icon-svgrepo-com.svg" class="resource-icon" />
+          <div v-if="editingDiscordLink" class="discord-edit">
+            <input v-model="discordLink" @keyup.enter="toggleEditDiscordLink" />
+            <button class="edit-discord-button-cancel" @click="cancelEditDiscordLink">Cancel</button>
+            <button class="edit-discord-button-save" @click="toggleEditDiscordLink">Save</button>
+          </div>
+          <div v-else>
+            <a :href="discordLink" v-if="discordLink" target="_blank">Discord</a>
+            <span v-else @click="toggleEditDiscordLink" class="edit-discord-placeholder">Add Discord link</span>
+            <button class="edit-discord-button" v-if="discordLink" @click="toggleEditDiscordLink">Edit</button>
+          </div>
         </div>
       </section>
     </div>
@@ -96,27 +101,34 @@ export default {
   },
   data() {
     return {
-      groupId: this.$route.params.id,
+      groupIdParam: this.$route.params.id,
       group: null,
       tasks: [],
       taskName: '',
       taskDescription: '',
       memberName: '',
       taskPriority: 'Low',
-      taskDueDate: ''
+      taskDueDate: '',
+      editingDiscordLink: false,
+      discordLink: null
     }
   },
   methods: {
     async fetchGroup() {
-      const response = await fetch(`http://localhost:3000/api/groups/get-course/${this.groupId}`, {
+      const response = await fetch(`http://localhost:3000/api/groups/get-course/${this.groupIdParam}`, {
         credentials: 'include'
       })
       const data = await response.json()
       console.log('data', data)
       this.group = data
+
+      if (data && data.resources) {
+        const discordResource = data.resources.find(resource => resource.type === 'discord')
+        if (discordResource) this.discordLink = discordResource.link
+      }
     },
     async getGroupTasks() {
-      const response = await fetch(`http://localhost:3000/api/tasks/getTasksByGroup/${this.groupId}`, {
+      const response = await fetch(`http://localhost:3000/api/tasks/getTasksByGroup/${this.groupIdParam}`, {
         credentials: 'include'
       })
       const data = await response.json()
@@ -128,7 +140,7 @@ export default {
         alert('Please fill out all fields')
         return
       }
-      const response = await fetch(`http://localhost:3000/api/tasks/create-task/${this.groupId}`, {
+      const response = await fetch(`http://localhost:3000/api/tasks/create-task/${this.groupIdParam}`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -147,7 +159,7 @@ export default {
       this.tasks.push(data)
     },
     async inviteMember() {
-      const response = await fetch(`http://localhost:3000/api/groups/${this.groupId}/invite/${this.memberName}`, {
+      const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}/invite/${this.memberName}`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -166,6 +178,40 @@ export default {
     initials(member) {
       const name = member
       return `${name[0].charAt(0)}${name[1] ? name[1].charAt(0) : ''}`
+    },
+    toggleEditDiscordLink() {
+      this.editingDiscordLink = !this.editingDiscordLink
+      if (!this.editingDiscordLink) {
+        this.updateDiscordLink()
+      }
+    },
+    cancelEditDiscordLink() {
+      this.editingDiscordLink = false
+    },
+    async updateDiscordLink() {
+      if (!this.discordLink.match(/^https:\/\/.*discord.*\/[a-zA-Z0-9]+/)) {
+        alert('Please enter a valid Discord invitation link!')
+        this.editingDiscordLink = true
+        return
+      }
+      const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}/set-resource/discord`, {
+        method: 'PUT',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          link: this.discordLink
+        })
+      })
+      const data = await response.json()
+
+      if (response.ok) {
+        const discordLink = data.resources.find((resource) => resource.type === 'discord')
+        this.discordLink = discordLink.link
+      } else {
+        console.error('Error updating discord link:', data.message || 'Unknown error')
+      }
     }
   },
   mounted() {
@@ -178,6 +224,7 @@ export default {
     }.bind(this))
   }
 }
+
 </script>
 
 <style>
@@ -259,6 +306,16 @@ main {
   }
 }
 
+.edit-discord-placeholder {
+  cursor: pointer;
+  color: #7289da;
+  text-decoration: underline;
+}
+
+.discord-edit input {
+  margin-right: 5px;
+}
+
 .left {
   width: 75%;
   background-color: #1b263b;
@@ -300,6 +357,50 @@ main {
 
 .resource-icon {
   margin-right: 10px;
+  height: 30px;
+}
+
+.edit-discord-button {
+  background-color: #7289da;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  text-align: center;
+  margin-left: 15px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+}
+
+.edit-discord-button-cancel {
+  background-color: #ff0000;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  text-align: center;
+  margin-left: 5px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+}
+.edit-discord-button-save {
+  background-color: #00ff26;
+  color: #2e2e2e;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  text-align: center;
+  margin-left: 5px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+
 }
 
 .deadline {

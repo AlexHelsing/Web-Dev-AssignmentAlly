@@ -7,7 +7,7 @@ GroupRouter.delete('/:course/delete-group', GroupController.deleteGroup);
 // GroupRouter.get('/getAllGroups', GroupController.getAllGroups);
 GroupRouter.get('/get-course/:id', GroupController.getGroup);
 GroupRouter.get('/getMyGroups', GroupController.getMyGroups);
-
+GroupRouter.put('/:groupId/set-resource/:type/', GroupController.setResource);
 GroupRouter.post(
   '/:groupId/invite/:username',
   GroupController.InviteMemberToGroup

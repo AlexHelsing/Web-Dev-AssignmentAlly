@@ -11,7 +11,6 @@ const AssignmentGroupSchema = new mongoose.Schema({
     required: true,
     unique: false,
   },
-
   members: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -22,6 +21,18 @@ const AssignmentGroupSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
+  resources: [
+    {
+      type: {
+        type: String, // 'discord', 'assignment file', etc.
+        required: true,
+      },
+      link: {
+        type: String, // The actual link
+        required: false,
+      },
+    },
+  ],
 });
 
 module.exports = mongoose.model('AssignmentGroup', AssignmentGroupSchema);

@@ -16,8 +16,21 @@ async function createTask(req, res) {
       Status: status,
       GroupId: groupId,
     });
+
     const savedTask = await newTask.save();
-    res.json(savedTask);
+
+    // populate the field since we are using in frontend state.
+    const populatedTask = await Task.findById(savedTask._id)
+      .populate('Assignee', ['username'])
+      .populate({
+        path: 'GroupId',
+        populate: {
+          path: 'members',
+          select: 'username',
+        },
+      });
+
+    res.json(populatedTask);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

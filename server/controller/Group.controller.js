@@ -101,6 +101,42 @@ async function deleteGroup(req, res) {
   }
 }
 
+async function setResource(req, res) {
+  console.log('hello');
+  const groupId = req.params.groupId;
+  const type = req.params.type;
+  const link = req.body.link;
+
+  const allowedTypes = ['discord', 'assignment file', 'reference material'];
+
+  if (!allowedTypes.includes(type)) {
+    return res.status(400).json({ message: 'Invalid resource type' });
+  }
+  try {
+    const group = await Group.findById(groupId);
+
+    if (!group) {
+      return res.status(404).json({ message: 'Group not found' });
+    }
+
+    // if the type already exists, update the link
+    const resourceIndex = group.resources.findIndex((r) => r.type === type);
+    if (resourceIndex !== -1) {
+      group.resources[resourceIndex].link = link;
+    } else {
+      group.resources.push({ type: type, link: link });
+    }
+
+    await group.save();
+
+    // return the updated group
+    return res.status(200).json(group);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
 module.exports = {
   createGroup,
   getAllGroups,
@@ -108,4 +144,5 @@ module.exports = {
   deleteGroup,
   getMyGroups,
   InviteMemberToGroup,
+  setResource,
 };
