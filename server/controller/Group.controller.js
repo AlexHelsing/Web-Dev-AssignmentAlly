@@ -51,6 +51,7 @@ async function getGroup(req, res) {
     // convert the members array of ids to an array of usernames
     const members = await User.find({ _id: { $in: group.members } });
     const memberNames = members.map((member) => member.username);
+    // create object of membername and memberid
 
     res.json({ ...group._doc, members: memberNames });
   } catch (err) {

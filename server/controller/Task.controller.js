@@ -1,4 +1,5 @@
 const Task = require('../models/Task.Model');
+const User = require('../models/User.mongo');
 
 async function createTask(req, res) {
   const groupId = req.params.groupId;
@@ -26,7 +27,9 @@ async function getTasksByGroup(req, res) {
   const groupId = req.params.groupId;
 
   try {
-    const tasks = await Task.find({ GroupId: groupId });
+    const tasks = await Task.find({ GroupId: groupId }).populate('Assignee', [
+      'username',
+    ]);
 
     //
     res.json(tasks);
@@ -66,6 +69,13 @@ async function updateTask(req, res) {
   if (status) updateFields.Status = status;
 
   try {
+    if (assignee) {
+      const assigneeUserId = await User.findOne({ username: assignee }).then(
+        (user) => user._id
+      );
+      updateFields.Assignee = assigneeUserId;
+    }
+
     const updatedTask = await Task.findByIdAndUpdate(taskId, updateFields, {
       new: true,
     });

@@ -9,9 +9,10 @@
       <b-form-textarea id="task-description" v-model="localTask.taskDescription"></b-form-textarea>
     </div>
 
-    <div v-if="localTask" class="mt-3">
+    <div v-if="localTask.belongsToGroup" class="mt-3">
       <label for="task-assignee" class="form-label">Assignee</label>
-      <b-form-select id="task-assignee" v-model="localTask.taskAssignee" :options="localTask.belongsToGroup.members"></b-form-select>
+      <b-form-select id="task-assignee" v-model="localTask.taskAssignee"
+        :options="localTask.belongsToGroup.members"></b-form-select>
     </div>
 
     <div v-if="localTask" class="mt-3">
@@ -53,8 +54,7 @@ export default {
   data() {
     return {
       localTask: { ...this.task },
-      members: ['John Doe', 'Jane Doe', 'Mike Doe'],
-      statuses: ['To Do', 'In progress', 'Completed']
+      statuses: ['To Do', 'In Progress', 'Completed']
     }
   },
   watch: {
@@ -74,6 +74,7 @@ export default {
     },
     async saveTask() {
       try {
+        console.log(this.localTask)
         const response = await fetch(`http://localhost:3000/api/tasks/update-task/${this.localTask.taskId}`, {
           method: 'PUT',
           credentials: 'include',
@@ -81,9 +82,12 @@ export default {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
+            taskName: this.localTask.taskName,
             description: this.localTask.taskDescription,
+            assignee: this.localTask.taskAssignee,
             priority: this.localTask.taskLabel,
-            dueDate: this.localTask.taskDate
+            dueDate: this.localTask.taskDate,
+            status: this.localTask.taskStatus
           })
         })
         const data = await response.json()

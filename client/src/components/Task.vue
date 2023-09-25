@@ -1,14 +1,14 @@
 <template>
   <div @click="handleTaskClick" class="task-item">
     <span class="task-code-container">
-      <span class="task-code">COURSECODE</span>
+      <span class="task-code">{{ belongsToGroup.course }}</span>
       <span class="separator">|</span>
       <span class="task-name">{{ taskName }}</span>
     </span>
 
     <span class="task-description">{{ taskDescription }}</span>
     <span class="task-details">
-      <b-avatar class="avatar" variant="light" text="taskAssignee">{{ taskAssignee }}</b-avatar>
+      <b-avatar class="avatar" variant="light" text="taskAssignee">{{ initials(taskAssignee) }}</b-avatar>
       <TaskLabel :label="taskLabel" />
       <span class="task-date">{{ convertDateToReadableFormat(taskDate) }}</span>
     </span>
@@ -71,6 +71,7 @@ export default {
         taskDescription: this.taskDescription,
         taskStatus: this.taskStatus,
         taskLabel: this.taskLabel,
+        taskAssignee: this.taskAssignee,
         taskDate: this.taskDate,
         taskId: this.taskId,
         belongsToGroup: this.belongsToGroup
@@ -81,6 +82,15 @@ export default {
       const month = dateObj.toLocaleString('default', { month: 'short' })
       const day = dateObj.getDate()
       return `${day} ${month}`
+    },
+    initials(member) {
+      if (!member) return ''
+      const name = member
+      // should prolly create a avatar component for this shit instead of doing magic on the name in every component
+      return name
+        .split(' ')
+        .map((word) => word.charAt(0).toUpperCase())
+        .join('')
     }
   }
 }
