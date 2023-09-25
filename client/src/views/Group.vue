@@ -171,6 +171,8 @@ export default {
 
       if (response.ok) {
         this.group.members.push(this.memberName)
+        // edit modal doesnt get the new member data unless we refectch
+        this.getGroupTasks()
       } else {
         console.error('Error inviting member:', data.message || 'Unknown error')
       }
@@ -387,6 +389,7 @@ main {
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   font-weight: bold;
 }
+
 .edit-discord-button-save {
   background-color: #00ff26;
   color: #2e2e2e;
