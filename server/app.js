@@ -8,6 +8,7 @@ var history = require('connect-history-api-fallback');
 var dotenv = require('dotenv').config();
 var passport = require('passport');
 
+const MeetingRouter = require('./routes/MeetingRouter');
 const AuthRouter = require('./routes/Auth.router');
 const UserRouter = require('./routes/User.router');
 const GroupRouter = require('./routes/GroupRouter');
@@ -66,6 +67,9 @@ app.use(passport.session());
 app.get('/api', function (req, res) {
   res.json({ message: 'Welcome to your DIT342 backend ExpressJS project!' });
 });
+
+// Meetings router
+app.get('/api/meetings', MeetingRouter);
 // User router
 app.use('/api/users', UserRouter);
 // Auth router

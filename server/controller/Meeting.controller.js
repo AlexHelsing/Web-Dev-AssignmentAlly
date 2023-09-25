@@ -2,7 +2,7 @@ const Meeting = require('../models/Meeting.model');
 
 // Create a meeting, we need to check which group the meeting is for and then update the meeting with the group ID
 async function createMeeting(req, res) {
-  const groupId = req.params.groupId;
+  const GroupId = req.params.groupId;
   const MeetingName = req.body.meetingName;
   const MeetingDate = req.body.date;
   const MeetingTime = req.body.time;
@@ -15,7 +15,7 @@ async function createMeeting(req, res) {
     MeetingTime: MeetingTime,
     MeetingLocation: MeetingLocation,
     MeetingAgenda: MeetingAgenda,
-    GroupId: groupId
+    GroupId: GroupId
   });
 
   try {

@@ -1,5 +1,4 @@
-
-POST http://localhost:3000/api/meetings/create-meeting/6512050c7652f89480b1087e
+POST http://localhost:3000/api/meetings/create-meeting/651219a3242f69172053ba34
 Content-Type: application/json
 
 {
@@ -11,10 +10,4 @@ Content-Type: application/json
 }
 
 
-
-const groupId = req.params.groupId;
-  const MeetingName = req.body.meetingName;
-  const MeetingDate = req.body.date;
-  const MeetingTime = req.body.time;
-  const MeetingLocation = req.body.meetingLocation;
-  const MeetingAgenda = req.body.meetingAgenda;
+###

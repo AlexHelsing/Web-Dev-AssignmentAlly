@@ -20,17 +20,16 @@ const MeetingSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  GroupId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'AssignmentGroup',
+  },
   //   MeetingAttendees: [
   //     {
   //       type: mongoose.Schema.Types.ObjectId,
   //       ref: 'User',
   //     },
   //   ],
-
-  GroupId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'AssignmentGroup',
-  },
 });
 
 module.exports = mongoose.model('Meeting', MeetingSchema);
