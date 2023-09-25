@@ -23,6 +23,7 @@ const MeetingSchema = new mongoose.Schema({
   GroupId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'AssignmentGroup',
+    required: true,
   },
   //   MeetingAttendees: [
   //     {

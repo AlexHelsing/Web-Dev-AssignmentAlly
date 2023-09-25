@@ -45,7 +45,7 @@ export default {
     }
   },
   methods: {
-    handleTaskClick() {
+    handleMeetingClick() {
       EventBus.$emit('meeting-clicked', {
         // Should convert this to a task type but its impossible in this shity language
         meetingName: this.meetingName,
