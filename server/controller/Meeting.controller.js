@@ -60,7 +60,7 @@ async function deleteMeeting(req, res) {
     const deletedMeeting = await Meeting.findByIdAndRemove(meetingId);
 
     if (!deletedMeeting) {
-      return res.status(404).json({ message: 'Task not found' });
+      return res.status(404).json({ message: 'Meeting not found' });
     }
 
     res.json(deletedMeeting);
@@ -77,7 +77,7 @@ async function updateMeeting(req, res) {
   // only update fields that were actually passed...
   const updateFields = {};
   if (meetingName) updateFields.MeetingName = meetingName;
-  if (meetingDate) updateFields.Date = meetingDate;
+  if (meetingDate) updateFields.MeetingDate = meetingDate;
   if (meetingAgenda) updateFields.MeetingAgenda = meetingAgenda;
   if (meetingLocation) updateFields.MeetingLocation = meetingLocation;
 
