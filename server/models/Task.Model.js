@@ -26,12 +26,9 @@ const TaskSchema = new mongoose.Schema({
   },
   GroupId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Group',
+    ref: 'AssignmentGroup',
     required: true,
   },
-  
 });
-
-
 
 module.exports = mongoose.model('Task', TaskSchema);
