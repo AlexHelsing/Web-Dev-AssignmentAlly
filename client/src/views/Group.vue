@@ -88,6 +88,34 @@
             :meeting-name="meeting.MeetingName" :belongs-to-group="meeting.GroupId" :meeting-agenda="meeting.MeetingAgenda"
             :meeting-location="meeting.MeetingLocation" :meeting-date="meeting.MeetingDate" :meeting-time="meeting.MeetingTime" />
       </div>
+      <button v-b-modal.modal-2 class="newMeetingButton"> New Meeting </button>
+      <b-modal size="lg" id="modal-2" title="Create a meeting " centered>
+          <div class="mb-3">
+            <label for="meeting-name" class="form-label">Name</label>
+            <input required type="text" id="meeting-name" class="form-control" v-model="meetingName" placeholder="Meeting Name">
+          </div>
+          <div class="mb-3">
+            <label for="meeting-agenda" class="form-label">Agenda</label>
+            <input required type="text" id="task-agenda" class="form-control" v-model="meetingAgenda"
+              placeholder="Meeting Agenda">
+          </div>
+          <div class="mb-3">
+            <label for="meeting-location" class="form-label">Location</label>
+            <input required type="text" id="meeting-location" class="form-control" v-model="meetingLocation"
+              placeholder="Meeting Location">
+          </div>
+          <div class="mb-3">
+            <label required for="meeting-date" class="form-label">Date</label>
+            <input type="date" id="meeting-date" class="form-control" v-model="meetingDate">
+          </div>
+          <div class="mb-3">
+            <label required for="meeting-time" class="form-label">Time</label>
+            <input type="text" id="meeting-time" class="form-control" v-model="meetingTime">
+          </div>
+          <div slot="modal-footer" class="w-100 d-flex justify-content-end">
+            <b-button variant="primary" @click="createGroupMeetings">Create</b-button>
+          </div>
+        </b-modal>
 
     </div>
   </main>
@@ -183,23 +211,23 @@ export default {
         alert('Please fill out all required fields')
         return
       }
-      const response = await fetch(`http://localhost:3000/api/tasks/create-task/${this.groupIdParam}`, {
+      const response = await fetch(`http://localhost:3000/api/meetings/create-meeting/${this.groupIdParam}`, {
         method: 'POST',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          MeetingName: this.meetingName,
-          MeetingDate: this.meetingDate,
-          MeetingAgenda: this.meetingAgenda,
-          MeetingTime: this.meetingTime,
-          MeetingLocation: this.meetingLocation
+          meetingName: this.meetingName,
+          date: this.meetingDate,
+          meetingAgenda: this.meetingAgenda,
+          time: this.meetingTime,
+          meetingLocation: this.meetingLocation
         })
       })
       const data = await response.json()
       console.log(data)
-      this.tasks.push(data)
+      this.meetings.push(data)
     },
 
     async inviteMember() {
@@ -486,11 +514,42 @@ main {
   display: flex;
   flex-direction: column;
   height: 300px;
+  justify-content: space-between;
 }
 
 .meetings-list{
   display: flex;
+  flex-grow: 1;
+  padding-right: 10px;
+  margin-bottom: 20px;
   flex-direction: column;
-  height: 50px;
+  height: 250px;
+  gap: 10px;
 }
+
+.newMeetingButton {
+  background-color: #34a8eb;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  text-align: center;
+  margin-top: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+}
+
+.newMeetingButton:hover {
+  background-color: #2c90d4;
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.newMeetingButton:active {
+  transform: translateY(0px);
+}
+
 </style>

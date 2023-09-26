@@ -7,6 +7,7 @@
       </span>
       <span class="meeting-description">{{ meetingAgenda }}</span>
       <span class="meeting-details">
+        <span class="meeting-location">{{ meetingLocation }}</span>
         <span class="meeting-date">{{ convertDateToReadableFormat(meetingDate) }}</span>
         <span class="meeting-time">{{ meetingTime }}</span>
       </span>
@@ -36,6 +37,10 @@ export default {
       type: String,
       default: ''
     },
+    meetingLocation: {
+      type: String,
+      default: ''
+    },
     belongsToGroup: {
       type: Object,
       default: () => ({})
@@ -54,6 +59,7 @@ export default {
         meetingDate: this.meetingDate,
         meetingTime: this.meetingTime,
         meetingId: this.meetingId,
+        meetingLocation: this.meetingLocation,
         belongsToGroup: this.belongsToGroup
       })
     },
@@ -83,7 +89,6 @@ export default {
   color: white;
   padding: 10px 15px;
   border-radius: 8px;
-  width: 800px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -122,6 +127,10 @@ export default {
 
 .meeting-description {
   flex: 2;
+  text-align: center;
+}
+
+.meeting-location {
   text-align: center;
 }
 
