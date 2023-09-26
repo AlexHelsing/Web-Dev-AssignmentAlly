@@ -8,6 +8,7 @@
       <span class="meeting-description">{{ meetingAgenda }}</span>
       <span class="meeting-details">
         <span class="meeting-date">{{ convertDateToReadableFormat(meetingDate) }}</span>
+        <span class="meeting-time">{{ meetingTime }}</span>
       </span>
     </div>
   </template>
@@ -82,6 +83,7 @@ export default {
   color: white;
   padding: 10px 15px;
   border-radius: 8px;
+  width: 800px;
   display: flex;
   justify-content: space-between;
   align-items: center;

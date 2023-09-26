@@ -85,7 +85,7 @@
       <h2 class="meetingsheader">Meetings</h2>
       <div class="meetings-list">
         <Meeting v-for="meeting in meetings" :meeting-id="meeting._id" :key="meeting._id"
-            :task-name="meeting.MeetingName" :belongs-to-group="meeting.GroupId" :meeting-agenda="meeting.MeetingAgenda"
+            :meeting-name="meeting.MeetingName" :belongs-to-group="meeting.GroupId" :meeting-agenda="meeting.MeetingAgenda"
             :meeting-location="meeting.MeetingLocation" :meeting-date="meeting.MeetingDate" :meeting-time="meeting.MeetingTime" />
       </div>
 
@@ -484,7 +484,13 @@ main {
   padding: 20px;
   border-top: 2px solid #0c0b15;
   display: flex;
-  justify-content: space-between;
-  height: 70px;
+  flex-direction: column;
+  height: 300px;
+}
+
+.meetings-list{
+  display: flex;
+  flex-direction: column;
+  height: 50px;
 }
 </style>
