@@ -1,3 +1,4 @@
+const AssignmentGroup = require('../models/AssignmentGroup');
 const Meeting = require('../models/Meeting.model');
 
 // Create a meeting, we need to check which group the meeting is for and then update the meeting with the group ID
@@ -53,6 +54,19 @@ async function getMeeting(req, res) {
   }
 }
 
+async function getMeetingsByUser(req, res) {
+  const user = req.user;
+  try{
+    const meetings = await Meeting.find({ GroupId: user.GroupId }).populate(
+      "GroupId"
+    ).select({ GroupId: { members: user._id }});
+
+    res.json(meetings)
+  } catch(err){
+    res.status(500).json({ message : err.message})
+  }
+}
+
 async function deleteMeeting(req, res) {
   const meetingId = req.params.meetingId;
 
@@ -96,4 +110,4 @@ async function updateMeeting(req, res) {
   }
 }
 
-module.exports = { createMeeting, getMeetingsByGroup, updateMeeting, getMeeting, deleteMeeting};
+module.exports = { createMeeting, getMeetingsByGroup, updateMeeting, getMeeting, deleteMeeting, getMeetingsByUser};

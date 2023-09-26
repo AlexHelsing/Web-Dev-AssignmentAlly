@@ -1,7 +1,7 @@
 <template>
     <div class="fullscreen-container">
       <div class="login-container">
-        <h1 class="login-title">Welcome {{ message }}</h1>
+        <h1 class="login-title">Welcome</h1>
         <form class="form" action="http://localhost:3000/api/auth/login" method="post">
           <div class="input-group">
             <label for="username">Username</label>
