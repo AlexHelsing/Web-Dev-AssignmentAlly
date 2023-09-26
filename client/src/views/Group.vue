@@ -196,6 +196,7 @@ export default {
       const data = await response.json()
       console.log(data)
       this.tasks.push(data)
+      this.$bvModal.hide('modal-1')
     },
     async getGroupMeetings() {
       const response = await fetch(`http://localhost:3000/api/meetings/getMeetingsByGroup/${this.groupIdParam}`, {
@@ -228,6 +229,7 @@ export default {
       const data = await response.json()
       console.log(data)
       this.meetings.push(data)
+      this.$bvModal.hide('modal-2')
     },
 
     async inviteMember() {
@@ -245,6 +247,7 @@ export default {
         this.group.members.push(this.memberName)
         // edit modal doesnt get the new member data unless we refectch
         this.getGroupTasks()
+        this.$bvModal.hide('modal-4')
       } else {
         console.error('Error inviting member:', data.message || 'Unknown error')
       }

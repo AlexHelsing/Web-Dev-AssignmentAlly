@@ -48,6 +48,7 @@
     <div class="section">
       <h1 class="section-title">My Tasks</h1>
       <div class="section-content-tasks">
+        <div class="empty-list-message" v-if="tasks.length == 0">You're all set!</div>
         <Task v-for="task in tasks" :key="task._id" :task-name="task.TaskName" :task-description="task.Description"
           :task-assignee="task.Assignee.username" :belongs-to-group="task.GroupId" :task-label="task.Priority"
           :task-status="task.Status" :task-date="task.DueDate" :task-id="task._id" />
@@ -116,6 +117,7 @@ export default {
         const data = await response.json()
         if (response.ok) {
           this.groups.push(data)
+          this.$bvModal.hide('modal-1')
         } else {
           console.error('Error creating group:', data.message || 'Unknown error')
         }
@@ -139,6 +141,7 @@ export default {
         const data = await response.json()
         if (response.ok) {
           this.groups.push(data)
+          this.$bvModal.hide('modal-2')
         } else {
           console.error('Error joining group:', data.message || 'Unknown error')
         }
@@ -242,6 +245,10 @@ export default {
   .main {
     align-items: center;
   }
+}
+
+.empty-list-message {
+  color: white;
 }
 
 </style>
