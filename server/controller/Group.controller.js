@@ -113,9 +113,11 @@ async function joinGroup(req, res) {
 
 async function deleteGroup(req, res) {
   try {
-    const deleteGroup = req.params.course;
-    await Group.findOneAndDelete({ course: deleteGroup });
+    const Id = req.params.Id;
+    await Group.findByIdAndDelete(Id);
     console.log('Deleted Group ');
+
+    res.status(200).json({ message: 'Group deleted' });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
