@@ -21,7 +21,15 @@ async function createMeeting(req, res) {
 
   try {
     const savedMeeting = await newMeeting.save();
-    res.json(savedMeeting);
+
+    const populated = await Meeting.findById(savedMeeting._id).populate({
+      path: 'GroupId',
+      populate: {
+        path: 'members',
+        select: 'username',
+      },
+    });
+    res.json(populated);
   } catch (err) {
     console.log(err);
     res.status(400).json({ message: err.message });

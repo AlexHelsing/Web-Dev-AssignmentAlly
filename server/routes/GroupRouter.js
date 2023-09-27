@@ -4,15 +4,12 @@ const GroupController = require('../controller/Group.controller');
 
 GroupRouter.post('/create-group', GroupController.createGroup);
 
+// Get
+GroupRouter.get('/get-group/:id', GroupController.getGroup);
 GroupRouter.get('/getAllGroups', GroupController.getAllGroups);
-
 GroupRouter.get('/getMyGroups', GroupController.getMyGroups);
-GroupRouter.put('/:groupId/set-resource/:type/', GroupController.setResource);
 
-// 5.1.2.d
-GroupRouter.get('/:Id', GroupController.getGroup);
-
-// 5.1.3.a
+// Post (relationship)
 GroupRouter.post(
   '/:groupId/invite/:username',
   GroupController.InviteMemberToGroup
@@ -20,6 +17,7 @@ GroupRouter.post(
 
 // 5.1.2.f
 GroupRouter.patch('/join-group/:groupName', GroupController.joinGroup);
+GroupRouter.patch('/:groupId/set-resource/:type/', GroupController.setResource);
 
 // 5.1.2.g
 GroupRouter.delete('/:Id', GroupController.deleteGroup);

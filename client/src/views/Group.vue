@@ -173,9 +173,8 @@ export default {
   },
   methods: {
     async fetchGroup() {
-      const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}`, {
-        credentials: 'include',
-        method: 'GET'
+      const response = await fetch(`http://localhost:3000/api/groups/get-group/${this.groupIdParam}`, {
+        credentials: 'include'
       })
       const data = await response.json()
       console.log('data', data)
@@ -306,7 +305,7 @@ export default {
 
       if (resource && resource.name) {
         const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}/set-resource/${resource.name.toLowerCase()}`, {
-          method: 'PUT',
+          method: 'PATCH',
           credentials: 'include',
           headers: {
             'Content-Type': 'application/json'

@@ -1,5 +1,7 @@
 const Group = require('../models/AssignmentGroup');
 const User = require('../models/User.mongo');
+const Task = require('../models/Task.Model');
+const Meeting = require('../models/Meeting.model');
 
 async function createGroup(req, res) {
   const assignmentGroupName = req.body.assignmentGroupName;
@@ -46,7 +48,7 @@ async function getMyGroups(req, res) {
 async function getGroup(req, res) {
   // will need to check if user is in group here later but i cba right now
   try {
-    const group = await Group.findById(req.params.Id);
+    const group = await Group.findById(req.params.id);
 
     // convert the members array of ids to an array of usernames
     const members = await User.find({ _id: { $in: group.members } });
@@ -114,10 +116,13 @@ async function joinGroup(req, res) {
 async function deleteGroup(req, res) {
   try {
     const Id = req.params.Id;
-    await Group.findByIdAndDelete(Id);
-    console.log('Deleted Group ');
 
-    res.status(200).json({ message: 'Group deleted' });
+    // delete all tasks and meetings associated with the group
+    await Task.deleteMany({ GroupId: Id });
+    await Meeting.deleteMany({ GroupId: Id });
+    await Group.findByIdAndDelete(Id);
+
+    return res.status(200).json({ message: 'Group deleted' });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
