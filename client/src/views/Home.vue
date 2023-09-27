@@ -58,8 +58,9 @@
       <h1 class="section-title">My Meetings</h1>
       <div class="section-content-meetings">
         <Meeting v-for="meeting in meetings" :meeting-id="meeting._id" :key="meeting._id"
-            :meeting-name="meeting.MeetingName" :belongs-to-group="meeting.GroupId" :meeting-agenda="meeting.MeetingAgenda"
-            :meeting-location="meeting.MeetingLocation" :meeting-date="meeting.MeetingDate" :meeting-time="meeting.MeetingTime" />
+          :meeting-name="meeting.MeetingName" :belongs-to-group="meeting.GroupId" :meeting-agenda="meeting.MeetingAgenda"
+          :meeting-location="meeting.MeetingLocation" :meeting-date="meeting.MeetingDate"
+          :meeting-time="meeting.MeetingTime" />
       </div>
     </div>
   </div>
@@ -76,6 +77,7 @@ export default {
     return {
       groups: [],
       tasks: [],
+      meetings: [],
       assignmentGroupName: '',
       existingGroupName: '',
       course: ''
@@ -125,7 +127,14 @@ export default {
         console.error('Error creating group:', error)
       }
     },
-
+    async fetchMyMeetings() {
+      const response = await fetch('http://localhost:3000/api/meetings/getMeetingsByUser', {
+        credentials: 'include'
+      })
+      const data = await response.json()
+      console.log(data)
+      this.meetings = data
+    },
     async joinGroup() {
       try {
         const response = await fetch('http://localhost:3000/api/groups/join-group', {
@@ -154,6 +163,7 @@ export default {
   mounted() {
     this.fetchMyGroups()
     this.fetchMyTasks()
+    this.fetchMyMeetings()
   },
   created() {
     EventBus.$on('task-updated', this.fetchMyTasks)
@@ -250,5 +260,4 @@ export default {
 .empty-list-message {
   color: white;
 }
-
 </style>
