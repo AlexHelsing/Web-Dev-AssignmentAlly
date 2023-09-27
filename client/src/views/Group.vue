@@ -108,7 +108,6 @@ export default {
       memberName: '',
       taskPriority: 'Low',
       taskDueDate: '',
-      editingDiscordLink: false,
       meetings: [],
       meetingName: '',
       meetingAgenda: '',
@@ -133,7 +132,7 @@ export default {
         {
           name: 'Discord',
           link: null,
-          editing: this.editingDiscordLink,
+          editing: false,
           icon: '/discord-icon-svgrepo-com.svg',
           iconClass: 'resource-icon-disc'
         }
@@ -256,48 +255,28 @@ export default {
     },
     async updateResourceLink(index) {
       const resource = this.resources[index]
-      const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}/set-resource/${resource.name.toLowerCase()}`, {
-        method: 'PUT',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          link: resource.link
-        })
-      })
-      const data = await response.json()
 
-      if (response.ok) {
-        const updatedResource = data.resources.find((resource) => resource.type === resource.name.toLowerCase())
-        resource.link = updatedResource.link
-      } else {
-        console.error('Error updating resource link:', data.message || 'Unknown error')
-      }
-    },
-    async updateDiscordLink() {
-      if (!this.discordLink.match(/^https:\/\/.*discord.*\/[a-zA-Z0-9]+/)) {
-        alert('Please enter a valid Discord invitation link!')
-        this.editingDiscordLink = true
-        return
-      }
-      const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}/set-resource/discord`, {
-        method: 'PUT',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          link: this.discordLink
+      if (resource && resource.name) {
+        const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}/set-resource/${resource.name.toLowerCase()}`, {
+          method: 'PUT',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            link: resource.link
+          })
         })
-      })
-      const data = await response.json()
+        const data = await response.json()
 
-      if (response.ok) {
-        const discordLink = data.resources.find((resource) => resource.type === 'discord')
-        this.discordLink = discordLink.link
+        if (response.ok) {
+          const updatedResource = data.resources.find((r) => r.type === resource.name.toLowerCase())
+          if (updatedResource) resource.link = updatedResource.link
+        } else {
+          console.error('Error updating resource link:', data.message || 'Unknown error')
+        }
       } else {
-        console.error('Error updating discord link:', data.message || 'Unknown error')
+        console.error('Resource or resource.name is undefined at index:', index)
       }
     }
   },

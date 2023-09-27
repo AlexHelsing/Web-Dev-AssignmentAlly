@@ -106,13 +106,10 @@ async function setResource(req, res) {
   const groupId = req.params.groupId;
   const type = req.params.type;
   const link = req.body.link;
+  console.log(type);
+  console.log(link);
 
-  const allowedTypes = [
-    'discord',
-    'assignment file',
-    'reference material',
-    'deadline',
-  ];
+  const allowedTypes = ['discord', 'assignment file', 'reference material'];
 
   if (!allowedTypes.includes(type)) {
     return res.status(400).json({ message: 'Invalid resource type' });
