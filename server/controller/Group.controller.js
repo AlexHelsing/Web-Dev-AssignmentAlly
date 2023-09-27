@@ -126,6 +126,8 @@ async function setResource(req, res) {
   const groupId = req.params.groupId;
   const type = req.params.type;
   const link = req.body.link;
+  console.log(type);
+  console.log(link);
 
   const allowedTypes = ['discord', 'assignment file', 'reference material'];
 
