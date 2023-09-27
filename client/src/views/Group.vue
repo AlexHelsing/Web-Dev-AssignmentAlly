@@ -173,8 +173,9 @@ export default {
   },
   methods: {
     async fetchGroup() {
-      const response = await fetch(`http://localhost:3000/api/groups/get-course/${this.groupIdParam}`, {
-        credentials: 'include'
+      const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}`, {
+        credentials: 'include',
+        method: 'GET'
       })
       const data = await response.json()
       console.log('data', data)
