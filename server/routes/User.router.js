@@ -1,6 +1,5 @@
 const UserRouter = require('express').Router();
 
-const passport = require('passport');
 const UserController = require('../controller/User.controller');
 
 UserRouter.get('/getAllUsers', UserController.getAllUsers);

@@ -86,7 +86,6 @@
           :meeting-location="meeting.MeetingLocation" :meeting-date="meeting.MeetingDate"
           :meeting-time="meeting.MeetingTime" />
       </div>
-      <button v-b-modal.modal-2 class="newMeetingButton"> New Meeting </button>
       <b-modal size="lg" id="modal-2" title="Create a meeting " centered>
         <div class="mb-3">
           <label for="meeting-name" class="form-label">Name</label>
@@ -115,8 +114,8 @@
           <b-button variant="primary" @click="createGroupMeetings">Create</b-button>
         </div>
       </b-modal>
-
     </div>
+    <button v-b-modal.modal-2 class="newMeetingButton"> New Meeting </button>
   </main>
 </template>
 
@@ -344,6 +343,9 @@ export default {
 <style>
 main {
   background-color: #1b263b;
+  flex-grow: 1;
+  display: flex !important;
+  flex-direction: column;
 }
 
 .header {
@@ -577,37 +579,51 @@ main {
 
 .meetings-container {
   color: aliceblue;
-  padding: 20px;
+  flex-grow: 1;
+  padding-left: 20px;
+  padding-right: 20px;
   border-top: 2px solid #0c0b15;
   display: flex;
   flex-direction: column;
-  height: 300px;
-  justify-content: space-between;
 }
 
 .meetings-list {
-  display: flex;
-  flex-grow: 1;
-  padding-right: 10px;
-  margin-bottom: 20px;
-  flex-direction: column;
-  height: 250px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
+  overflow-y: auto;
+  padding: 10px;
+
+  @media screen and (max-width: 768px) {
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+  }
+
+}
+
+.meetingsheader {
+  margin-top: 20px;
 }
 
 .newMeetingButton {
   background-color: #34a8eb;
   color: #ffffff;
+  margin-bottom: 10px;
   border: none;
+  margin-left: 10px;
+  margin-right: 10px;
   padding: 10px 20px;
   border-radius: 8px;
   font-size: 14px;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
   text-align: center;
-  margin-top: 20px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   font-weight: bold;
+
+  @media screen and (max-width: 768px) {
+    position: relative;
+  }
 }
 
 .newMeetingButton:hover {

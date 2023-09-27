@@ -1,18 +1,16 @@
 <template>
-    <div @click="handleMeetingClick" class="meeting-item">
-      <span class="meeting-code-container">
-        <span class="meeting-code">{{ belongsToGroup.course }}</span>
-        <span class="separator">|</span>
-        <span class="meeting-name">{{ meetingName }}</span>
-      </span>
-      <span class="meeting-description">{{ meetingAgenda }}</span>
-      <span class="meeting-details">
-        <span class="meeting-location">{{ meetingLocation }}</span>
-        <span class="meeting-date">{{ convertDateToReadableFormat(meetingDate) }}</span>
-        <span class="meeting-time">{{ meetingTime }}</span>
+  <div @click="handleMeetingClick" class="meeting-item">
+    <img :src="imageSource" class="locationbox" />
+    <div class="meetinginfo">
+      <span class="meetingname">{{ meetingName }}</span>
+      <span class="meetingagenda">{{ meetingAgenda }}</span>
+      <span class="meetingdetails">
+        <span class="meetingdate">{{ convertDateToReadableFormat(meetingDate) }}</span>
+        <span class="meetingtime">{{ meetingTime }}</span>
       </span>
     </div>
-  </template>
+  </div>
+</template>
 
 <script>
 
@@ -48,6 +46,11 @@ export default {
     meetingId: {
       type: String,
       default: ''
+    }
+  },
+  computed: {
+    imageSource() {
+      return this.meetingLocation === 'discord' ? '/discord-icon-svgrepo-com.svg' : '/campus-svgrepo-com.svg'
     }
   },
   methods: {
@@ -88,10 +91,10 @@ export default {
   background-color: #0d1319;
   color: white;
   padding: 10px 15px;
+  gap: 7px;
+  height: 8rem;
   border-radius: 8px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
   transition: background-color 0.2s, box-shadow 0.2s;
   cursor: pointer;
   border: 1px solid transparent;
@@ -102,47 +105,24 @@ export default {
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.avatar {
-  margin-right: 10px;
-  height: 30px;
-}
-
-.meeting-code-container {
-  flex: 1;
+.meetinginfo {
   display: flex;
-  align-items: center;
+  flex: 7;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
-.meeting-name {
-  font-size: 0.8rem;
-}
-
-.separator {
-  margin: 0 5px;
-}
-
-.meeting-code {
-  font-weight: bold;
-}
-
-.meeting-description {
-  flex: 2;
-  text-align: center;
-}
-
-.meeting-location {
-  text-align: center;
-}
-
-.meeting-details {
-  flex: 1;
-  justify-content: flex-end;
+.meetingdetails {
   display: flex;
-  align-items: center;
+  gap: 5px;
 }
 
-.meeting-date {
-  margin: 0 7px;
-  font-weight: bold;
+.locationbox {
+
+  border-radius: 10%;
+  /* Or you can use a specific value like 50px */
+  /* Or you can use a specific value like 50px */
+  object-fit: contain;
+  /* or 'contain' based on your preference */
 }
 </style>
