@@ -137,15 +137,12 @@ export default {
     },
     async joinGroup() {
       try {
-        const response = await fetch('http://localhost:3000/api/groups/join-group', {
-          method: 'PUT',
+        const response = await fetch(`http://localhost:3000/api/groups/join-group/${this.existingGroupName}`, {
+          method: 'PATCH',
           credentials: 'include',
           headers: {
             'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            assignmentGroupName: this.existingGroupName
-          })
+          }
         })
         const data = await response.json()
         if (response.ok) {

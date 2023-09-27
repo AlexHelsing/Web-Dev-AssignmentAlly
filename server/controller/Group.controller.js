@@ -92,16 +92,16 @@ async function InviteMemberToGroup(req, res) {
 }
 
 async function joinGroup(req, res) {
-  const groupName = req.body.assignmentGroupName;
+  const groupName = req.params.groupName;
   const userToJoin = req.user;
 
   try {
-    const group = await Group.findOne({ assignmentGroupName: groupName});
+    const group = await Group.findOne({ assignmentGroupName: groupName });
 
     if (!group) {
       return res.status(404).json({ message: 'Group not found' });
     }
-  
+
     group.members.push(userToJoin.id);
     await group.save();
     return res.status(200).json({ message: 'User added to group' });

@@ -9,6 +9,8 @@ GroupRouter.get('/get-course/:id', GroupController.getGroup);
 GroupRouter.get('/getMyGroups', GroupController.getMyGroups);
 GroupRouter.put('/:groupId/set-resource/:type/', GroupController.setResource);
 GroupRouter.post('/:groupId/invite/:username', GroupController.InviteMemberToGroup);
-GroupRouter.put('/join-group', GroupController.joinGroup);
+
+// 5.1.2.f
+GroupRouter.patch('/join-group/:groupName', GroupController.joinGroup);
 
 module.exports = GroupRouter;
