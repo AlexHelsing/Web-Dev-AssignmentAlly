@@ -17,6 +17,7 @@
           </b-card>
         </router-link>
         <b-button v-b-modal.modal-1>Create New Group</b-button>
+        <b-button v-b-modal.modal-2>Join Existing Group</b-button>
       </div>
       <b-modal id="modal-1" title="Create an assignment group" centered>
         <div class="mb-3">
@@ -32,14 +33,34 @@
           <b-button variant="primary" @click="createGroup">Create</b-button>
         </div>
       </b-modal>
+      <b-modal id="modal-2" title="Join Existing Group" centered>
+        <div class="mb-3">
+          <label for="existing-group-name" class="form-label">Group Name</label>
+          <input type="text" id="existing-group-name" class="form-control" v-model="existingGroupName"
+            placeholder="Enter Group Name">
+        </div>
+        <div slot="modal-footer" class="w-100 d-flex justify-content-end">
+          <b-button variant="primary" @click="joinGroup">Join</b-button>
+        </div>
+      </b-modal>
     </div>
 
     <div class="section">
       <h1 class="section-title">My Tasks</h1>
       <div class="section-content-tasks">
+        <div class="empty-list-message" v-if="tasks.length == 0">You're all set!</div>
         <Task v-for="task in tasks" :key="task._id" :task-name="task.TaskName" :task-description="task.Description"
           :task-assignee="task.Assignee.username" :belongs-to-group="task.GroupId" :task-label="task.Priority"
           :task-status="task.Status" :task-date="task.DueDate" :task-id="task._id" />
+      </div>
+    </div>
+    <div class="section">
+      <h1 class="section-title">My Meetings</h1>
+      <div class="section-content-meetings">
+        <Meeting v-for="meeting in meetings" :meeting-id="meeting._id" :key="meeting._id"
+          :meeting-name="meeting.MeetingName" :belongs-to-group="meeting.GroupId" :meeting-agenda="meeting.MeetingAgenda"
+          :meeting-location="meeting.MeetingLocation" :meeting-date="meeting.MeetingDate"
+          :meeting-time="meeting.MeetingTime" />
       </div>
     </div>
   </div>
@@ -49,17 +70,22 @@
 import { store } from '../store/store'
 import { EventBus } from '../event-bus'
 import Task from '../components/Task.vue'
+import Meeting from '../components/Meeting.vue'
+
 export default {
   data() {
     return {
       groups: [],
       tasks: [],
+      meetings: [],
       assignmentGroupName: '',
+      existingGroupName: '',
       course: ''
     }
   },
   components: {
-    Task
+    Task,
+    Meeting
   },
   methods: {
     async fetchMyGroups() {
@@ -93,17 +119,51 @@ export default {
         const data = await response.json()
         if (response.ok) {
           this.groups.push(data)
+          this.$bvModal.hide('modal-1')
         } else {
           console.error('Error creating group:', data.message || 'Unknown error')
         }
       } catch (error) {
         console.error('Error creating group:', error)
       }
+    },
+    async fetchMyMeetings() {
+      const response = await fetch('http://localhost:3000/api/meetings/getMeetingsByUser', {
+        credentials: 'include'
+      })
+      const data = await response.json()
+      console.log(data)
+      this.meetings = data
+    },
+    async joinGroup() {
+      try {
+        const response = await fetch('http://localhost:3000/api/groups/join-group', {
+          method: 'PUT',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            assignmentGroupName: this.existingGroupName
+          })
+        })
+        const data = await response.json()
+        if (response.ok) {
+          this.groups.push(data)
+          this.$bvModal.hide('modal-2')
+        } else {
+          console.error('Error joining group:', data.message || 'Unknown error')
+        }
+      } catch (error) {
+        console.error('Error joining group:', error)
+      }
     }
   },
+
   mounted() {
     this.fetchMyGroups()
     this.fetchMyTasks()
+    this.fetchMyMeetings()
   },
   created() {
     EventBus.$on('task-updated', this.fetchMyTasks)
@@ -114,6 +174,7 @@ export default {
     }
   }
 }
+
 </script>
 
 <style>
@@ -194,5 +255,9 @@ export default {
   .main {
     align-items: center;
   }
+}
+
+.empty-list-message {
+  color: white;
 }
 </style>

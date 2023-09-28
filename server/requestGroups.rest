@@ -1,4 +1,9 @@
 
+
+GET http://localhost:3000/api/meetings/getUserMeetings
+
+###
+
 GET http://localhost:3000/api/groups/getAllGroups
 
 ###
@@ -17,3 +22,21 @@ Content-Type: application/json
 ### 
 
 POST http://localhost:3000/api/groups/algo/delete-group
+
+
+###
+
+PUT http://localhost:3000/api/groups/join-group
+Content-Type: application/json
+
+{
+    "groupName": "testingmatte"
+}
+
+### 
+
+###
+
+GET http://localhost:3000/api/meetings/getMeetingsByUser
+
+### 

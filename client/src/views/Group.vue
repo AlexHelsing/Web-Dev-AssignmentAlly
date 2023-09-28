@@ -57,27 +57,21 @@
       </section>
       <section class="right">
         <div class="right-header">Resources & Info</div>
-        <div class="resource-item">
-          <span class="resource-icon">[Icon]</span>
-          <a href="#">Assignment File</a>
-        </div>
-        <div class="resource-item">
-          <span class="resource-icon">[Icon]</span>
-          <a href="#">Reference Material</a>
-        </div>
-        <div class="resource-item">
-          <img src="../../public/discord-icon-svgrepo-com.svg" class="resource-icon" />
-          <div v-if="editingDiscordLink" class="discord-edit">
-            <input v-model="discordLink" @keyup.enter="toggleEditDiscordLink" />
-            <button class="edit-discord-button-cancel" @click="cancelEditDiscordLink">Cancel</button>
-            <button class="edit-discord-button-save" @click="toggleEditDiscordLink">Save</button>
+        <div class="resource-item" v-for="(resource, index) in resources" :key="index">
+          <img :src="resource.icon" :class="resource.iconClass" />
+          <div v-if="resource.editing" class="resource-edit">
+            <input v-model="resource.link" @keyup.enter="toggleEditResourceLink(index)" />
+            <button class="edit-resource-button-cancel" @click="cancelEditResourceLink(index)">Cancel</button>
+            <button class="edit-resource-button-save" @click="toggleEditResourceLink(index)">Save</button>
           </div>
           <div v-else>
-            <a :href="discordLink" v-if="discordLink" target="_blank">Discord</a>
-            <span v-else @click="toggleEditDiscordLink" class="edit-discord-placeholder">Add Discord link</span>
-            <button class="edit-discord-button" v-if="discordLink" @click="toggleEditDiscordLink">Edit</button>
+            <a :href="resource.link" v-if="resource.link" target="_blank">{{ resource.name }}</a>
+            <span v-else @click="toggleEditResourceLink(index)" class="edit-resource-placeholder">Add {{ resource.name }}
+              link</span>
+            <button class="edit-resource-button" v-if="resource.link" @click="toggleEditResourceLink(index)">Edit</button>
           </div>
         </div>
+
       </section>
     </div>
 
@@ -85,9 +79,37 @@
       <h2 class="meetingsheader">Meetings</h2>
       <div class="meetings-list">
         <Meeting v-for="meeting in meetings" :meeting-id="meeting._id" :key="meeting._id"
-            :task-name="meeting.MeetingName" :belongs-to-group="meeting.GroupId" :meeting-agenda="meeting.MeetingAgenda"
+            :meeting-name="meeting.MeetingName" :belongs-to-group="meeting.GroupId" :meeting-agenda="meeting.MeetingAgenda"
             :meeting-location="meeting.MeetingLocation" :meeting-date="meeting.MeetingDate" :meeting-time="meeting.MeetingTime" />
       </div>
+      <button v-b-modal.modal-2 class="newMeetingButton"> New Meeting </button>
+      <b-modal size="lg" id="modal-2" title="Create a meeting " centered>
+          <div class="mb-3">
+            <label for="meeting-name" class="form-label">Name</label>
+            <input required type="text" id="meeting-name" class="form-control" v-model="meetingName" placeholder="Meeting Name">
+          </div>
+          <div class="mb-3">
+            <label for="meeting-agenda" class="form-label">Agenda</label>
+            <input required type="text" id="task-agenda" class="form-control" v-model="meetingAgenda"
+              placeholder="Meeting Agenda">
+          </div>
+          <div class="mb-3">
+            <label for="meeting-location" class="form-label">Location</label>
+            <input required type="text" id="meeting-location" class="form-control" v-model="meetingLocation"
+              placeholder="Meeting Location">
+          </div>
+          <div class="mb-3">
+            <label required for="meeting-date" class="form-label">Date</label>
+            <input type="date" id="meeting-date" class="form-control" v-model="meetingDate">
+          </div>
+          <div class="mb-3">
+            <label required for="meeting-time" class="form-label">Time</label>
+            <input type="text" id="meeting-time" class="form-control" v-model="meetingTime">
+          </div>
+          <div slot="modal-footer" class="w-100 d-flex justify-content-end">
+            <b-button variant="primary" @click="createGroupMeetings">Create</b-button>
+          </div>
+        </b-modal>
 
     </div>
   </main>
@@ -113,15 +135,35 @@ export default {
       memberName: '',
       taskPriority: 'Low',
       taskDueDate: '',
-      editingDiscordLink: false,
-      discordLink: null,
       meetings: [],
       meetingName: '',
       meetingAgenda: '',
       meetingLocation: '',
       meetingDate: '',
-      meetingTime: ''
-
+      meetingTime: '',
+      resources: [
+        {
+          name: 'Assignment file',
+          link: null,
+          editing: false,
+          icon: '/afileimg.svg',
+          iconClass: 'resource-icon-file'
+        },
+        {
+          name: 'Reference Material',
+          link: null,
+          editing: false,
+          icon: '/message-alt-edit-svgrepo-com.svg',
+          iconClass: 'resource-icon-ref'
+        },
+        {
+          name: 'Discord',
+          link: null,
+          editing: false,
+          icon: '/discord-icon-svgrepo-com.svg',
+          iconClass: 'resource-icon-disc'
+        }
+      ]
     }
   },
   methods: {
@@ -135,7 +177,11 @@ export default {
 
       if (data && data.resources) {
         const discordResource = data.resources.find(resource => resource.type === 'discord')
-        if (discordResource) this.discordLink = discordResource.link
+        const assignmentFileResource = data.resources.find(resource => resource.type === 'assignment file')
+        const referenceMaterialResource = data.resources.find(resource => resource.type === 'reference material')
+        if (assignmentFileResource) this.resources[0].link = assignmentFileResource.link
+        if (referenceMaterialResource) this.resources[1].link = referenceMaterialResource.link
+        if (discordResource) this.resources[2].link = discordResource.link
       }
     },
     async getGroupTasks() {
@@ -183,23 +229,24 @@ export default {
         alert('Please fill out all required fields')
         return
       }
-      const response = await fetch(`http://localhost:3000/api/tasks/create-task/${this.groupIdParam}`, {
+      const response = await fetch(`http://localhost:3000/api/meetings/create-meeting/${this.groupIdParam}`, {
         method: 'POST',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          MeetingName: this.meetingName,
-          MeetingDate: this.meetingDate,
-          MeetingAgenda: this.meetingAgenda,
-          MeetingTime: this.meetingTime,
-          MeetingLocation: this.meetingLocation
+          meetingName: this.meetingName,
+          date: this.meetingDate,
+          meetingAgenda: this.meetingAgenda,
+          time: this.meetingTime,
+          meetingLocation: this.meetingLocation
         })
       })
       const data = await response.json()
       console.log(data)
-      this.tasks.push(data)
+      this.meetings.push(data)
+      this.$bvModal.hide('modal-2')
     },
 
     async inviteMember() {
@@ -217,6 +264,7 @@ export default {
         this.group.members.push(this.memberName)
         // edit modal doesnt get the new member data unless we refectch
         this.getGroupTasks()
+        this.$bvModal.hide('modal-4')
       } else {
         console.error('Error inviting member:', data.message || 'Unknown error')
       }
@@ -225,38 +273,39 @@ export default {
       const name = member
       return `${name[0].charAt(0)}${name[1] ? name[1].charAt(0) : ''}`
     },
-    toggleEditDiscordLink() {
-      this.editingDiscordLink = !this.editingDiscordLink
-      if (!this.editingDiscordLink) {
-        this.updateDiscordLink()
+    toggleEditResourceLink(index) {
+      this.resources[index].editing = !this.resources[index].editing
+      if (!this.resources[index].editing) {
+        this.updateResourceLink(index)
       }
     },
-    cancelEditDiscordLink() {
-      this.editingDiscordLink = false
+    cancelEditResourceLink(index) {
+      this.resources[index].editing = false
     },
-    async updateDiscordLink() {
-      if (!this.discordLink.match(/^https:\/\/.*discord.*\/[a-zA-Z0-9]+/)) {
-        alert('Please enter a valid Discord invitation link!')
-        this.editingDiscordLink = true
-        return
-      }
-      const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}/set-resource/discord`, {
-        method: 'PUT',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          link: this.discordLink
-        })
-      })
-      const data = await response.json()
+    async updateResourceLink(index) {
+      const resource = this.resources[index]
 
-      if (response.ok) {
-        const discordLink = data.resources.find((resource) => resource.type === 'discord')
-        this.discordLink = discordLink.link
+      if (resource && resource.name) {
+        const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}/set-resource/${resource.name.toLowerCase()}`, {
+          method: 'PUT',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            link: resource.link
+          })
+        })
+        const data = await response.json()
+
+        if (response.ok) {
+          const updatedResource = data.resources.find((r) => r.type === resource.name.toLowerCase())
+          if (updatedResource) resource.link = updatedResource.link
+        } else {
+          console.error('Error updating resource link:', data.message || 'Unknown error')
+        }
       } else {
-        console.error('Error updating discord link:', data.message || 'Unknown error')
+        console.error('Resource or resource.name is undefined at index:', index)
       }
     }
   },
@@ -353,13 +402,13 @@ main {
   }
 }
 
-.edit-discord-placeholder {
+.edit-resource-placeholder {
   cursor: pointer;
   color: #7289da;
   text-decoration: underline;
 }
 
-.discord-edit input {
+.resource-edit input {
   margin-right: 5px;
 }
 
@@ -402,12 +451,23 @@ main {
   align-items: center;
 }
 
-.resource-icon {
+.resource-icon-disc {
   margin-right: 10px;
   height: 30px;
 }
 
-.edit-discord-button {
+.resource-icon-file {
+  margin-right: 10px;
+  height: 30px;
+  color: #00ff26;
+}
+
+.resource-icon-ref {
+  margin-right: 10px;
+  height: 35px;
+}
+
+.edit-resource-button {
   background-color: #7289da;
   color: #ffffff;
   border: none;
@@ -421,7 +481,7 @@ main {
   font-weight: bold;
 }
 
-.edit-discord-button-cancel {
+.edit-resource-button-cancel {
   background-color: #ff0000;
   color: #ffffff;
   border: none;
@@ -435,7 +495,7 @@ main {
   font-weight: bold;
 }
 
-.edit-discord-button-save {
+.edit-resource-button-save {
   background-color: #00ff26;
   color: #2e2e2e;
   border: none;
@@ -451,13 +511,7 @@ main {
 
 }
 
-.deadline {
-  color: red;
-  margin: 20px 0;
-  font-weight: bold;
-}
-
-.discord-link {
+.resource-link {
   margin: 20px 0;
   display: flex;
   align-items: center;
@@ -484,7 +538,44 @@ main {
   padding: 20px;
   border-top: 2px solid #0c0b15;
   display: flex;
+  flex-direction: column;
+  height: 300px;
   justify-content: space-between;
-  height: 70px;
 }
+
+.meetings-list{
+  display: flex;
+  flex-grow: 1;
+  padding-right: 10px;
+  margin-bottom: 20px;
+  flex-direction: column;
+  height: 250px;
+  gap: 10px;
+}
+
+.newMeetingButton {
+  background-color: #34a8eb;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  text-align: center;
+  margin-top: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+}
+
+.newMeetingButton:hover {
+  background-color: #2c90d4;
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.newMeetingButton:active {
+  transform: translateY(0px);
+}
+
 </style>

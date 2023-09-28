@@ -1,3 +1,4 @@
+const AssignmentGroup = require('../models/AssignmentGroup');
 const Meeting = require('../models/Meeting.model');
 
 // Create a meeting, we need to check which group the meeting is for and then update the meeting with the group ID
@@ -15,7 +16,7 @@ async function createMeeting(req, res) {
     MeetingTime: MeetingTime,
     MeetingLocation: MeetingLocation,
     MeetingAgenda: MeetingAgenda,
-    GroupId: GroupId
+    GroupId: GroupId,
   });
 
   try {
@@ -30,7 +31,14 @@ async function getMeetingsByGroup(req, res) {
   const groupId = req.params.groupId;
 
   try {
-    const meetings = await Meeting.find({ GroupId: groupId });
+    const meetings = await Meeting.find({ GroupId: groupId }).populate({
+      path: 'GroupId',
+      populate: {
+        path: 'members',
+        select: 'username',
+      },
+    });
+
     res.json(meetings);
   } catch (err) {
     res.status(500).json({ message: 'Internal server error' });
@@ -53,6 +61,32 @@ async function getMeeting(req, res) {
   }
 }
 
+async function getMeetingsByUser(req, res) {
+  const user = req.user;
+
+  try {
+    const meetings = await Meeting.find()
+      .populate({
+        path: 'GroupId',
+        populate: {
+          path: 'members',
+          select: 'username',
+        },
+      })
+      .then((meetings) => {
+        return meetings.filter((meeting) => {
+          return meeting.GroupId.members.some((member) => {
+            return member.id === user.id;
+          });
+        });
+      });
+
+    res.json(meetings);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+}
+
 async function deleteMeeting(req, res) {
   const meetingId = req.params.meetingId;
 
@@ -71,8 +105,7 @@ async function deleteMeeting(req, res) {
 
 async function updateMeeting(req, res) {
   const meetingId = req.params.meetingId;
-  const { meetingName, meetingDate, meetingAgenda, meetingLocation } =
-    req.body;
+  const { meetingName, meetingDate, meetingAgenda, meetingLocation } = req.body;
 
   // only update fields that were actually passed...
   const updateFields = {};
@@ -82,9 +115,13 @@ async function updateMeeting(req, res) {
   if (meetingLocation) updateFields.MeetingLocation = meetingLocation;
 
   try {
-    const updatedMeeting = await Meeting.findByIdAndUpdate(meetingId, updateFields, {
-      new: true,
-    });
+    const updatedMeeting = await Meeting.findByIdAndUpdate(
+      meetingId,
+      updateFields,
+      {
+        new: true,
+      }
+    );
 
     if (!updatedMeeting) {
       return res.status(404).json({ message: 'Meeting not found' });
@@ -96,4 +133,11 @@ async function updateMeeting(req, res) {
   }
 }
 
-module.exports = { createMeeting, getMeetingsByGroup, updateMeeting, getMeeting, deleteMeeting};
+module.exports = {
+  createMeeting,
+  getMeetingsByGroup,
+  updateMeeting,
+  getMeeting,
+  deleteMeeting,
+  getMeetingsByUser,
+};

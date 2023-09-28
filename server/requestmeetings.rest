@@ -6,7 +6,7 @@ Content-Type: application/json
     "date": "2023-09-27",
     "time": "2pm",
     "meetingLocation": "Svea",
-    "meetingAgenda": "Discuss tests"
+    "meetingAgenda": "Discuss tests",
 }
 
 

@@ -91,6 +91,26 @@ async function InviteMemberToGroup(req, res) {
   }
 }
 
+async function joinGroup(req, res) {
+  const groupName = req.body.assignmentGroupName;
+  const userToJoin = req.user;
+
+  try {
+    const group = await Group.findOne({ assignmentGroupName: groupName});
+
+    if (!group) {
+      return res.status(404).json({ message: 'Group not found' });
+    }
+  
+    group.members.push(userToJoin.id);
+    await group.save();
+    return res.status(200).json({ message: 'User added to group' });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
 async function deleteGroup(req, res) {
   try {
     const deleteGroup = req.params.course;
@@ -106,6 +126,8 @@ async function setResource(req, res) {
   const groupId = req.params.groupId;
   const type = req.params.type;
   const link = req.body.link;
+  console.log(type);
+  console.log(link);
 
   const allowedTypes = ['discord', 'assignment file', 'reference material'];
 
@@ -145,4 +167,5 @@ module.exports = {
   getMyGroups,
   InviteMemberToGroup,
   setResource,
+  joinGroup,
 };
