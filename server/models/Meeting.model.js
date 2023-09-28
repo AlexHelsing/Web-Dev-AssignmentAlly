@@ -14,7 +14,7 @@ const MeetingSchema = new mongoose.Schema({
   },
   MeetingLocation: {
     type: String,
-    required: true
+    required: true,
   },
   MeetingAgenda: {
     type: String,

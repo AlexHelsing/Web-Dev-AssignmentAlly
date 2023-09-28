@@ -1,5 +1,7 @@
 const Group = require('../models/AssignmentGroup');
 const User = require('../models/User.mongo');
+const Task = require('../models/Task.Model');
+const Meeting = require('../models/Meeting.model');
 
 async function createGroup(req, res) {
   const assignmentGroupName = req.body.assignmentGroupName;
@@ -92,16 +94,16 @@ async function InviteMemberToGroup(req, res) {
 }
 
 async function joinGroup(req, res) {
-  const groupName = req.body.assignmentGroupName;
+  const groupName = req.params.groupName;
   const userToJoin = req.user;
 
   try {
-    const group = await Group.findOne({ assignmentGroupName: groupName});
+    const group = await Group.findOne({ assignmentGroupName: groupName });
 
     if (!group) {
       return res.status(404).json({ message: 'Group not found' });
     }
-  
+
     group.members.push(userToJoin.id);
     await group.save();
     return res.status(200).json({ message: 'User added to group' });
@@ -113,9 +115,14 @@ async function joinGroup(req, res) {
 
 async function deleteGroup(req, res) {
   try {
-    const deleteGroup = req.params.course;
-    await Group.findOneAndDelete({ course: deleteGroup });
-    console.log('Deleted Group ');
+    const Id = req.params.Id;
+
+    // delete all tasks and meetings associated with the group
+    await Task.deleteMany({ GroupId: Id });
+    await Meeting.deleteMany({ GroupId: Id });
+    await Group.findByIdAndDelete(Id);
+
+    return res.status(200).json({ message: 'Group deleted' });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

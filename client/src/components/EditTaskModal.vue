@@ -32,7 +32,7 @@
     </div>
 
     <div slot="modal-footer" class="w-100 d-flex justify-content-between">
-      <b-button variant="secondary" @click="closeModal">Cancel</b-button>
+      <b-button class="mr-1" variant="danger" @click="deleteTask">Delete Task</b-button> <!-- Added delete task button -->
       <div>
         <b-button class="mr-1" variant="primary" @click="closeModal">Close</b-button>
         <b-button variant="success" @click="saveTask">Save</b-button>
@@ -99,6 +99,23 @@ export default {
         }
       } catch (error) {
         console.error('Error updating task:', error)
+      }
+    },
+    async deleteTask() {
+      try {
+        const response = await fetch(`http://localhost:3000/api/tasks/${this.localTask.taskId}`, {
+          method: 'DELETE',
+          credentials: 'include'
+        })
+        const data = await response.json()
+        if (response.ok) {
+          this.$bvModal.hide('task-detail-modal')
+          EventBus.$emit('task-updated')
+        } else {
+          console.error('Error deleting task:', data.message || 'Unknown error')
+        }
+      } catch (error) {
+        console.error('Error deleting task:', error)
       }
     },
     showTaskModal(task) {

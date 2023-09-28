@@ -21,8 +21,17 @@ async function createMeeting(req, res) {
 
   try {
     const savedMeeting = await newMeeting.save();
-    res.json(savedMeeting);
+
+    const populated = await Meeting.findById(savedMeeting._id).populate({
+      path: 'GroupId',
+      populate: {
+        path: 'members',
+        select: 'username',
+      },
+    });
+    res.json(populated);
   } catch (err) {
+    console.log(err);
     res.status(400).json({ message: err.message });
   }
 }
@@ -105,7 +114,7 @@ async function deleteMeeting(req, res) {
 
 async function updateMeeting(req, res) {
   const meetingId = req.params.meetingId;
-  const { meetingName, meetingDate, meetingAgenda, meetingLocation } = req.body;
+  const { meetingName, meetingDate, meetingAgenda, meetingLocation, meetingTime } = req.body;
 
   // only update fields that were actually passed...
   const updateFields = {};
@@ -113,6 +122,7 @@ async function updateMeeting(req, res) {
   if (meetingDate) updateFields.MeetingDate = meetingDate;
   if (meetingAgenda) updateFields.MeetingAgenda = meetingAgenda;
   if (meetingLocation) updateFields.MeetingLocation = meetingLocation;
+  if (meetingTime) updateFields.MeetingTime = meetingTime;
 
   try {
     const updatedMeeting = await Meeting.findByIdAndUpdate(

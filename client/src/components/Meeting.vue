@@ -1,18 +1,18 @@
 <template>
-    <div @click="handleMeetingClick" class="meeting-item">
-      <span class="meeting-code-container">
-        <span class="meeting-code">{{ belongsToGroup.course }}</span>
-        <span class="separator">|</span>
-        <span class="meeting-name">{{ meetingName }}</span>
-      </span>
-      <span class="meeting-description">{{ meetingAgenda }}</span>
-      <span class="meeting-details">
-        <span class="meeting-location">{{ meetingLocation }}</span>
-        <span class="meeting-date">{{ convertDateToReadableFormat(meetingDate) }}</span>
-        <span class="meeting-time">{{ meetingTime }}</span>
-      </span>
+  <div class="meeting-container" @click="handleMeetingClick">
+    <div class="meeting-item">
+      <img class="locationbox" :src="imageSource" alt="">
+      <div class="meetinginfo">
+        <div>{{ meetingName }}</div>
+        <div>{{ meetingAgenda }}</div>
+      </div>
     </div>
-  </template>
+    <div class="meeting-bottom">
+      <div class="belongs-to-group">{{ belongsToGroup.course }}</div>
+      <div class="meeting-time">{{ convertDateToReadableFormat(meetingDate) }} {{ meetingTime }}</div>
+    </div>
+  </div>
+</template>
 
 <script>
 
@@ -50,6 +50,11 @@ export default {
       default: ''
     }
   },
+  computed: {
+    imageSource() {
+      return this.meetingLocation === 'discord' ? '/discord-icon-svgrepo-com.svg' : '/campus-svgrepo-com.svg'
+    }
+  },
   methods: {
     handleMeetingClick() {
       EventBus.$emit('meeting-clicked', {
@@ -85,64 +90,55 @@ export default {
 
 <style scoped>
 .meeting-item {
-  background-color: #0d1319;
-  color: white;
-  padding: 10px 15px;
+  gap: 7px;
+  height: 8rem;
   border-radius: 8px;
+  padding-left: 10px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  transition: background-color 0.2s, box-shadow 0.2s;
-  cursor: pointer;
-  border: 1px solid transparent;
 }
 
-.meeting-item:hover {
+.meeting-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #0d1319;
+  color: white;
+  border: 1px solid transparent;
+  cursor: pointer;
+  border-radius: 8px
+}
+
+.meeting-container:hover {
   background-color: #070808;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.avatar {
-  margin-right: 10px;
-  height: 30px;
-}
-
-.meeting-code-container {
-  flex: 1;
-  display: flex;
-  align-items: center;
-}
-
-.meeting-name {
-  font-size: 0.8rem;
-}
-
-.separator {
-  margin: 0 5px;
-}
-
-.meeting-code {
+.belongs-to-group {
   font-weight: bold;
+  margin-left: 5px;
 }
 
-.meeting-description {
-  flex: 2;
-  text-align: center;
-}
-
-.meeting-location {
-  text-align: center;
-}
-
-.meeting-details {
-  flex: 1;
-  justify-content: flex-end;
+.meetinginfo {
   display: flex;
-  align-items: center;
+  flex: 7;
+  flex-direction: column;
+  justify-content: space-around;
+  padding-left: 10px;
 }
 
-.meeting-date {
-  margin: 0 7px;
-  font-weight: bold;
+.meeting-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #181935;
+  padding: 10px;
+}
+
+.locationbox {
+  border-radius: 8px;
+  object-fit: contain;
+  width: 80px;
+  height: 80px;
+
 }
 </style>

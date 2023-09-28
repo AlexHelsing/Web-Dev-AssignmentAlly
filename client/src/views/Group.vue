@@ -6,7 +6,10 @@
         }}</b-avatar>
       </b-avatar-group>
       <h1 class="groupName">{{ group ? group.assignmentGroupName : "..." }}</h1>
-      <button v-b-modal.modal-4 class="invite-button">Invite member</button>
+      <span class="invite-button-container">
+        <button @click="deleteGroup" class="delete-group-button">Delete group</button>
+        <button v-b-modal.modal-4 class="invite-button">Invite member</button>
+      </span>
       <b-modal id="modal-4" title="invite member" centered>
         <div class="mb-3">
           <label for="member-name" class="form-label">Member Name</label>
@@ -79,39 +82,43 @@
       <h2 class="meetingsheader">Meetings</h2>
       <div class="meetings-list">
         <Meeting v-for="meeting in meetings" :meeting-id="meeting._id" :key="meeting._id"
-            :meeting-name="meeting.MeetingName" :belongs-to-group="meeting.GroupId" :meeting-agenda="meeting.MeetingAgenda"
-            :meeting-location="meeting.MeetingLocation" :meeting-date="meeting.MeetingDate" :meeting-time="meeting.MeetingTime" />
+          :meeting-name="meeting.MeetingName" :belongs-to-group="meeting.GroupId" :meeting-agenda="meeting.MeetingAgenda"
+          :meeting-location="meeting.MeetingLocation" :meeting-date="meeting.MeetingDate"
+          :meeting-time="meeting.MeetingTime" />
       </div>
-      <button v-b-modal.modal-2 class="newMeetingButton"> New Meeting </button>
       <b-modal size="lg" id="modal-2" title="Create a meeting " centered>
-          <div class="mb-3">
-            <label for="meeting-name" class="form-label">Name</label>
-            <input required type="text" id="meeting-name" class="form-control" v-model="meetingName" placeholder="Meeting Name">
-          </div>
-          <div class="mb-3">
-            <label for="meeting-agenda" class="form-label">Agenda</label>
-            <input required type="text" id="task-agenda" class="form-control" v-model="meetingAgenda"
-              placeholder="Meeting Agenda">
-          </div>
-          <div class="mb-3">
-            <label for="meeting-location" class="form-label">Location</label>
-            <input required type="text" id="meeting-location" class="form-control" v-model="meetingLocation"
-              placeholder="Meeting Location">
-          </div>
-          <div class="mb-3">
-            <label required for="meeting-date" class="form-label">Date</label>
-            <input type="date" id="meeting-date" class="form-control" v-model="meetingDate">
-          </div>
-          <div class="mb-3">
-            <label required for="meeting-time" class="form-label">Time</label>
-            <input type="text" id="meeting-time" class="form-control" v-model="meetingTime">
-          </div>
-          <div slot="modal-footer" class="w-100 d-flex justify-content-end">
-            <b-button variant="primary" @click="createGroupMeetings">Create</b-button>
-          </div>
-        </b-modal>
+        <div class="mb-3">
+          <label for="meeting-name" class="form-label">Name</label>
+          <input required type="text" id="meeting-name" class="form-control" v-model="meetingName"
+            placeholder="Meeting Name">
+        </div>
+        <div class="mb-3">
+          <label for="meeting-agenda" class="form-label">Agenda</label>
+          <input required type="text" id="task-agenda" class="form-control" v-model="meetingAgenda"
+            placeholder="Meeting Agenda">
+        </div>
+        <div class="mb-3">
+          <label for="meeting-location" class="form-label">Location</label>
+          <select required id="meeting-location" class="form-control" v-model="meetingLocation">
+            <option value="discord">Discord</option>
+            <option value="campus">Campus</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label required for="meeting-date" class="form-label">Date</label>
+          <input type="date" id="meeting-date" class="form-control" v-model="meetingDate">
+        </div>
+        <div class="mb-3">
+          <label required for="meeting-time" class="form-label">Time</label>
+          <b-form-timepicker id="meeting-time" locale="en" v-model="meetingTime"></b-form-timepicker>
+        </div>
+        <div slot="modal-footer" class="w-100 d-flex justify-content-end">
+          <b-button variant="primary" @click="createGroupMeetings">Create</b-button>
+        </div>
+      </b-modal>
 
     </div>
+    <button v-b-modal.modal-2 class="newMeetingButton"> New Meeting </button>
   </main>
 </template>
 
@@ -168,7 +175,7 @@ export default {
   },
   methods: {
     async fetchGroup() {
-      const response = await fetch(`http://localhost:3000/api/groups/get-course/${this.groupIdParam}`, {
+      const response = await fetch(`http://localhost:3000/api/groups/get-group/${this.groupIdParam}`, {
         credentials: 'include'
       })
       const data = await response.json()
@@ -182,6 +189,19 @@ export default {
         if (assignmentFileResource) this.resources[0].link = assignmentFileResource.link
         if (referenceMaterialResource) this.resources[1].link = referenceMaterialResource.link
         if (discordResource) this.resources[2].link = discordResource.link
+      }
+    },
+    async deleteGroup() {
+      const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      })
+      const data = await response.json()
+      console.log(data)
+      if (response.ok) {
+        this.$router.push('/dashboard')
+      } else {
+        console.error('Error deleting group:', data.message || 'Unknown error')
       }
     },
     async getGroupTasks() {
@@ -287,7 +307,7 @@ export default {
 
       if (resource && resource.name) {
         const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}/set-resource/${resource.name.toLowerCase()}`, {
-          method: 'PUT',
+          method: 'PATCH',
           credentials: 'include',
           headers: {
             'Content-Type': 'application/json'
@@ -318,6 +338,9 @@ export default {
     EventBus.$on('task-updated', function () {
       this.getGroupTasks()
     }.bind(this))
+    EventBus.$on('meeting-updated', function () {
+      this.getGroupMeetings()
+    }.bind(this))
   }
 }
 
@@ -326,6 +349,9 @@ export default {
 <style>
 main {
   background-color: #1b263b;
+  flex-grow: 1;
+  display: flex !important;
+  flex-direction: column;
 }
 
 .header {
@@ -351,6 +377,13 @@ main {
   margin-right: 20px;
 }
 
+.invite-button-container {
+  font-size: 14px;
+  order: 3;
+  display: flex;
+  gap: 10px;
+}
+
 .invite-button {
   background-color: #6c757d;
   color: whitesmoke;
@@ -358,8 +391,25 @@ main {
   padding: 10px 20px;
   border-radius: 15px;
   font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+
+}
+
+.delete-group-button {
+  background-color: #ff0000;
+  color: #ffffff;
+  border: none;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 15px;
+  font-size: 14px;
   cursor: pointer;
   order: 3;
+}
+
+.delete-group-button:hover {
+  scale: 1.025;
 }
 
 .invite-button:hover {
@@ -535,37 +585,51 @@ main {
 
 .meetings-container {
   color: aliceblue;
-  padding: 20px;
+  flex-grow: 1;
+  padding-left: 20px;
+  padding-right: 20px;
   border-top: 2px solid #0c0b15;
   display: flex;
   flex-direction: column;
-  height: 300px;
-  justify-content: space-between;
 }
 
-.meetings-list{
-  display: flex;
-  flex-grow: 1;
-  padding-right: 10px;
-  margin-bottom: 20px;
-  flex-direction: column;
-  height: 250px;
+.meetings-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
+  overflow-y: auto;
+  padding: 10px;
+
+  @media screen and (max-width: 768px) {
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+  }
+
+}
+
+.meetingsheader {
+  margin-top: 20px;
 }
 
 .newMeetingButton {
   background-color: #34a8eb;
   color: #ffffff;
+  margin-bottom: 10px;
   border: none;
+  margin-left: 10px;
+  margin-right: 10px;
   padding: 10px 20px;
   border-radius: 8px;
   font-size: 14px;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
   text-align: center;
-  margin-top: 20px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   font-weight: bold;
+
+  @media screen and (max-width: 768px) {
+    position: relative;
+  }
 }
 
 .newMeetingButton:hover {
@@ -577,5 +641,4 @@ main {
 .newMeetingButton:active {
   transform: translateY(0px);
 }
-
 </style>
