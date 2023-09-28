@@ -116,6 +116,7 @@ async function deleteGroup(req, res) {
     const deleteGroup = req.params.course;
     await Group.findOneAndDelete({ course: deleteGroup });
     console.log('Deleted Group ');
+    res.status(200).json({message: "Deleted group successfully"});
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

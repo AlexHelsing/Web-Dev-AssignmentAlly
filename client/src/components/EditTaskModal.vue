@@ -34,7 +34,6 @@
     <div slot="modal-footer" class="w-100 d-flex justify-content-between">
       <b-button variant="secondary" @click="closeModal">Cancel</b-button>
       <div>
-        <b-button class="mr-1" variant="primary" @click="closeModal">Close</b-button>
         <b-button variant="success" @click="saveTask">Save</b-button>
       </div>
     </div>

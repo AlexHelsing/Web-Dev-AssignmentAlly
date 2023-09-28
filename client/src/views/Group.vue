@@ -104,7 +104,7 @@
           </div>
           <div class="mb-3">
             <label required for="meeting-time" class="form-label">Time</label>
-            <input type="text" id="meeting-time" class="form-control" v-model="meetingTime">
+            <b-form-timepicker id="meeting-time" locale="en" v-model="meetingTime"></b-form-timepicker>
           </div>
           <div slot="modal-footer" class="w-100 d-flex justify-content-end">
             <b-button variant="primary" @click="createGroupMeetings">Create</b-button>

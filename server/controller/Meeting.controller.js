@@ -105,7 +105,7 @@ async function deleteMeeting(req, res) {
 
 async function updateMeeting(req, res) {
   const meetingId = req.params.meetingId;
-  const { meetingName, meetingDate, meetingAgenda, meetingLocation } = req.body;
+  const { meetingName, meetingDate, meetingAgenda, meetingLocation, meetingTime } = req.body;
 
   // only update fields that were actually passed...
   const updateFields = {};
@@ -113,6 +113,7 @@ async function updateMeeting(req, res) {
   if (meetingDate) updateFields.MeetingDate = meetingDate;
   if (meetingAgenda) updateFields.MeetingAgenda = meetingAgenda;
   if (meetingLocation) updateFields.MeetingLocation = meetingLocation;
+  if (meetingTime) updateFields.MeetingTime = meetingTime;
 
   try {
     const updatedMeeting = await Meeting.findByIdAndUpdate(
