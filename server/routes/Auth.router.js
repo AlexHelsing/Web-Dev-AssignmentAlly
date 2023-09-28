@@ -3,6 +3,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local');
 var crypto = require('crypto');
 var User = require('../models/User.mongo');
+const { SourceTextModule } = require('vm');
 
 passport.use(
   new LocalStrategy(function (username, password, done) {
@@ -41,7 +42,7 @@ router.post(
   passport.authenticate('local', {
     // redirect to dashboard or whatever route we got later on
     successReturnToOrRedirect: 'http://localhost:8080/dashboard',
-    failureRedirect: '/login',
+    failureRedirect: 'back',
     failureMessage: true,
   })
 );
@@ -67,9 +68,15 @@ router.get('/current-user', function (req, res) {
   }
 });
 
-router.post('/signup', function (req, res, next) {
-  var salt = crypto.randomBytes(16).toString('hex');
-  var hash = crypto
+router.post('/signup', async function (req, res, next) {
+
+  try{
+    const existingUser = await User.findOne( { username: req.body.username})
+
+    if(!existingUser){
+
+    var salt = crypto.randomBytes(16).toString('hex');
+    var hash = crypto
     .pbkdf2Sync(req.body.password, salt, 1000, 64, 'sha512')
     .toString('hex');
 
@@ -78,19 +85,24 @@ router.post('/signup', function (req, res, next) {
     password: hash,
     salt: salt,
   });
+    user.save();
+    // Log the user in after successful registration
+    req.login(user, function (err) {
+      if(err) {
+        return next(err);
+      }
+      // Redirect to dashboard after successful login
+      res.redirect('http://localhost:8080/dashboard');
+      })}
 
-  // Save the user to the database
-  user.save();
-
-  // Log the user in after successful registration
-  req.login(user, function (err) {
-    if (err) {
-      return next(err);
-    }
-
-    // Redirect to dashboard after successful login
-    res.redirect('http://localhost:8080/dashboard');
-  });
+  else{
+    console.log("Username already exists")
+    res.redirect("http://localhost:8080/signup");
+  }}
+  catch(err){
+    res.status(400).json({message: err.message})
+  }
+    
 });
 
 module.exports = router;
