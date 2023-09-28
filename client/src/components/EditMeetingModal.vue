@@ -11,7 +11,10 @@
 
     <div v-if="localMeeting" class="mt-3">
       <label for="meeting-location" class="form-label">Location</label>
-      <b-form-textarea id="meeting-location" v-model="localMeeting.meetingLocation"></b-form-textarea>
+      <b-form-select id="meeting-location" v-model="localMeeting.meetingLocation">
+        <b-form-select-option value="discord">Discord</b-form-select-option>
+        <b-form-select-option value="campus">Campus</b-form-select-option>
+      </b-form-select>
     </div>
 
     <div v-if="localMeeting" class="mt-3">

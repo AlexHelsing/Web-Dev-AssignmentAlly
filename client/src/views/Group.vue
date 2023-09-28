@@ -99,8 +99,10 @@
         </div>
         <div class="mb-3">
           <label for="meeting-location" class="form-label">Location</label>
-          <input required type="text" id="meeting-location" class="form-control" v-model="meetingLocation"
-            placeholder="Meeting Location">
+          <select required id="meeting-location" class="form-control" v-model="meetingLocation">
+            <option value="discord">Discord</option>
+            <option value="campus">Campus</option>
+          </select>
         </div>
         <div class="mb-3">
           <label required for="meeting-date" class="form-label">Date</label>
@@ -335,6 +337,9 @@ export default {
   created() {
     EventBus.$on('task-updated', function () {
       this.getGroupTasks()
+    }.bind(this))
+    EventBus.$on('meeting-updated', function () {
+      this.getGroupMeetings()
     }.bind(this))
   }
 }
