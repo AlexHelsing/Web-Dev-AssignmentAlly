@@ -2,7 +2,7 @@ const TaskRouter = require('express').Router();
 
 const TaskController = require('../controller/Task.controller');
 
-
+//tasks/
 
 // Post 
 TaskRouter.post('/create-task/:groupId', TaskController.createTask);
@@ -12,16 +12,19 @@ TaskRouter.get('/get-task/:taskId', TaskController.getTask);
 TaskRouter.get('/getTasksByGroup/:groupId', TaskController.getTasksByGroup);
 TaskRouter.get('/getUserTasks', TaskController.getUserTasks);
 
-// Delete '
+// 2g
 TaskRouter.delete('/:taskId', TaskController.deleteTask);
 
-// Put 
+
+// 2e
+TaskRouter.put('/assign-task/:taskId', TaskController.assignTaskToUser); 
 TaskRouter.put('/update-task/:taskId', TaskController.updateTask);
 
 
-// Un-used 
-TaskRouter.put('/assign-task/:taskId', TaskController.assignTaskToUser); // Add assign-task route
-TaskRouter.put('/change-task-status/:taskId', TaskController.changeTaskStatus); // Add change-task-status route
+
+
+
+TaskRouter.put('/change-task-status/:taskId', TaskController.changeTaskStatus); 
 
 
 module.exports = TaskRouter;

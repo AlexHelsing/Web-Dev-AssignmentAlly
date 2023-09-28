@@ -170,6 +170,76 @@ async function setResource(req, res) {
   }
 }
 
+async function getUsersFromGroup(req, res) {
+  const groupId = req.params.groupId;
+
+  try {
+    const group = await Group.findById(groupId);
+
+    if (!group) {
+      return res.status(404).json({ message: 'Group not found' });
+    }
+
+    const users = await User.find({ _id: { $in: group.members } });
+
+    return res.status(200).json(users);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+async function getUserFromGroup(req, res) {
+  const groupId = req.params.groupId;
+  const userId = req.params.userId;
+
+  try {
+    const group = await Group.findById(groupId);
+
+    if (!group) {
+      return res.status(404).json({ message: 'Group not found' });
+    }
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    return res.status(200).json(user);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+async function removeUserFromGroup(req, res) {
+  const groupId = req.params.groupId;
+  const userId = req.params.userId;
+
+  try {
+    const group = await Group.findById(groupId);
+
+    if (!group) {
+      return res.status(404).json({ message: 'Group not found' });
+    }
+
+    const userIndex = group.members.findIndex((m) => m === userId);
+
+    if (userIndex === -1) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    group.members.splice(userIndex, 1);
+    await group.save();
+
+    return res.status(200).json({ message: 'User removed from group' });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
 module.exports = {
   createGroup,
   getAllGroups,
@@ -179,4 +249,7 @@ module.exports = {
   InviteMemberToGroup,
   setResource,
   joinGroup,
+  getUsersFromGroup,
+  removeUserFromGroup,
+  getUserFromGroup,
 };
