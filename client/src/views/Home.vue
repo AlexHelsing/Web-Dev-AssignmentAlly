@@ -164,6 +164,7 @@ export default {
   },
   created() {
     EventBus.$on('task-updated', this.fetchMyTasks)
+    EventBus.$on('meeting-updated', this.fetchMyMeetings)
   },
   computed: {
     user() {
@@ -221,6 +222,12 @@ export default {
 }
 
 .section-content-tasks {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.section-content-meetings {
   display: flex;
   flex-direction: column;
   row-gap: 10px;

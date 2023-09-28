@@ -12,7 +12,7 @@ async function createGroup(req, res) {
   console.log('Creating group for course: ' + course);
 
   const newGroup = new Group({
-    assignmentGroupName: assignmentGroupName,
+    assignmentGroupName: capitalizeFirstLetter(assignmentGroupName),
     course: course,
     members: members,
     createdBy: currentUser.id,
@@ -126,6 +126,10 @@ async function deleteGroup(req, res) {
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
+}
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 async function setResource(req, res) {

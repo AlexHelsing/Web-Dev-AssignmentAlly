@@ -3,22 +3,27 @@
     <Navbar v-if="this.$route.path !== '/login' && this.$route.path !== '/signup'" />
     <router-view></router-view>
     <EditTaskModal :task="selectedTask" />
+    <EditMeetingModal :meeting="selectedMeeting"/>
   </div>
 </template>
 
 <script>
 import Navbar from './components/NavBar'
 import EditTaskModal from './components/EditTaskModal'
+import EditMeetingModal from './components/EditMeetingModal.vue'
 
 export default {
   name: 'App',
   components: {
     Navbar,
-    EditTaskModal
+    EditTaskModal,
+    EditMeetingModal
   },
   data() {
     return {
-      selectedTask: null
+      selectedTask: null,
+      selectedMeeting: null
+
     }
   }
 }
