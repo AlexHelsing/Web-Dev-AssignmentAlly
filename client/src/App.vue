@@ -3,7 +3,7 @@
     <Navbar v-if="this.$route.path !== '/login' && this.$route.path !== '/signup'" />
     <router-view></router-view>
     <EditTaskModal :task="selectedTask" />
-    <EditMeetingModal :meeting="selectedMeeting"/>
+    <EditMeetingModal :meeting="selectedMeeting" />
   </div>
 </template>
 

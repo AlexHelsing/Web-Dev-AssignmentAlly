@@ -1,13 +1,15 @@
 <template>
-  <div @click="handleMeetingClick" class="meeting-item">
-    <img :src="imageSource" class="locationbox" />
-    <div class="meetinginfo">
-      <span class="meetingname">{{ meetingName }}</span>
-      <span class="meetingagenda">{{ meetingAgenda }}</span>
-      <span class="meetingdetails">
-        <span class="meetingdate">{{ convertDateToReadableFormat(meetingDate) }}</span>
-        <span class="meetingtime">{{ meetingTime }}</span>
-      </span>
+  <div class="meeting-container" @click="handleMeetingClick">
+    <div class="meeting-item">
+      <img class="locationbox" :src="imageSource" alt="">
+      <div class="meetinginfo">
+        <div>{{ meetingName }}</div>
+        <div>{{ meetingAgenda }}</div>
+      </div>
+    </div>
+    <div class="meeting-bottom">
+      <div class="belongs-to-group">{{ belongsToGroup.course }}</div>
+      <div class="meeting-time">{{ convertDateToReadableFormat(meetingDate) }} {{ meetingTime }}</div>
     </div>
   </div>
 </template>
@@ -88,21 +90,32 @@ export default {
 
 <style scoped>
 .meeting-item {
-  background-color: #0d1319;
-  color: white;
-  padding: 10px 15px;
   gap: 7px;
   height: 8rem;
   border-radius: 8px;
+  padding-left: 10px;
   display: flex;
-  transition: background-color 0.2s, box-shadow 0.2s;
-  cursor: pointer;
-  border: 1px solid transparent;
+  align-items: center;
 }
 
-.meeting-item:hover {
+.meeting-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #0d1319;
+  color: white;
+  border: 1px solid transparent;
+  cursor: pointer;
+  border-radius: 8px
+}
+
+.meeting-container:hover {
   background-color: #070808;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.belongs-to-group {
+  font-weight: bold;
+  margin-left: 5px;
 }
 
 .meetinginfo {
@@ -110,19 +123,22 @@ export default {
   flex: 7;
   flex-direction: column;
   justify-content: space-around;
+  padding-left: 10px;
 }
 
-.meetingdetails {
+.meeting-bottom {
   display: flex;
-  gap: 5px;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #181935;
+  padding: 10px;
 }
 
 .locationbox {
-
-  border-radius: 10%;
-  /* Or you can use a specific value like 50px */
-  /* Or you can use a specific value like 50px */
+  border-radius: 8px;
   object-fit: contain;
-  /* or 'contain' based on your preference */
+  width: 80px;
+  height: 80px;
+
 }
 </style>

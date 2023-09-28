@@ -87,32 +87,33 @@
           :meeting-time="meeting.MeetingTime" />
       </div>
       <b-modal size="lg" id="modal-2" title="Create a meeting " centered>
-          <div class="mb-3">
-            <label for="meeting-name" class="form-label">Name</label>
-            <input required type="text" id="meeting-name" class="form-control" v-model="meetingName" placeholder="Meeting Name">
-          </div>
-          <div class="mb-3">
-            <label for="meeting-agenda" class="form-label">Agenda</label>
-            <input required type="text" id="task-agenda" class="form-control" v-model="meetingAgenda"
-              placeholder="Meeting Agenda">
-          </div>
-          <div class="mb-3">
-            <label for="meeting-location" class="form-label">Location</label>
-            <input required type="text" id="meeting-location" class="form-control" v-model="meetingLocation"
-              placeholder="Meeting Location">
-          </div>
-          <div class="mb-3">
-            <label required for="meeting-date" class="form-label">Date</label>
-            <input type="date" id="meeting-date" class="form-control" v-model="meetingDate">
-          </div>
-          <div class="mb-3">
-            <label required for="meeting-time" class="form-label">Time</label>
-            <b-form-timepicker id="meeting-time" locale="en" v-model="meetingTime"></b-form-timepicker>
-          </div>
-          <div slot="modal-footer" class="w-100 d-flex justify-content-end">
-            <b-button variant="primary" @click="createGroupMeetings">Create</b-button>
-          </div>
-        </b-modal>
+        <div class="mb-3">
+          <label for="meeting-name" class="form-label">Name</label>
+          <input required type="text" id="meeting-name" class="form-control" v-model="meetingName"
+            placeholder="Meeting Name">
+        </div>
+        <div class="mb-3">
+          <label for="meeting-agenda" class="form-label">Agenda</label>
+          <input required type="text" id="task-agenda" class="form-control" v-model="meetingAgenda"
+            placeholder="Meeting Agenda">
+        </div>
+        <div class="mb-3">
+          <label for="meeting-location" class="form-label">Location</label>
+          <input required type="text" id="meeting-location" class="form-control" v-model="meetingLocation"
+            placeholder="Meeting Location">
+        </div>
+        <div class="mb-3">
+          <label required for="meeting-date" class="form-label">Date</label>
+          <input type="date" id="meeting-date" class="form-control" v-model="meetingDate">
+        </div>
+        <div class="mb-3">
+          <label required for="meeting-time" class="form-label">Time</label>
+          <b-form-timepicker id="meeting-time" locale="en" v-model="meetingTime"></b-form-timepicker>
+        </div>
+        <div slot="modal-footer" class="w-100 d-flex justify-content-end">
+          <b-button variant="primary" @click="createGroupMeetings">Create</b-button>
+        </div>
+      </b-modal>
 
     </div>
     <button v-b-modal.modal-2 class="newMeetingButton"> New Meeting </button>

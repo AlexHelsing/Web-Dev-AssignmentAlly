@@ -34,6 +34,7 @@
     <div slot="modal-footer" class="w-100 d-flex justify-content-between">
       <b-button class="mr-1" variant="danger" @click="deleteTask">Delete Task</b-button> <!-- Added delete task button -->
       <div>
+        <b-button class="mr-1" variant="primary" @click="closeModal">Close</b-button>
         <b-button variant="success" @click="saveTask">Save</b-button>
       </div>
     </div>
