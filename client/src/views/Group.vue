@@ -2,21 +2,34 @@
   <main>
     <header class="header">
       <b-avatar-group v-if="group" class="member-container">
-        <b-avatar variant="secondary" v-for="member in group.members" :key="member.id">{{ initials(member).toUpperCase()
-        }}</b-avatar>
+        <b-avatar variant="secondary" v-for="member in group.members" :key="member.id">
+          {{ initials(member).toUpperCase() }}
+        </b-avatar>
       </b-avatar-group>
       <h1 class="groupName">{{ group ? group.assignmentGroupName : "..." }}</h1>
       <span class="invite-button-container">
-        <button @click="deleteGroup" class="delete-group-button">Delete group</button>
         <button v-b-modal.modal-4 class="invite-button">Invite member</button>
+        <button v-b-modal.modal-5 class="delete-member-button">Delete member from group</button>
+        <button @click="deleteGroup" class="delete-group-button">Delete group</button>
       </span>
-      <b-modal id="modal-4" title="invite member" centered>
+      <b-modal id="modal-4" title="Invite member" centered>
         <div class="mb-3">
           <label for="member-name" class="form-label">Member Name</label>
           <input type="text" id="member-name" class="form-control" v-model="memberName" placeholder="Enter member name">
         </div>
         <div slot="modal-footer" class="w-100 d-flex justify-content-end">
           <b-button variant="primary" @click="inviteMember">Invite</b-button>
+        </div>
+      </b-modal>
+      <b-modal id="modal-5" title="Delete Member Confirmation" centered>
+        <div class="mb-3">
+          <label for="member-name" class="form-label">Member Name</label>
+          <input type="text" id="member-name" class="form-control" v-model="memberName" placeholder="Enter member name">
+        </div>
+        <p>Are you sure you want to remove this member from the group?</p>
+        <div slot="modal-footer" class="w-100 d-flex justify-content-end">
+          <b-button variant="danger" @click="deleteUserFromGroupAndCloseModal" class="mr-1">Confirm</b-button>
+          <b-button variant="primary" @click="$bvModal.hide('modal-5')" class="mr-1">Close</b-button>
         </div>
       </b-modal>
     </header>
@@ -33,13 +46,13 @@
         <button v-b-modal.modal-1 class="newTaskButton"> New Task </button>
         <b-modal size="lg" id="modal-1" title="Create a task " centered>
           <div class="mb-3">
-            <label for="task-name" class="form-label">Task Name, gotta specify our data better</label>
-            <input required type="text" id="task-name" class="form-control" v-model="taskName" placeholder="taskname">
+            <label for="task-name" class="form-label">Task Name</label>
+            <input required type="text" id="task-name" class="form-control" v-model="taskName" placeholder="Task name">
           </div>
           <div class="mb-3">
-            <label for="task-description" class="form-label">description</label>
+            <label for="task-description" class="form-label">Description</label>
             <input required type="text" id="task-description" class="form-control" v-model="taskDescription"
-              placeholder="description">
+              placeholder="Description">
           </div>
           <div class="mb-3">
             <label for="task-priority" class="form-label">Priority</label>
@@ -202,6 +215,34 @@ export default {
         this.$router.push('/dashboard')
       } else {
         console.error('Error deleting group:', data.message || 'Unknown error')
+      }
+    },
+    async deleteMemberFromGroup() {
+      if (!this.memberName) {
+        alert('Please specify the member name to remove.')
+        return
+      }
+
+      const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}/remove-member/${this.memberName}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      })
+
+      const data = await response.json()
+      console.log(data)
+
+      if (response.ok) {
+        const index = this.group.members.indexOf(this.memberName)
+        if (index !== -1) {
+          this.group.members.splice(index, 1)
+        }
+        this.memberName = ''
+        this.getGroupTasks()
+        this.getGroupMeetings()
+
+        alert(`User ${this.memberName} has been removed from the group.`)
+      } else {
+        console.error('Error removing user from group:', data.message || 'Unknown error')
       }
     },
     async getGroupTasks() {
@@ -394,6 +435,18 @@ main {
   font-weight: bold;
   cursor: pointer;
 
+}
+
+.delete-member-button {
+  background-color: #1324c1;
+  color: #ffffff;
+  border: none;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 15px;
+  font-size: 14px;
+  cursor: pointer;
+  order: 3;
 }
 
 .delete-group-button {
