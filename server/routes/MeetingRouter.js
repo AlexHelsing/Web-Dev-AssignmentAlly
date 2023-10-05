@@ -3,14 +3,12 @@ const MeetingRouter = require('express').Router();
 const MeetingController = require('../controller/Meeting.controller');
 
 
-MeetingRouter.get('/getMeetingsByGroup/:groupId', MeetingController.getMeetingsByGroup);
-MeetingRouter.get('/get-meeting/:meetingId', MeetingController.getMeeting);
-MeetingRouter.get('/getMeetingsByUser', MeetingController.getMeetingsByUser);
 
-MeetingRouter.post('/create-meeting/:groupId', MeetingController.createMeeting);
-
-MeetingRouter.patch('/update-meeting/:meetingId', MeetingController.updateMeeting);
-
-MeetingRouter.delete('/delete-meeting/:meetingId', MeetingController.deleteMeeting);
+MeetingRouter.get('/meetings', MeetingController.getMeetingsByUser);
+MeetingRouter.get('/:groupId', MeetingController.getMeetingsByGroup);
+MeetingRouter.get('/:meetingId', MeetingController.getMeeting);
+MeetingRouter.post('/:groupId', MeetingController.createMeeting);
+MeetingRouter.patch('/:meetingId', MeetingController.updateMeeting);
+MeetingRouter.delete('/:meetingId', MeetingController.deleteMeeting);
 
 module.exports = MeetingRouter;

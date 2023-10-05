@@ -89,14 +89,14 @@ export default {
   },
   methods: {
     async fetchMyGroups() {
-      const response = await fetch('http://localhost:3000/api/groups/getMyGroups', {
+      const response = await fetch('http://localhost:3000/api/groups/groups', {
         credentials: 'include'
       })
       const data = await response.json()
       this.groups = data
     },
     async fetchMyTasks() {
-      const response = await fetch('http://localhost:3000/api/tasks/getUserTasks', {
+      const response = await fetch('http://localhost:3000/api/tasks/tasks', {
         credentials: 'include'
       })
       const data = await response.json()
@@ -105,7 +105,7 @@ export default {
     },
     async createGroup() {
       try {
-        const response = await fetch('http://localhost:3000/api/groups/create-group', {
+        const response = await fetch('http://localhost:3000/api/groups/', {
           method: 'POST',
           credentials: 'include',
           headers: {
@@ -128,7 +128,7 @@ export default {
       }
     },
     async fetchMyMeetings() {
-      const response = await fetch('http://localhost:3000/api/meetings/getMeetingsByUser', {
+      const response = await fetch('http://localhost:3000/api/meetings/meetings', {
         credentials: 'include'
       })
       const data = await response.json()
@@ -137,7 +137,7 @@ export default {
     },
     async joinGroup() {
       try {
-        const response = await fetch(`http://localhost:3000/api/groups/join-group/${this.existingGroupName}`, {
+        const response = await fetch(`http://localhost:3000/api/groups/${this.existingGroupName}`, {
           method: 'PATCH',
           credentials: 'include',
           headers: {

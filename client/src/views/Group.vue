@@ -175,7 +175,7 @@ export default {
   },
   methods: {
     async fetchGroup() {
-      const response = await fetch(`http://localhost:3000/api/groups/get-group/${this.groupIdParam}`, {
+      const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}`, {
         credentials: 'include'
       })
       const data = await response.json()
@@ -205,7 +205,7 @@ export default {
       }
     },
     async getGroupTasks() {
-      const response = await fetch(`http://localhost:3000/api/tasks/getTasksByGroup/${this.groupIdParam}`, {
+      const response = await fetch(`http://localhost:3000/api/tasks/${this.groupIdParam}`, {
         credentials: 'include'
       })
       const data = await response.json()
@@ -217,7 +217,7 @@ export default {
         alert('Please fill out all fields')
         return
       }
-      const response = await fetch(`http://localhost:3000/api/tasks/create-task/${this.groupIdParam}`, {
+      const response = await fetch(`http://localhost:3000/api/tasks/${this.groupIdParam}`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -236,7 +236,7 @@ export default {
       this.tasks.push(data)
     },
     async getGroupMeetings() {
-      const response = await fetch(`http://localhost:3000/api/meetings/getMeetingsByGroup/${this.groupIdParam}`, {
+      const response = await fetch(`http://localhost:3000/api/meetings/${this.groupIdParam}`, {
         credentials: 'include'
       })
       const data = await response.json()
@@ -249,7 +249,7 @@ export default {
         alert('Please fill out all required fields')
         return
       }
-      const response = await fetch(`http://localhost:3000/api/meetings/create-meeting/${this.groupIdParam}`, {
+      const response = await fetch(`http://localhost:3000/api/meetings/${this.groupIdParam}`, {
         method: 'POST',
         credentials: 'include',
         headers: {

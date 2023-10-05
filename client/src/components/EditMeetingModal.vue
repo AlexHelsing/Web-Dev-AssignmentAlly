@@ -69,7 +69,7 @@ export default {
     async saveMeeting() {
       try {
         console.log(this.localMeeting)
-        const response = await fetch(`http://localhost:3000/api/meetings/update-meeting/${this.localMeeting.meetingId}`, {
+        const response = await fetch(`http://localhost:3000/api/meetings/${this.localMeeting.meetingId}`, {
           method: 'PATCH',
           credentials: 'include',
           headers: {
