@@ -151,4 +151,40 @@ export default {
   margin: 0 7px;
   font-weight: bold;
 }
+
+@media screen and (max-width: 768px) {
+  .task-item {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
+  }
+
+  .separator {
+    display: none;
+  }
+
+  .task-code-container,
+  .task-description,
+  .task-details {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .task-name,
+  .task-description {
+    font-size: 1rem;
+  }
+
+  .task-code-container {
+    justify-content: space-between;
+  }
+
+  .task-description {
+    text-align: left;
+  }
+
+  .task-details {
+    justify-content: space-between;
+  }
+}
 </style>
