@@ -205,7 +205,7 @@ export default {
       }
     },
     async getGroupTasks() {
-      const response = await fetch(`http://localhost:3000/api/tasks/${this.groupIdParam}`, {
+      const response = await fetch(`http://localhost:3000/api/tasks/getTasksByGroup/${this.groupIdParam}`, {
         credentials: 'include'
       })
       const data = await response.json()
