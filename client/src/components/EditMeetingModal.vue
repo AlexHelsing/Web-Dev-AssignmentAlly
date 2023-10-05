@@ -1,5 +1,5 @@
 <template>
-  <b-modal size="lg" id="meeting-detail-modal" ref="meetingModal" title="Edit meeting" centered>
+  <b-modal size="lg" id="meeting-detail-modal" ref="meetingModal" title="Edit meeting" centered hide-footer>
     <div v-if="localMeeting">
       <label for="meeting-name" class="form-label">Name</label>
       <input required type="text" id="meeting-name" class="form-control" v-model="localMeeting.meetingName">
@@ -27,10 +27,15 @@
       <b-form-timepicker id="meeting-time" locale="en" v-model="localMeeting.meetingTime"></b-form-timepicker>
     </div>
 
-    <div slot="modal-footer" class="w-100 d-flex justify-content-between">
-      <b-button variant="secondary" @click="closeModal">Cancel</b-button>
-      <div>
-        <b-button variant="success" @click="saveMeeting">Save</b-button>
+    <div class="mt-4">
+      <div class="d-flex justify-content-between">
+        <div>
+          <b-button variant="danger" @click="deleteMeeting">Delete Meeting</b-button>
+        </div>
+        <div>
+          <b-button variant="primary" @click="closeModal" class="text-white mr-2">Close</b-button>
+          <b-button variant="success" @click="saveMeeting">Save</b-button>
+        </div>
       </div>
     </div>
   </b-modal>
@@ -92,6 +97,23 @@ export default {
         }
       } catch (error) {
         console.error('Error updating meeting:', error)
+      }
+    },
+    async deleteMeeting() {
+      try {
+        const response = await fetch(`http://localhost:3000/api/meetings/delete-meeting/${this.localMeeting.meetingId}`, {
+          method: 'DELETE',
+          credentials: 'include'
+        })
+        const data = await response.json()
+        if (response.ok) {
+          this.$bvModal.hide('meeting-detail-modal')
+          EventBus.$emit('meeting-updated')
+        } else {
+          console.error('Error deleting meeting:', data.message || 'Unknown error')
+        }
+      } catch (error) {
+        console.error('Error deleting meeting:', error)
       }
     },
     showMeetingModal(meeting) {
