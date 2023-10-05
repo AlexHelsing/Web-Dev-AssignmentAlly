@@ -362,6 +362,11 @@ main {
   justify-content: space-between;
   align-items: center;
   height: 70px;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    height: auto;
+  }
 }
 
 .groupName {
@@ -382,6 +387,10 @@ main {
   order: 3;
   display: flex;
   gap: 10px;
+
+  @media screen and (max-width: 768px) {
+    font-size: 7px;
+  }
 }
 
 .invite-button {
