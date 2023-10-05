@@ -1,15 +1,19 @@
 <template>
   <b-navbar class="custom-navbar" toggleable="md">
 
-    <b-navbar-brand class="navbar-dark" to="/dashboard">LOGO</b-navbar-brand>
+    <b-navbar-brand class="navbar-dark navbar-logo-text" to="/dashboard">
+      <!-- logo here  -->
+      <b-icon class="navbar-logo"></b-icon>
+      AssignmentAlly
+    </b-navbar-brand>
 
     <b-navbar-toggle target="nav-collapse" class="hamburger"></b-navbar-toggle>
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
         <b-nav-item class="test" to="/dashboard">Dashboard</b-nav-item>
-        <b-nav-item to="/meetings">Meetings</b-nav-item>
-        <b-nav-item to="/tasks">Tasks</b-nav-item>
+        <b-nav-item class="disabled" to="/meetings">Meetings</b-nav-item>
+        <b-nav-item class="disabled" to="/tasks">Tasks</b-nav-item>
       </b-navbar-nav>
     </b-collapse>
 
@@ -97,5 +101,23 @@ export default {
 .custom-navbar .navbar-brand:hover {
   color: #ffffff;
   text-decoration: none;
+}
+
+.disabled {
+  pointer-events: none;
+  cursor: default;
+  text-decoration: none;
+}
+
+.navbar-logo-text {
+  color: #ffffff !important;
+}
+
+.navbar-logo {
+  color: #ffffff !important;
+  margin-right: 8px;
+  vertical-align: middle;
+  width: 24px;
+  height: 24px;
 }
 </style>
