@@ -1,8 +1,9 @@
 <template>
-  <b-navbar type="light" class="custom-navbar">
-    <b-navbar-brand variant="dark" type="primary" to="/dashboard">LOGO</b-navbar-brand>
+  <b-navbar class="custom-navbar" toggleable="md">
 
-    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+    <b-navbar-brand class="navbar-dark" to="/dashboard">LOGO</b-navbar-brand>
+
+    <b-navbar-toggle target="nav-collapse" class="hamburger"></b-navbar-toggle>
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
@@ -11,10 +12,14 @@
         <b-nav-item to="/tasks">Tasks</b-nav-item>
       </b-navbar-nav>
     </b-collapse>
-    <b-dropdown variant="secondary" right class="dropdownmenu">
-      <template #button-content>{{ user ? user.username : "..." }}</template>
-      <b-dropdown-item-button v-on:click="logout">Logout</b-dropdown-item-button>
-    </b-dropdown>
+
+    <b-navbar-nav class="ml-auto">
+      <b-dropdown variant="secondary" right class="dropdownmenu">
+        <template #button-content>{{ user ? user.username : "..." }}</template>
+        <b-dropdown-item-button v-on:click="logout">Logout</b-dropdown-item-button>
+      </b-dropdown>
+    </b-navbar-nav>
+
   </b-navbar>
 </template>
 
@@ -61,12 +66,14 @@ export default {
   color: #ffffff;
 }
 
+.hamburger {
+  background-color: #ffffff;
+}
+
 /* Style for the links */
 .custom-navbar .nav-item a.nav-link {
   color: #e5e5e5;
-  /* Slightly brighter than the text color */
   transition: color 0.2s;
-  /* Smooth transition */
 }
 
 .custom-navbar a {
@@ -78,7 +85,7 @@ export default {
 .custom-navbar .nav-item a.nav-link:hover {
   color: #ffffff;
   text-decoration: none;
-  scale: 1.05;
+  transform: scale(1.05);
 }
 
 /* Style for the active link */
@@ -90,6 +97,5 @@ export default {
 .custom-navbar .navbar-brand:hover {
   color: #ffffff;
   text-decoration: none;
-
 }
 </style>
