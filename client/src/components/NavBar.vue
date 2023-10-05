@@ -3,7 +3,7 @@
 
     <b-navbar-brand class="navbar-dark navbar-logo-text" to="/dashboard">
       <!-- logo here  -->
-      <b-icon class="navbar-logo"></b-icon>
+      <span class="navbar-logo"></span>
       AssignmentAlly
     </b-navbar-brand>
 
