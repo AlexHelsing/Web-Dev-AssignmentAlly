@@ -14,6 +14,7 @@
         <b-nav-item class="test" to="/dashboard">Dashboard</b-nav-item>
         <b-nav-item class="disabled" to="/meetings">Meetings</b-nav-item>
         <b-nav-item class="disabled" to="/tasks">Tasks</b-nav-item>
+        <b-nav-item v-if="isAdmin" to="/admin">Admin</b-nav-item>
       </b-navbar-nav>
     </b-collapse>
 
@@ -34,6 +35,9 @@ export default {
   computed: {
     user() {
       return store.user
+    },
+    isAdmin() {
+      return this.user && (this.user.username === 'Admin' || this.user.username === 'admin')
     }
   },
   methods: {
@@ -59,9 +63,10 @@ export default {
         console.error('Error logging in:', error)
       }
     }
-
   }
+
 }
+
 </script>
 
 <style scoped>

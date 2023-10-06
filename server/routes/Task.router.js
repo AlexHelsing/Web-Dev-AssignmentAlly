@@ -12,7 +12,7 @@ TaskRouter.get('/:taskId', TaskController.getTask);
 TaskRouter.get('/getTasksByGroup/:groupId', TaskController.getTasksByGroup);
 TaskRouter.delete('/:taskId', TaskController.deleteTask);
 TaskRouter.put('/assign-task/:taskId', TaskController.assignTaskToUser); 
-TaskRouter.put('/update-task/:taskId', TaskController.updateTask);
+TaskRouter.put('/:taskId', TaskController.updateTask);
 TaskRouter.put('/change-task-status/:taskId', TaskController.changeTaskStatus); 
 
 
