@@ -4,11 +4,12 @@ const GroupController = require('../controller/Group.controller');
 
 
 GroupRouter.post('/', GroupController.createGroup);
-//GroupRouter.get('/getAllGroups', GroupController.getAllGroups);
+GroupRouter.get('/', GroupController.getAllGroups);
 GroupRouter.get('/groups', GroupController.getMyGroups);
 GroupRouter.get('/:id', GroupController.getGroup);
 GroupRouter.patch('/:groupName', GroupController.joinGroup);
 GroupRouter.patch('/:groupId/set-resource/:type/', GroupController.setResource);
+GroupRouter.delete('/', GroupController.deleteAllGroups)
 GroupRouter.delete('/:Id', GroupController.deleteGroup);
 GroupRouter.post('/:groupId/invite/:username', GroupController.InviteMemberToGroup);
 GroupRouter.get('/:groupId/users', GroupController.getUsersFromGroup);

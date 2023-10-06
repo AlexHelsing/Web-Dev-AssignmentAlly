@@ -4,6 +4,7 @@ import Login from './views/Login.vue'
 import Dashboard from './views/Home.vue'
 import Signup from './views/Signup.vue'
 import Group from './views/Group.vue'
+import AdminPageVue from './views/AdminPage.vue'
 import { getCurrentUser } from './auth'
 
 Vue.use(Router)
@@ -33,6 +34,11 @@ const router = new Router({
       name: 'signup',
       component: Signup,
       meta: { requiresNoAuth: true }
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: AdminPageVue
     }
   ]
 })

@@ -239,6 +239,24 @@ async function removeUserFromGroup(req, res) {
     res.status(500).json({ message: 'Internal server error' });
   }
 }
+async function deleteAllGroups(req, res) {
+  // check if user is admin first then delete all groups
+  const currentUser = req.user;
+
+  console.log(currentUser.username);
+  if (currentUser.username !== 'admin' && currentUser.username !== 'Admin') {
+    return res.status(401).json({ message: 'Not admin gtfo' });
+  }
+  try {
+    // Gotta delete everything since we have no cascading deletes
+    await Task.deleteMany({});
+    await Meeting.deleteMany({});
+    await Group.deleteMany({});
+    return res.status(200).json({ message: 'All groups deleted' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+}
 
 module.exports = {
   createGroup,
@@ -252,4 +270,5 @@ module.exports = {
   getUsersFromGroup,
   removeUserFromGroup,
   getUserFromGroup,
+  deleteAllGroups,
 };

@@ -232,6 +232,7 @@ export default {
         })
       })
       const data = await response.json()
+      this.$bvModal.hide('modal-1')
       console.log(data)
       this.tasks.push(data)
     },
