@@ -68,7 +68,7 @@ router.get('/current-user', function (req, res) {
   }
 });
 
-router.post('/signup', async function (req, res, next) {
+router.post('/', async function (req, res, next) {
 
   try{
     const existingUser = await User.findOne( { username: req.body.username})
