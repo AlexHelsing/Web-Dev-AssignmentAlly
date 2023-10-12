@@ -24,19 +24,31 @@
         <button @click="deleteAllMeetings" class="delete-all-groups-btn">DELETE ALL MEETINGS</button>
       </div>
     </div>
+    <div class="section">
+      <h1 class="section-title">All tasks</h1>
+      <div class="section-content-tasks">
+        <Task v-for="task in tasks" :key="task._id" :task-name="task.TaskName" :task-description="task.Description"
+          :task-assignee="task.Assignee.username" :belongs-to-group="task.GroupId" :task-label="task.Priority"
+          :task-status="task.Status" :task-date="task.DueDate" :task-id="task._id" />
+        <button @click="deleteAllTasks" class="delete-all-groups-btn">DELETE ALL TASKS</button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import Meeting from '../components/Meeting.vue'
+import Task from '../components/Task.vue'
 export default {
   components: {
-    Meeting
+    Meeting,
+    Task
   },
   data() {
     return {
       groups: [],
-      meetings: []
+      meetings: [],
+      tasks: []
     }
   },
   methods: {
@@ -67,6 +79,22 @@ export default {
         })
         const data = await response.json()
         this.meetings = data
+        console.log('data', data)
+      } catch (error) {
+        console.error('Error creating group:', error)
+      }
+    },
+    getTasks: async function () {
+      try {
+        const response = await fetch('http://localhost:3000/api/tasks', {
+          method: 'GET',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        const data = await response.json()
+        this.tasks = data
         console.log('data', data)
       } catch (error) {
         console.error('Error creating group:', error)
@@ -111,11 +139,32 @@ export default {
       } catch (error) {
         console.error('Error creating group:', error)
       }
+    },
+    async deleteAllTasks() {
+      try {
+        const response = await fetch('http://localhost:3000/api/tasks', {
+          method: 'DELETE',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        const data = await response.json()
+        console.log('data', data)
+        if (response.ok) {
+          this.tasks = []
+        } else {
+          console.error('Error creating group:', data.message || 'Unknown error')
+        }
+      } catch (error) {
+        console.error('Error creating group:', error)
+      }
     }
   },
   mounted() {
     this.getGroups()
     this.getMeetings()
+    this.getTasks()
   }
 }
 
