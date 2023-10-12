@@ -53,7 +53,7 @@ router.post('/logout', function (req, res, next) {
       return next(err);
     }
     // Redirect to /login after a successful logout
-    res.status(200).json({message: "Successfully logged out"})
+    res.status(200).json({ message: 'Successfully logged out' });
   });
 });
 
@@ -69,40 +69,36 @@ router.get('/current-user', function (req, res) {
 });
 
 router.post('/', async function (req, res, next) {
+  try {
+    const existingUser = await User.findOne({ username: req.body.username });
 
-  try{
-    const existingUser = await User.findOne( { username: req.body.username})
+    if (!existingUser) {
+      var salt = crypto.randomBytes(16).toString('hex');
+      var hash = crypto
+        .pbkdf2Sync(req.body.password, salt, 1000, 64, 'sha512')
+        .toString('hex');
 
-    if(!existingUser){
-
-    var salt = crypto.randomBytes(16).toString('hex');
-    var hash = crypto
-    .pbkdf2Sync(req.body.password, salt, 1000, 64, 'sha512')
-    .toString('hex');
-
-  var user = new User({
-    username: req.body.username,
-    password: hash,
-    salt: salt,
-  });
-    user.save();
-    // Log the user in after successful registration
-    req.login(user, function (err) {
-      if(err) {
-        return next(err);
-      }
-      // Redirect to dashboard after successful login
-      res.redirect('http://localhost:8080/dashboard');
-      })}
-
-  else{
-    console.log("Username already exists")
-    res.redirect("http://localhost:8080/signup");
-  }}
-  catch(err){
-    res.status(400).json({message: err.message})
+      var user = new User({
+        username: req.body.username,
+        password: hash,
+        salt: salt,
+      });
+      user.save();
+      // Log the user in after successful registration
+      req.login(user, function (err) {
+        if (err) {
+          return next(err);
+        }
+        // Redirect to dashboard after successful login
+        res.redirect('http://localhost:8080/dashboard');
+      });
+    } else {
+      console.log('Username already exists');
+      res.redirect('http://localhost:8080/signup');
+    }
+  } catch (err) {
+    res.status(400).json({ message: err.message });
   }
-    
 });
 
 module.exports = router;

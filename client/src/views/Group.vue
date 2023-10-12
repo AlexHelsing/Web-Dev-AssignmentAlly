@@ -1,8 +1,8 @@
 <template>
   <main>
     <header class="header">
-      <b-avatar-group v-if="group" class="member-container">
-        <b-avatar variant="secondary" v-for="member in group.members" :key="member.id">{{ initials(member).toUpperCase()
+      <b-avatar-group v-if="members" class="member-container">
+        <b-avatar variant="secondary" v-for="member in members" :key="member.id">{{ initials(member.username).toUpperCase()
         }}</b-avatar>
       </b-avatar-group>
       <h1 class="groupName">{{ group ? group.assignmentGroupName : "..." }}</h1>
@@ -136,6 +136,7 @@ export default {
     return {
       groupIdParam: this.$route.params.id,
       group: null,
+      members: [],
       tasks: [],
       taskName: '',
       taskDescription: '',
@@ -190,6 +191,14 @@ export default {
         if (referenceMaterialResource) this.resources[1].link = referenceMaterialResource.link
         if (discordResource) this.resources[2].link = discordResource.link
       }
+    },
+    async getUsersInGroup() {
+      const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}/users`, {
+        credentials: 'include'
+      })
+      const data = await response.json()
+      this.members = data
+      console.log(data)
     },
     async deleteGroup() {
       const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}`, {
@@ -271,18 +280,21 @@ export default {
     },
 
     async inviteMember() {
-      const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}/invite/${this.memberName}`, {
-        method: 'PATCH',
+      const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}/users`, {
+        method: 'POST',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify({
+          username: this.memberName
+        })
       })
       const data = await response.json()
       console.log(data)
 
       if (response.ok) {
-        this.group.members.push(this.memberName)
+        this.members.push(this.memberName)
         // edit modal doesnt get the new member data unless we refectch
         this.getGroupTasks()
         this.$bvModal.hide('modal-4')
@@ -332,6 +344,7 @@ export default {
   },
   mounted() {
     this.fetchGroup()
+    this.getUsersInGroup()
     this.getGroupTasks()
     this.getGroupMeetings()
   },

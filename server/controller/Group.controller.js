@@ -62,7 +62,7 @@ async function getGroup(req, res) {
 }
 async function InviteMemberToGroup(req, res) {
   const groupId = req.params.groupId;
-  const usernameToInvite = req.params.username;
+  const usernameToInvite = req.body.username;
 
   console.log('Inviting user ' + usernameToInvite + ' to group ' + groupId);
   try {
@@ -180,7 +180,10 @@ async function getUsersFromGroup(req, res) {
       return res.status(404).json({ message: 'Group not found' });
     }
 
-    const users = await User.find({ _id: { $in: group.members } });
+    // only return id and username
+    const users = await User.find({ _id: { $in: group.members } }).select(
+      'username'
+    );
 
     return res.status(200).json(users);
   } catch (err) {
