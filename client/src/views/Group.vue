@@ -3,25 +3,23 @@
     <header class="header">
       <b-avatar-group v-if="members" class="member-container">
         <template v-for="member in members">
-          <b-button :key="member.id" @click="fetchMemberData(member._id)" variant="outline-secondary" class="mb-2"
-            v-b-modal.modal-8>
-            <b-avatar variant="secondary">
-              {{ initials(member.username).toUpperCase() }}
-            </b-avatar>
-          </b-button>
+          <b-avatar button :key="member.id" @click="fetchMemberData(member._id)" v-b-modal.modal-8 variant="primary"
+            class="full-avatar">
+            {{ initials(member.username).toUpperCase() }}
+          </b-avatar>
         </template>
       </b-avatar-group>
-      <b-modal id="modal-8" :title="activeMemberData ? activeMemberData.username : 'Loading...'" centered>
+      <b-modal id="modal-8" title="USER INFO" centered>
         <div class="mb-3">
           <template v-if="activeMemberData">
-            info about user, if we had more data :)
+            Username: {{ activeMemberData.username }}
           </template>
           <template v-else>
             <div>Loading<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span></div>
           </template>
         </div>
         <div slot="modal-footer" class="w-100 d-flex justify-content-end">
-          <b-button class="delete-member-button" variant="primary"
+          <b-button class="delete-member-button" variant="danger"
             @click="removeMemberFromGroup(activeMemberData._id)">Remove from
             group</b-button>
         </div>
@@ -725,5 +723,27 @@ main {
   font-size: 14px;
   cursor: pointer;
   order: 3;
+}
+
+.avatar-button {
+  padding: 0;
+  border: none;
+  background: none;
+  position: relative;
+  margin-left: 5px;
+}
+
+.full-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10rem;
+  /* adjust as needed */
+  background-color: #3498db;
+  color: #fff;
+  font-weight: bold;
 }
 </style>
