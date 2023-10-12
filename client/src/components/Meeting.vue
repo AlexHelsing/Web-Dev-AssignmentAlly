@@ -1,13 +1,13 @@
 <template>
-  <div class="meeting-container" @click="handleMeetingClick">
-    <div class="meeting-item">
+  <div id="meeting-container" @click="handleMeetingClick">
+    <div id="meeting-item">
       <img class="locationbox" :src="imageSource" alt="">
       <div class="meetinginfo">
         <div>{{ meetingName }}</div>
         <div>{{ meetingAgenda }}</div>
       </div>
     </div>
-    <div class="meeting-bottom">
+    <div id="meeting-bottom">
       <div class="belongs-to-group">{{ belongsToGroup.course }}</div>
       <div class="meeting-time">{{ convertDateToReadableFormat(meetingDate) }} {{ meetingTime }}</div>
     </div>
@@ -89,7 +89,7 @@ export default {
 </script>
 
 <style scoped>
-.meeting-item {
+#meeting-item {
   gap: 7px;
   height: 8rem;
   border-radius: 8px;
@@ -98,7 +98,7 @@ export default {
   align-items: center;
 }
 
-.meeting-container {
+#meeting-container {
   display: flex;
   flex-direction: column;
   background-color: #0d1319;
@@ -108,7 +108,7 @@ export default {
   border-radius: 8px
 }
 
-.meeting-container:hover {
+#meeting-container:hover {
   background-color: #070808;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
@@ -126,7 +126,7 @@ export default {
   padding-left: 10px;
 }
 
-.meeting-bottom {
+#meeting-bottom {
   display: flex;
   justify-content: space-between;
   align-items: center;

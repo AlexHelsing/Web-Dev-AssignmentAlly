@@ -1,5 +1,5 @@
 <template>
-  <div @click="handleTaskClick" class="task-item">
+  <div @click="handleTaskClick" id="task-item">
     <span class="task-code-container">
       <span class="task-code">{{ belongsToGroup.course }}</span>
       <span class="separator">|</span>
@@ -7,7 +7,7 @@
     </span>
 
     <span class="task-description">{{ taskDescription }}</span>
-    <span class="task-details">
+    <span id="task-details">
       <b-avatar class="avatar" variant="light" text="taskAssignee">{{ initials(taskAssignee) }}</b-avatar>
       <TaskLabel :label="taskLabel" />
       <span class="task-date">{{ convertDateToReadableFormat(taskDate) }}</span>
@@ -93,7 +93,7 @@ export default {
 </script>
 
 <style scoped>
-.task-item {
+#task-item {
   background-color: #0d1319;
   color: white;
   padding: 10px 15px;
@@ -106,7 +106,7 @@ export default {
   border: 1px solid transparent;
 }
 
-.task-item:hover {
+#task-item:hover {
   background-color: #070808;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
@@ -139,7 +139,7 @@ export default {
   text-align: center;
 }
 
-.task-details {
+#task-details {
   flex: 1;
   justify-content: flex-end;
   display: flex;
