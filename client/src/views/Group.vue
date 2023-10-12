@@ -2,9 +2,30 @@
   <main>
     <header class="header">
       <b-avatar-group v-if="members" class="member-container">
-        <b-avatar variant="secondary" v-for="member in members" :key="member.id">{{ initials(member.username).toUpperCase()
-        }}</b-avatar>
+        <template v-for="member in members">
+          <b-button :key="member.id" @click="fetchMemberData(member._id)" variant="outline-secondary" class="mb-2"
+            v-b-modal.modal-8>
+            <b-avatar variant="secondary">
+              {{ initials(member.username).toUpperCase() }}
+            </b-avatar>
+          </b-button>
+        </template>
       </b-avatar-group>
+      <b-modal id="modal-8" :title="activeMemberData ? activeMemberData.username : 'Loading...'" centered>
+        <div class="mb-3">
+          <template v-if="activeMemberData">
+            info about user, if we had more data :)
+            <!-- Your content for when data is available goes here -->
+          </template>
+          <template v-else>
+            <!-- Loading Indicator -->
+            <div>Loading<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span></div>
+          </template>
+        </div>
+        <div slot="modal-footer" class="w-100 d-flex justify-content-end">
+          <b-button variant="primary" @click="inviteMember">Remove from group</b-button>
+        </div>
+      </b-modal>
       <h1 class="groupName">{{ group ? group.assignmentGroupName : "..." }}</h1>
       <span class="invite-button-container">
         <button @click="deleteGroup" class="delete-group-button">Delete group</button>
@@ -137,6 +158,7 @@ export default {
       groupIdParam: this.$route.params.id,
       group: null,
       members: [],
+      activeMemberData: null,
       tasks: [],
       taskName: '',
       taskDescription: '',
@@ -300,6 +322,21 @@ export default {
         this.$bvModal.hide('modal-4')
       } else {
         console.error('Error inviting member:', data.message || 'Unknown error')
+      }
+    },
+    async fetchMemberData(memberId) {
+      console.log('fetching member data for', memberId)
+      const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}/users/${memberId}`, {
+        credentials: 'include'
+      })
+      const data = await response.json()
+
+      if (response.ok) {
+        this.activeMemberData = data
+
+        console.log('activeMemberData', this.activeMemberData)
+      } else {
+        console.error('Error fetching member data:', data.message || 'Unknown error')
       }
     },
     initials(member) {
