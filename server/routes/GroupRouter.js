@@ -10,7 +10,7 @@ GroupRouter.patch('/:groupName', GroupController.joinGroup);
 GroupRouter.patch('/:groupId/set-resource/:type/', GroupController.setResource);
 GroupRouter.delete('/', GroupController.deleteAllGroups);
 GroupRouter.delete('/:Id', GroupController.deleteGroup);
-GroupRouter.post(
+GroupRouter.patch(
   '/:groupId/invite/:username',
   GroupController.InviteMemberToGroup
 );

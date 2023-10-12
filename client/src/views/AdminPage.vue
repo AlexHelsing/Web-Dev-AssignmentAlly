@@ -1,28 +1,29 @@
 <template>
-    <div class="main">
-        <div class="section">
-            <h1 class="section-title">All assignment groups</h1>
-            <div class="section-content-1">
-                <router-link v-for="group in groups" :key="group.id" :to="'/group/' + group._id" tag="div"
-                    class="router-link-wrapper">
-                    <b-card class="group-card">
-                        <b-card-text>
-                            {{ group.assignmentGroupName }}
-                        </b-card-text>
-                    </b-card>
-                </router-link>
-                <button @click="deleteAllGroups" class="delete-all-groups-btn">DELETE ALL GROUPS</button>
-            </div>
-        </div>
-        <div class="section">
-            <h1 class="section-title">All meetings</h1>
-            <div class="section-content-meetings">
-                <Meeting v-for="meeting in meetings" :meeting-id="meeting._id" :key="meeting._id"
-                    :meeting-name="meeting.MeetingName" :meeting-description="meeting.Description"
-                    :meeting-date="meeting.Date" :meeting-time="meeting.Time" :meeting-location="meeting.Location"
-                    :meeting-attendees="meeting.Attendees" :meeting-organizer="meeting.Organizer.username" />
-            </div>
+  <div class="main">
+    <div class="section">
+      <h1 class="section-title">All assignment groups</h1>
+      <div class="section-content-1">
+        <router-link v-for="group in groups" :key="group.id" :to="'/group/' + group._id" tag="div"
+          class="router-link-wrapper">
+          <b-card class="group-card">
+            <b-card-text>
+              {{ group.assignmentGroupName }}
+            </b-card-text>
+          </b-card>
+        </router-link>
+        <button @click="deleteAllGroups" class="delete-all-groups-btn">DELETE ALL GROUPS</button>
+      </div>
     </div>
+    <div class="section">
+      <h1 class="section-title">All meetings</h1>
+      <div class="section-content-meetings">
+        <Meeting v-for="meeting in meetings" :meeting-id="meeting._id" :key="meeting._id"
+          :meeting-name="meeting.MeetingName" :meeting-description="meeting.Description" :meeting-date="meeting.Date"
+          :meeting-time="meeting.Time" :meeting-location="meeting.Location" :meeting-attendees="meeting.Attendees"
+          :meeting-organizer="meeting.Organizer.username" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -97,13 +98,13 @@ export default {
 
 <style>
 .delete-all-groups-btn {
-    background-color: #ff0000;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
+  background-color: #ff0000;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
 }
 </style>
