@@ -114,7 +114,13 @@ async function deleteMeeting(req, res) {
 
 async function updateMeeting(req, res) {
   const meetingId = req.params.meetingId;
-  const { meetingName, meetingDate, meetingAgenda, meetingLocation, meetingTime } = req.body;
+  const {
+    meetingName,
+    meetingDate,
+    meetingAgenda,
+    meetingLocation,
+    meetingTime,
+  } = req.body;
 
   // only update fields that were actually passed...
   const updateFields = {};
@@ -143,6 +149,32 @@ async function updateMeeting(req, res) {
   }
 }
 
+async function getAllMeetings(req, res) {
+  try {
+    const meetings = await Meeting.find().populate({
+      path: 'GroupId',
+      populate: {
+        path: 'members',
+        select: 'username',
+      },
+    });
+
+    res.json(meetings);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+}
+
+async function deleteAllMeetings(req, res) {
+  try {
+    const deletedMeetings = await Meeting.deleteMany({});
+
+    res.json(deletedMeetings);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+}
+
 module.exports = {
   createMeeting,
   getMeetingsByGroup,
@@ -150,4 +182,6 @@ module.exports = {
   getMeeting,
   deleteMeeting,
   getMeetingsByUser,
+  getAllMeetings,
+  deleteAllMeetings,
 };

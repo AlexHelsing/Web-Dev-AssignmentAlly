@@ -70,7 +70,7 @@ export default {
       try {
         console.log(this.localMeeting)
         const response = await fetch(`http://localhost:3000/api/meetings/${this.localMeeting.meetingId}`, {
-          method: 'PATCH',
+          method: 'PUT',
           credentials: 'include',
           headers: {
             'Content-Type': 'application/json'

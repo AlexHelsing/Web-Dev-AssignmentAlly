@@ -14,6 +14,14 @@
                 <button @click="deleteAllGroups" class="delete-all-groups-btn">DELETE ALL GROUPS</button>
             </div>
         </div>
+        <div class="section">
+            <h1 class="section-title">All meetings</h1>
+            <div class="section-content-meetings">
+                <Meeting v-for="meeting in meetings" :meeting-id="meeting._id" :key="meeting._id"
+                    :meeting-name="meeting.MeetingName" :meeting-description="meeting.Description"
+                    :meeting-date="meeting.Date" :meeting-time="meeting.Time" :meeting-location="meeting.Location"
+                    :meeting-attendees="meeting.Attendees" :meeting-organizer="meeting.Organizer.username" />
+            </div>
     </div>
 </template>
 
@@ -21,13 +29,13 @@
 export default {
   data() {
     return {
-      groups: []
+      groups: [],
+      meetings: []
     }
   },
   methods: {
     getGroups: async function () {
       try {
-        console.log(this.assignmentGroupName, this.course)
         const response = await fetch('http://localhost:3000/api/groups', {
           method: 'GET',
           credentials: 'include',
@@ -37,6 +45,22 @@ export default {
         })
         const data = await response.json()
         this.groups = data
+        console.log('data', data)
+      } catch (error) {
+        console.error('Error creating group:', error)
+      }
+    },
+    getMeetings: async function () {
+      try {
+        const response = await fetch('http://localhost:3000/api/meetings', {
+          method: 'GET',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        const data = await response.json()
+        this.meetings = data
         console.log('data', data)
       } catch (error) {
         console.error('Error creating group:', error)
@@ -65,6 +89,7 @@ export default {
   },
   mounted() {
     this.getGroups()
+    this.getMeetings()
   }
 }
 
