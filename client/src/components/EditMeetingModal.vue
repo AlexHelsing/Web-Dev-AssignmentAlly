@@ -101,7 +101,7 @@ export default {
     },
     async deleteMeeting() {
       try {
-        const response = await fetch(`http://localhost:3000/api/meetings/delete-meeting/${this.localMeeting.meetingId}`, {
+        const response = await fetch(`http://localhost:3000/api/meetings/${this.localMeeting.meetingId}`, {
           method: 'DELETE',
           credentials: 'include'
         })

@@ -216,6 +216,11 @@ async function getUserFromGroup(req, res) {
 async function removeUserFromGroup(req, res) {
   const groupId = req.params.groupId;
   const userId = req.params.userId;
+  const { id } = req.user;
+
+  if (userId === id) {
+    return res.status(400).json({ message: 'Cannot remove yourself' });
+  }
 
   try {
     const group = await Group.findById(groupId);
@@ -224,13 +229,9 @@ async function removeUserFromGroup(req, res) {
       return res.status(404).json({ message: 'Group not found' });
     }
 
-    const userIndex = group.members.findIndex((m) => m === userId);
+    // remove the user from the group
+    group.members = group.members.filter((member) => member != userId);
 
-    if (userIndex === -1) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    group.members.splice(userIndex, 1);
     await group.save();
 
     return res.status(200).json({ message: 'User removed from group' });

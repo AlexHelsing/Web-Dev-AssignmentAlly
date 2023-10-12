@@ -15,15 +15,15 @@
         <div class="mb-3">
           <template v-if="activeMemberData">
             info about user, if we had more data :)
-            <!-- Your content for when data is available goes here -->
           </template>
           <template v-else>
-            <!-- Loading Indicator -->
             <div>Loading<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span></div>
           </template>
         </div>
         <div slot="modal-footer" class="w-100 d-flex justify-content-end">
-          <b-button variant="primary" @click="inviteMember">Remove from group</b-button>
+          <b-button class="delete-member-button" variant="primary"
+            @click="removeMemberFromGroup(activeMemberData._id)">Remove from
+            group</b-button>
         </div>
       </b-modal>
       <h1 class="groupName">{{ group ? group.assignmentGroupName : "..." }}</h1>
@@ -275,7 +275,20 @@ export default {
       console.log(data)
       this.meetings = data
     },
-
+    async removeMemberFromGroup(memberId) {
+      const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}/users/${memberId}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      })
+      const data = await response.json()
+      console.log(data)
+      if (response.ok) {
+        this.members = this.members.filter(member => member._id !== memberId)
+        this.$bvModal.hide('modal-8')
+      } else {
+        console.error('Error removing member from group:', data.message || 'Unknown error')
+      }
+    },
     async createGroupMeetings() {
       if (!this.meetingName || !this.meetingAgenda || !this.meetingDate || !this.meetingLocation) {
         alert('Please fill out all required fields')
@@ -316,12 +329,12 @@ export default {
       console.log(data)
 
       if (response.ok) {
-        this.members.push(this.memberName)
-        // edit modal doesnt get the new member data unless we refectch
+        this.getUsersInGroup()
         this.getGroupTasks()
         this.$bvModal.hide('modal-4')
       } else {
         console.error('Error inviting member:', data.message || 'Unknown error')
+        alert('Error inviting member: ' + data.message || 'Unknown error')
       }
     },
     async fetchMemberData(memberId) {
@@ -700,5 +713,17 @@ main {
 
 .newMeetingButton:active {
   transform: translateY(0px);
+}
+
+.delete-member-button {
+  background-color: #1324c1;
+  color: #ffffff;
+  border: none;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 15px;
+  font-size: 14px;
+  cursor: pointer;
+  order: 3;
 }
 </style>
