@@ -18,16 +18,21 @@
       <h1 class="section-title">All meetings</h1>
       <div class="section-content-meetings">
         <Meeting v-for="meeting in meetings" :meeting-id="meeting._id" :key="meeting._id"
-          :meeting-name="meeting.MeetingName" :meeting-description="meeting.Description" :meeting-date="meeting.Date"
-          :meeting-time="meeting.Time" :meeting-location="meeting.Location" :meeting-attendees="meeting.Attendees"
-          :meeting-organizer="meeting.Organizer.username" />
+          :meeting-name="meeting.MeetingName" :belongs-to-group="meeting.GroupId" :meeting-agenda="meeting.MeetingAgenda"
+          :meeting-location="meeting.MeetingLocation" :meeting-date="meeting.MeetingDate"
+          :meeting-time="meeting.MeetingTime" />
+        <button @click="deleteAllMeetings" class="delete-all-groups-btn">DELETE ALL MEETINGS</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Meeting from '../components/Meeting.vue'
 export default {
+  components: {
+    Meeting
+  },
   data() {
     return {
       groups: [],
@@ -80,6 +85,26 @@ export default {
         console.log('data', data)
         if (response.ok) {
           this.groups = []
+        } else {
+          console.error('Error creating group:', data.message || 'Unknown error')
+        }
+      } catch (error) {
+        console.error('Error creating group:', error)
+      }
+    },
+    async deleteAllMeetings() {
+      try {
+        const response = await fetch('http://localhost:3000/api/meetings', {
+          method: 'DELETE',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        const data = await response.json()
+        console.log('data', data)
+        if (response.ok) {
+          this.meetings = []
         } else {
           console.error('Error creating group:', data.message || 'Unknown error')
         }
