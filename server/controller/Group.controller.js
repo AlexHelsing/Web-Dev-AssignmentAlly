@@ -62,7 +62,7 @@ async function getGroup(req, res) {
 }
 async function InviteMemberToGroup(req, res) {
   const groupId = req.params.groupId;
-  const usernameToInvite = req.params.username;
+  const usernameToInvite = req.body.username;
 
   console.log('Inviting user ' + usernameToInvite + ' to group ' + groupId);
   try {
@@ -106,7 +106,8 @@ async function joinGroup(req, res) {
 
     group.members.push(userToJoin.id);
     await group.save();
-    return res.status(200).json({ message: 'User added to group' });
+
+    return res.json(group);
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: 'Internal server error' });
@@ -180,7 +181,10 @@ async function getUsersFromGroup(req, res) {
       return res.status(404).json({ message: 'Group not found' });
     }
 
-    const users = await User.find({ _id: { $in: group.members } });
+    // only return id and username
+    const users = await User.find({ _id: { $in: group.members } }).select(
+      'username'
+    );
 
     return res.status(200).json(users);
   } catch (err) {
@@ -200,11 +204,8 @@ async function getUserFromGroup(req, res) {
       return res.status(404).json({ message: 'Group not found' });
     }
 
-    const user = await User.findById(userId);
-
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
+    // only return id and username
+    const user = await User.findById(userId).select('username');
 
     return res.status(200).json(user);
   } catch (err) {
@@ -216,6 +217,11 @@ async function getUserFromGroup(req, res) {
 async function removeUserFromGroup(req, res) {
   const groupId = req.params.groupId;
   const userId = req.params.userId;
+  const { id } = req.user;
+
+  if (userId === id) {
+    return res.status(400).json({ message: 'Cannot remove yourself' });
+  }
 
   try {
     const group = await Group.findById(groupId);
@@ -224,13 +230,9 @@ async function removeUserFromGroup(req, res) {
       return res.status(404).json({ message: 'Group not found' });
     }
 
-    const userIndex = group.members.findIndex((m) => m === userId);
+    // remove the user from the group
+    group.members = group.members.filter((member) => member != userId);
 
-    if (userIndex === -1) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    group.members.splice(userIndex, 1);
     await group.save();
 
     return res.status(200).json({ message: 'User removed from group' });

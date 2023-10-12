@@ -2,7 +2,7 @@
     <div class="fullscreen-container">
       <div class="signup-container">
         <h1 class="signup-title">Sign up</h1>
-        <form class="form" action="http://localhost:3000/api/auth/signup" method="post">
+        <form class="form" action="http://localhost:3000/api/auth/" method="post">
           <div class="input-group">
             <label for="username">Username</label>
             <input type="username" name="username" id="username">

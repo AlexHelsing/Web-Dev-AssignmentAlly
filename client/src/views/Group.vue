@@ -1,10 +1,29 @@
 <template>
   <main>
     <header class="header">
-      <b-avatar-group v-if="group" class="member-container">
-        <b-avatar variant="secondary" v-for="member in group.members" :key="member.id">{{ initials(member).toUpperCase()
-        }}</b-avatar>
+      <b-avatar-group v-if="members" class="member-container">
+        <template v-for="member in members">
+          <b-avatar button :key="member.id" @click="fetchMemberData(member._id)" v-b-modal.modal-8 variant="primary"
+            class="full-avatar">
+            {{ initials(member.username).toUpperCase() }}
+          </b-avatar>
+        </template>
       </b-avatar-group>
+      <b-modal id="modal-8" title="USER INFO" centered>
+        <div class="mb-3">
+          <template v-if="activeMemberData">
+            Username: {{ activeMemberData.username }}
+          </template>
+          <template v-else>
+            <div>Loading<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span></div>
+          </template>
+        </div>
+        <div slot="modal-footer" class="w-100 d-flex justify-content-end">
+          <b-button class="delete-member-button" variant="danger"
+            @click="removeMemberFromGroup(activeMemberData._id)">Remove from
+            group</b-button>
+        </div>
+      </b-modal>
       <h1 class="groupName">{{ group ? group.assignmentGroupName : "..." }}</h1>
       <span class="invite-button-container">
         <button @click="deleteGroup" class="delete-group-button">Delete group</button>
@@ -136,6 +155,8 @@ export default {
     return {
       groupIdParam: this.$route.params.id,
       group: null,
+      members: [],
+      activeMemberData: null,
       tasks: [],
       taskName: '',
       taskDescription: '',
@@ -191,6 +212,14 @@ export default {
         if (discordResource) this.resources[2].link = discordResource.link
       }
     },
+    async getUsersInGroup() {
+      const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}/users`, {
+        credentials: 'include'
+      })
+      const data = await response.json()
+      this.members = data
+      console.log(data)
+    },
     async deleteGroup() {
       const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}`, {
         method: 'DELETE',
@@ -244,7 +273,20 @@ export default {
       console.log(data)
       this.meetings = data
     },
-
+    async removeMemberFromGroup(memberId) {
+      const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}/users/${memberId}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      })
+      const data = await response.json()
+      console.log(data)
+      if (response.ok) {
+        this.members = this.members.filter(member => member._id !== memberId)
+        this.$bvModal.hide('modal-8')
+      } else {
+        console.error('Error removing member from group:', data.message || 'Unknown error')
+      }
+    },
     async createGroupMeetings() {
       if (!this.meetingName || !this.meetingAgenda || !this.meetingDate || !this.meetingLocation) {
         alert('Please fill out all required fields')
@@ -271,23 +313,41 @@ export default {
     },
 
     async inviteMember() {
-      const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}/invite/${this.memberName}`, {
+      const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}/users`, {
         method: 'POST',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify({
+          username: this.memberName
+        })
       })
       const data = await response.json()
       console.log(data)
 
       if (response.ok) {
-        this.group.members.push(this.memberName)
-        // edit modal doesnt get the new member data unless we refectch
+        this.getUsersInGroup()
         this.getGroupTasks()
         this.$bvModal.hide('modal-4')
       } else {
         console.error('Error inviting member:', data.message || 'Unknown error')
+        alert('Error inviting member: ' + data.message || 'Unknown error')
+      }
+    },
+    async fetchMemberData(memberId) {
+      console.log('fetching member data for', memberId)
+      const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}/users/${memberId}`, {
+        credentials: 'include'
+      })
+      const data = await response.json()
+
+      if (response.ok) {
+        this.activeMemberData = data
+
+        console.log('activeMemberData', this.activeMemberData)
+      } else {
+        console.error('Error fetching member data:', data.message || 'Unknown error')
       }
     },
     initials(member) {
@@ -332,6 +392,7 @@ export default {
   },
   mounted() {
     this.fetchGroup()
+    this.getUsersInGroup()
     this.getGroupTasks()
     this.getGroupMeetings()
   },
@@ -650,5 +711,39 @@ main {
 
 .newMeetingButton:active {
   transform: translateY(0px);
+}
+
+.delete-member-button {
+  background-color: #1324c1;
+  color: #ffffff;
+  border: none;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 15px;
+  font-size: 14px;
+  cursor: pointer;
+  order: 3;
+}
+
+.avatar-button {
+  padding: 0;
+  border: none;
+  background: none;
+  position: relative;
+  margin-left: 5px;
+}
+
+.full-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10rem;
+  /* adjust as needed */
+  background-color: #3498db;
+  color: #fff;
+  font-weight: bold;
 }
 </style>

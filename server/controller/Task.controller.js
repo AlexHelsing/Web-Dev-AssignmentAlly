@@ -36,6 +36,24 @@ async function createTask(req, res) {
   }
 }
 
+async function getAllTasks(req, res) {
+  try {
+    const tasks = await Task.find()
+      .populate('Assignee', ['username'])
+      .populate({
+        path: 'GroupId',
+        populate: {
+          path: 'members',
+          select: 'username',
+        },
+      });
+
+    res.json(tasks);
+  } catch (err) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
 async function getTasksByGroup(req, res) {
   const groupId = req.params.groupId;
 
@@ -188,6 +206,16 @@ async function changeTaskStatus(req, res) {
   }
 }
 
+async function deleteAllTasks(req, res) {
+  try {
+    const deletedTasks = await Task.deleteMany();
+
+    res.json(deletedTasks);
+  } catch (err) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
 module.exports = {
   createTask,
   getTask,
@@ -197,4 +225,6 @@ module.exports = {
   changeTaskStatus,
   getTasksByGroup,
   getUserTasks,
+  getAllTasks,
+  deleteAllTasks,
 };
