@@ -20,14 +20,17 @@
         <b-button v-b-modal.modal-2>Join Existing Group</b-button>
       </div>
       <b-modal id="modal-1" title="Create Assignment Group" centered>
+        <b-alert v-model="showErrorAlert" variant="danger" dismissible fade>
+          {{ errorMessage }}
+        </b-alert>
         <div class="mb-3">
           <label for="assignment-group-name" class="form-label">Name</label>
-          <input type="text" id="assignment-group-name" class="form-control" v-model="assignmentGroupName"
+          <input required type="text" id="assignment-group-name" class="form-control" v-model="assignmentGroupName"
             placeholder="Web development">
         </div>
         <div class="mb-3">
           <label for="course" class="form-label">Course Code</label>
-          <input type="text" id="course" class="form-control" v-model="course" placeholder="DIT341">
+          <input required type="text" id="course" class="form-control" v-model="course" placeholder="DIT341">
         </div>
         <div slot="modal-footer" class="w-100 d-flex justify-content-end">
           <b-button variant="primary" @click="createGroup">Create</b-button>
@@ -60,6 +63,7 @@
     <div class="section">
       <h1 class="section-title">My Meetings</h1>
       <div class="section-content-meetings">
+        <div class="empty-list-message" v-if="meetings.length == 0">No meetings scheduled!</div>
         <Meeting v-for="meeting in meetings" :meeting-id="meeting._id" :key="meeting._id"
           :meeting-name="meeting.MeetingName" :belongs-to-group="meeting.GroupId" :meeting-agenda="meeting.MeetingAgenda"
           :meeting-location="meeting.MeetingLocation" :meeting-date="meeting.MeetingDate"
@@ -129,6 +133,8 @@ export default {
           this.$bvModal.hide('modal-1')
         } else {
           console.error('Error creating group:', data.message || 'Unknown error')
+          this.errorMessage = data.message || 'Unknown error'
+          this.showErrorAlert = true
         }
       } catch (error) {
         console.error('Error creating group:', error)
@@ -157,7 +163,7 @@ export default {
           this.$bvModal.hide('modal-2')
         } else {
           console.error('Error joining group:', data.message || 'Unknown error')
-          this.errorMessage = 'Failed to join the group. Please check the group name and try again.'
+          this.errorMessage = data.message || 'Unknown error'
           this.showErrorAlert = true
         }
       } catch (error) {

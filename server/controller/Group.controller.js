@@ -18,6 +18,16 @@ async function createGroup(req, res) {
     createdBy: currentUser.id,
   });
 
+  // Check if group already exists
+  const groupExists = await Group.findOne({
+    assignmentGroupName: assignmentGroupName,
+  });
+  if (groupExists) {
+    return res
+      .status(400)
+      .json({ message: 'Group already exists, choose another name' });
+  }
+
   try {
     newGroup.members.push(currentUser.id);
     const savedGroup = await newGroup.save();
@@ -101,7 +111,16 @@ async function joinGroup(req, res) {
     const group = await Group.findOne({ assignmentGroupName: groupName });
 
     if (!group) {
-      return res.status(404).json({ message: 'Group not found' });
+      return res
+        .status(404)
+        .json({ message: 'Group doesnt exist, try again!' });
+    }
+
+    // check if user is already in group
+    if (group.members.includes(userToJoin.id)) {
+      return res
+        .status(400)
+        .json({ message: 'You are already in this group!' });
     }
 
     group.members.push(userToJoin.id);
