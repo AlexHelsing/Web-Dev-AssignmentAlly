@@ -56,15 +56,15 @@
             :task-status="task.Status" :task-label="task.Priority" :task-date="task.DueDate" />
         </div>
         <button v-b-modal.modal-1 class="newTaskButton"> New Task </button>
-        <b-modal size="lg" id="modal-1" title="Create a task " centered>
+        <b-modal size="lg" id="modal-1" title="Create Task " centered>
           <div class="mb-3">
-            <label for="task-name" class="form-label">Task Name, gotta specify our data better</label>
-            <input required type="text" id="task-name" class="form-control" v-model="taskName" placeholder="taskname">
+            <label for="task-name" class="form-label">Title</label>
+            <input required type="text" id="task-name" class="form-control" v-model="taskName" placeholder="Do Q4...">
           </div>
           <div class="mb-3">
-            <label for="task-description" class="form-label">description</label>
+            <label for="task-description" class="form-label">Description</label>
             <input required type="text" id="task-description" class="form-control" v-model="taskDescription"
-              placeholder="description">
+              placeholder="Complete the writeup for Q4...">
           </div>
           <div class="mb-3">
             <label for="task-priority" class="form-label">Priority</label>
