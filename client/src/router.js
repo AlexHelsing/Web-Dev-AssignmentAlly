@@ -39,6 +39,11 @@ const router = new Router({
       path: '/admin',
       name: 'admin',
       component: AdminPageVue
+    },
+    {
+      // redirect to dashboard if on / or some random route not defined
+      path: '*',
+      redirect: '/dashboard'
     }
   ]
 })
