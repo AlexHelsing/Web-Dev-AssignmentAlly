@@ -61,9 +61,19 @@ async function getMyGroups(req, res) {
 }
 
 async function getGroup(req, res) {
-  // will need to check if user is in group here later but i cba right now
+  const { id } = req.user;
   try {
     const group = await Group.findById(req.params.id);
+
+    // check if group exists
+    if (!group) {
+      return res.status(404).json({ message: 'Group not found' });
+    }
+
+    // check if current user is in group
+    if (!group.members.includes(id)) {
+      return res.status(401).json({ message: 'Not authorized' });
+    }
 
     // convert the members array of ids to an array of usernames
     const members = await User.find({ _id: { $in: group.members } });

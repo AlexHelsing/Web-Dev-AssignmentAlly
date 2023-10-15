@@ -257,6 +257,7 @@ export default {
       console.log(data)
       this.tasks = data
     },
+
     async createGroupTask() {
       if (!this.taskName || !this.taskDescription || !this.taskPriority || !this.taskDueDate) {
         alert('Please fill out all fields')

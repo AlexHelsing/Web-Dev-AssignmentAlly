@@ -27,7 +27,27 @@ const router = new Router({
     {
       path: '/group/:id',
       name: 'group',
-      component: Group
+      component: Group,
+      beforeEnter: (to, from, next) => {
+        fetch(`http://localhost:3000/api/groups/${to.params.id}`, {
+          credentials: 'include'
+        })
+          // if error message says 'Not authorized', redirect to login
+          .then((res) => {
+            console.log(res)
+            if (res.status === 401) {
+              next('/dashboard')
+              alert('Not authorized')
+            } else if (res.status === 404) {
+              next('/dashboard')
+              alert('Group not found')
+            } else if (res.status === 400) {
+              next('/dashboard')
+            } else {
+              next()
+            }
+          })
+      }
     },
     {
       path: '/signup',
