@@ -11,9 +11,7 @@
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
-        <b-nav-item class="test" to="/dashboard">Dashboard</b-nav-item>
-        <b-nav-item class="disabled" to="/meetings">Meetings</b-nav-item>
-        <b-nav-item class="disabled" to="/tasks">Tasks</b-nav-item>
+        <b-nav-item to="/dashboard">Dashboard</b-nav-item>
         <b-nav-item v-if="isAdmin" to="/admin">Admin</b-nav-item>
       </b-navbar-nav>
     </b-collapse>
