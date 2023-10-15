@@ -58,7 +58,21 @@ const router = new Router({
     {
       path: '/admin',
       name: 'admin',
-      component: AdminPageVue
+      component: AdminPageVue,
+      beforeEnter: async (to, from, next) => {
+        // ... check if user is admin
+        const currentUser = await getCurrentUser()
+        console.log(currentUser.username)
+        if (
+          currentUser.username !== 'admin' &&
+          currentUser.username !== 'Admin'
+        ) {
+          next('/dashboard')
+          alert('Not admin gtfo')
+        } else {
+          next()
+        }
+      }
     },
     {
       // redirect to dashboard if on / or some random route not defined
