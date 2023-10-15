@@ -9,7 +9,10 @@
           </b-avatar>
         </template>
       </b-avatar-group>
-      <b-modal id="modal-8" title="USER INFO" centered>
+      <b-modal @hidden="handleModalHidden" id="modal-8" title="USER INFO" centered>
+        <b-alert v-model="showErrorAlert" variant="danger" dismissible fade>
+          {{ errorMessage }}
+        </b-alert>
         <div class="mb-3">
           <template v-if="activeMemberData">
             Username: {{ activeMemberData.username }}
@@ -29,7 +32,10 @@
         <button @click="deleteGroup" class="delete-group-button">Delete group</button>
         <button v-b-modal.modal-4 class="invite-button">Invite member</button>
       </span>
-      <b-modal id="modal-4" title="invite member" centered>
+      <b-modal @hidden="handleModalHidden" id="modal-4" title="invite member" centered>
+        <b-alert v-model="showErrorAlert" variant="danger" dismissible fade>
+          {{ errorMessage }}
+        </b-alert>
         <div class="mb-3">
           <label for="member-name" class="form-label">Member Name</label>
           <input type="text" id="member-name" class="form-control" v-model="memberName" placeholder="Enter member name">
@@ -144,12 +150,20 @@
 <script>
 import Task from '../components/Task.vue'
 import { EventBus } from '../event-bus'
+import { store } from '../store/store'
+import { BAlert } from 'bootstrap-vue'
 import Meeting from '../components/Meeting.vue'
 
 export default {
   components: {
     Task,
-    Meeting
+    Meeting,
+    BAlert
+  },
+  computed: {
+    user() {
+      return store.user
+    }
   },
   data() {
     return {
@@ -169,6 +183,8 @@ export default {
       meetingLocation: '',
       meetingDate: '',
       meetingTime: '',
+      showErrorAlert: false,
+      errorMessage: '',
       resources: [
         {
           name: 'Assignment file',
@@ -285,6 +301,8 @@ export default {
         this.$bvModal.hide('modal-8')
       } else {
         console.error('Error removing member from group:', data.message || 'Unknown error')
+        this.errorMessage = data.message || 'Unknown error'
+        this.showErrorAlert = true
       }
     },
     async createGroupMeetings() {
@@ -332,7 +350,8 @@ export default {
         this.$bvModal.hide('modal-4')
       } else {
         console.error('Error inviting member:', data.message || 'Unknown error')
-        alert('Error inviting member: ' + data.message || 'Unknown error')
+        this.errorMessage = data.message || 'Unknown error'
+        this.showErrorAlert = true
       }
     },
     async fetchMemberData(memberId) {
@@ -362,6 +381,10 @@ export default {
     },
     cancelEditResourceLink(index) {
       this.resources[index].editing = false
+    },
+    handleModalHidden() {
+      this.showErrorAlert = false
+      this.errorMessage = ''
     },
     async updateResourceLink(index) {
       const resource = this.resources[index]

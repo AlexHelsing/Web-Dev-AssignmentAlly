@@ -6,7 +6,7 @@
   </div> -->
   <div class="main">
     <div class="section">
-      <h1 class="section-title">Assignment Group</h1>
+      <h1 class="section-title">Assignment Groups</h1>
       <div class="section-content-1">
         <router-link v-for="group in groups" :key="group.id" :to="'/group/' + group._id" tag="div"
           class="router-link-wrapper">
@@ -232,17 +232,23 @@ export default {
 .group-card {
   background-color: white;
   color: black;
-  padding: 10px;
   font-size: larger;
   font-style: italic;
   font-weight: 500;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  min-height: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.3s ease;
+  /* Add transition effect */
+}
+
+/* Add hover effect */
+.group-card:hover {
+  background-color: #e0f2f1;
+  /* Change the background color on hover */
 }
 
 .group-info {

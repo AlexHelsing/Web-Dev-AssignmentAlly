@@ -83,22 +83,28 @@ async function InviteMemberToGroup(req, res) {
   try {
     const group = await Group.findById(groupId);
 
-    console.log('Group: ' + group);
-
+    // check if group exists
     if (!group) {
       return res.status(404).json({ message: 'Group not found' });
     }
 
-    const userToInvite = await User.findOne({
-      username: usernameToInvite,
-    }).then((user) => user._id);
-    console.log('User to invite: ' + userToInvite);
+    // check if user exists
+    const userToInvite = await User.findOne({ username: usernameToInvite });
 
     if (!userToInvite) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    group.members.push(userToInvite);
+    // check if user is already in group
+    if (group.members.includes(userToInvite.id)) {
+      return res
+        .status(400)
+        .json({ message: 'User is already in this group!' });
+    }
+
+    // add user to group
+    group.members.push(userToInvite.id);
+
     await group.save();
 
     return res.status(200).json({ message: 'User added to group' });
