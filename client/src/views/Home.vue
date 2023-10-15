@@ -11,9 +11,19 @@
         <router-link v-for="group in groups" :key="group.id" :to="'/group/' + group._id" tag="div"
           class="router-link-wrapper">
           <b-card class="group-card">
-            <b-card-text>
-              {{ group.assignmentGroupName }}
-            </b-card-text>
+            <div class="group-info">
+              <b-card-text class="group-title">
+                {{ group.assignmentGroupName }}
+              </b-card-text>
+              <div class="group-course">
+                <div class="course-code">{{ group.course }}</div>
+              </div>
+            </div>
+            <div v-if="group.members" class="group-members">
+              <b-avatar variant="primary" v-for="member in group.members" :key="member._id" class="avatar">
+                {{ initials(member.username).toUpperCase() }}
+              </b-avatar>
+            </div>
           </b-card>
         </router-link>
         <b-button v-b-modal.modal-1>Create New Group</b-button>
@@ -105,6 +115,7 @@ export default {
       })
       const data = await response.json()
       this.groups = data
+      console.log(this.groups)
     },
     async fetchMyTasks() {
       const response = await fetch('http://localhost:3000/api/tasks/tasks', {
@@ -169,6 +180,10 @@ export default {
       } catch (error) {
         console.error('Error joining group:', error)
       }
+    },
+    initials(member) {
+      const name = member
+      return `${name[0].charAt(0)}${name[1] ? name[1].charAt(0) : ''}`
     }
   },
 
@@ -228,6 +243,53 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.group-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+}
+
+.group-title {
+  font-size: larger;
+  font-style: italic;
+  font-weight: 800;
+  margin-bottom: 5px;
+}
+
+.group-course {
+  font-size: small;
+}
+
+.course-code {
+  font-weight: bold;
+  font-size: medium;
+
+}
+
+.group-members {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .section-content-1 {

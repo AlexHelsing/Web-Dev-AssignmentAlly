@@ -48,7 +48,12 @@ async function getAllGroups(req, res) {
 async function getMyGroups(req, res) {
   console.log('Getting groups for user: ' + req.user.id);
   try {
-    const groups = await Group.find({ members: req.user.id });
+    // POPULATE THE MEMBERS ARRAY WITH THE USER OBJECTS but just keep the id and username
+    const groups = await Group.find({ members: req.user.id }).populate(
+      'members',
+      ['username']
+    );
+
     res.json(groups);
   } catch (err) {
     res.status(500).json({ message: err.message });
