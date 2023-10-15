@@ -19,21 +19,24 @@
         <b-button v-b-modal.modal-1>Create New Group</b-button>
         <b-button v-b-modal.modal-2>Join Existing Group</b-button>
       </div>
-      <b-modal id="modal-1" title="Create an assignment group" centered>
+      <b-modal id="modal-1" title="Create Assignment Group" centered>
         <div class="mb-3">
-          <label for="assignment-group-name" class="form-label">assignmentGroupName</label>
+          <label for="assignment-group-name" class="form-label">Name</label>
           <input type="text" id="assignment-group-name" class="form-control" v-model="assignmentGroupName"
-            placeholder="Enter assignmentGroupName">
+            placeholder="Web development">
         </div>
         <div class="mb-3">
-          <label for="course" class="form-label">CourseCode</label>
-          <input type="text" id="course" class="form-control" v-model="course" placeholder="Enter course name">
+          <label for="course" class="form-label">Course Code</label>
+          <input type="text" id="course" class="form-control" v-model="course" placeholder="DIT341">
         </div>
         <div slot="modal-footer" class="w-100 d-flex justify-content-end">
           <b-button variant="primary" @click="createGroup">Create</b-button>
         </div>
       </b-modal>
       <b-modal id="modal-2" title="Join Existing Group" centered>
+        <b-alert v-model="showErrorAlert" variant="danger" dismissible fade>
+          {{ errorMessage }}
+        </b-alert>
         <div class="mb-3">
           <label for="existing-group-name" class="form-label">Group Name</label>
           <input type="text" id="existing-group-name" class="form-control" v-model="existingGroupName"
@@ -69,6 +72,7 @@
 <script>
 import { store } from '../store/store'
 import { EventBus } from '../event-bus'
+import { BAlert } from 'bootstrap-vue'
 import Task from '../components/Task.vue'
 import Meeting from '../components/Meeting.vue'
 
@@ -80,12 +84,15 @@ export default {
       meetings: [],
       assignmentGroupName: '',
       existingGroupName: '',
-      course: ''
+      course: '',
+      showErrorAlert: false,
+      errorMessage: ''
     }
   },
   components: {
     Task,
-    Meeting
+    Meeting,
+    BAlert
   },
   methods: {
     async fetchMyGroups() {
@@ -150,6 +157,8 @@ export default {
           this.$bvModal.hide('modal-2')
         } else {
           console.error('Error joining group:', data.message || 'Unknown error')
+          this.errorMessage = 'Failed to join the group. Please check the group name and try again.'
+          this.showErrorAlert = true
         }
       } catch (error) {
         console.error('Error joining group:', error)
