@@ -4,7 +4,7 @@ const GroupController = require('../controller/Group.controller');
 
 GroupRouter.post('/', GroupController.createGroup);
 GroupRouter.get('/', GroupController.getAllGroups);
-GroupRouter.get('/myGroups', GroupController.getMyGroups);
+GroupRouter.get('/groups', GroupController.getMyGroups);
 GroupRouter.get('/:id', GroupController.getGroup);
 GroupRouter.patch('/:groupName', GroupController.joinGroup);
 GroupRouter.patch('/:groupId/set-resource/:type/', GroupController.setResource);

@@ -57,17 +57,6 @@ router.post('/logout', function (req, res, next) {
   });
 });
 
-router.get('/current-user', function (req, res) {
-  // Check if the user is authenticated
-  if (req.isAuthenticated()) {
-    // Send the user information to the frontend
-    res.json({ user: req.user });
-  } else {
-    // If the user is not authenticated, send an empty object or an error message
-    return res.status(401).json({ message: 'Not authorized' });
-  }
-});
-
 router.post('/', async function (req, res, next) {
   try {
     const existingUser = await User.findOne({ username: req.body.username });
@@ -83,18 +72,22 @@ router.post('/', async function (req, res, next) {
         password: hash,
         salt: salt,
       });
-      user.save();
-      // Log the user in after successful registration
-      req.login(user, function (err) {
+
+      await user.save(); // Adding await here to ensure the user is saved before proceeding
+
+      req.logIn(user, function (err) {
         if (err) {
           return next(err);
         }
-        // Redirect to dashboard after successful login
-        res.redirect('http://localhost:8080/dashboard');
+        // Redirect to /login after a successful registration
+        res.status(200).json({ message: 'Successfully registered' });
       });
     } else {
       console.log('Username already exists');
-      res.redirect('http://localhost:8080/signup');
+      // Send JSON response instead of redirecting
+      res
+        .status(400)
+        .json({ message: 'Username already exists', redirectTo: '/signup' });
     }
   } catch (err) {
     res.status(400).json({ message: err.message });
