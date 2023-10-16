@@ -281,6 +281,12 @@ export default {
       this.$bvModal.hide('modal-1')
       console.log(data)
       this.tasks.push(data)
+
+      // clear the form
+      this.taskName = ''
+      this.taskDescription = ''
+      this.taskPriority = 'Low'
+      this.taskDueDate = ''
     },
     async getGroupMeetings() {
       const response = await fetch(`http://localhost:3000/api/meetings/${this.groupIdParam}`, {
@@ -329,6 +335,13 @@ export default {
       console.log(data)
       this.meetings.push(data)
       this.$bvModal.hide('modal-2')
+
+      // clear the form
+      this.meetingName = ''
+      this.meetingAgenda = ''
+      this.meetingLocation = ''
+      this.meetingDate = ''
+      this.meetingTime = ''
     },
 
     async inviteMember() {
