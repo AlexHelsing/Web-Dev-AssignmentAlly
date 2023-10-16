@@ -120,10 +120,16 @@ export default {
   flex: 1;
   display: flex;
   align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .task-name {
   font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .separator {
@@ -137,6 +143,9 @@ export default {
 .task-description {
   flex: 2;
   text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 #task-details {
@@ -153,7 +162,7 @@ export default {
 }
 
 @media screen and (max-width: 768px) {
-  .task-item {
+  #task-item {
     flex-direction: column;
     align-items: flex-start;
     padding: 15px;
@@ -165,9 +174,10 @@ export default {
 
   .task-code-container,
   .task-description,
-  .task-details {
+  #task-details {
     width: 100%;
     margin-bottom: 10px;
+    white-space: normal;
   }
 
   .task-name,
@@ -183,7 +193,7 @@ export default {
     text-align: left;
   }
 
-  .task-details {
+  #task-details {
     justify-content: space-between;
   }
 }
