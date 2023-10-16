@@ -85,4 +85,4 @@ The current user then has a dashboard allowing him to see everything thats on th
 
 ## Teaser (MS3)
 
-![Teaser](./images/teaser.png)
+![Teaser](./images/imgWebProj.png)
