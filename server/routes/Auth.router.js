@@ -3,7 +3,6 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local');
 var crypto = require('crypto');
 var User = require('../models/User.mongo');
-const { SourceTextModule } = require('vm');
 
 passport.use(
   new LocalStrategy(function (username, password, done) {
@@ -83,18 +82,22 @@ router.post('/', async function (req, res, next) {
         password: hash,
         salt: salt,
       });
-      user.save();
-      // Log the user in after successful registration
-      req.login(user, function (err) {
+
+      await user.save(); // Adding await here to ensure the user is saved before proceeding
+
+      req.logIn(user, function (err) {
         if (err) {
           return next(err);
         }
-        // Redirect to dashboard after successful login
-        res.redirect('http://localhost:8080/dashboard');
+        // Redirect to /login after a successful registration
+        res.status(200).json({ message: 'Successfully registered' });
       });
     } else {
       console.log('Username already exists');
-      res.redirect('http://localhost:8080/signup');
+      // Send JSON response instead of redirecting
+      res
+        .status(400)
+        .json({ message: 'Username already exists', redirectTo: '/signup' });
     }
   } catch (err) {
     res.status(400).json({ message: err.message });
