@@ -6,9 +6,19 @@
         <router-link v-for="group in groups" :key="group.id" :to="'/group/' + group._id" tag="div"
           class="router-link-wrapper">
           <b-card class="group-card">
-            <b-card-text>
-              {{ group.assignmentGroupName }}
-            </b-card-text>
+            <div class="group-info">
+              <b-card-text class="group-title">
+                {{ group.assignmentGroupName }}
+              </b-card-text>
+              <div class="group-course">
+                <div class="course-code">{{ group.course }}</div>
+              </div>
+            </div>
+            <div v-if="group.members" class="group-members">
+              <b-avatar variant="primary" v-for="member in group.members" :key="member._id" class="avatar">
+                {{ initials(member.username).toUpperCase() }}
+              </b-avatar>
+            </div>
           </b-card>
         </router-link>
         <button @click="deleteAllGroups" class="delete-all-groups-btn">DELETE ALL GROUPS</button>
@@ -159,6 +169,10 @@ export default {
       } catch (error) {
         console.error('Error creating group:', error)
       }
+    },
+    initials(member) {
+      const name = member
+      return `${name[0].charAt(0)}${name[1] ? name[1].charAt(0) : ''}`
     }
   },
   mounted() {

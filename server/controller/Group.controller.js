@@ -38,7 +38,7 @@ async function createGroup(req, res) {
 }
 async function getAllGroups(req, res) {
   try {
-    const groups = await Group.find();
+    const groups = await Group.find().populate('members', ['username']);
     res.json(groups);
   } catch (err) {
     res.status(500).json({ message: err.message });

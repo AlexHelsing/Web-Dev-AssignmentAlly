@@ -236,6 +236,7 @@ export default {
   font-style: italic;
   font-weight: 500;
   border-radius: 5px;
+  height: 200px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   display: flex;
