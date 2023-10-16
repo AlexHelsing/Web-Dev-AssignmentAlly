@@ -3,7 +3,7 @@ const MeetingRouter = require('express').Router();
 const MeetingController = require('../controller/Meeting.controller');
 
 MeetingRouter.get('/', MeetingController.getAllMeetings);
-MeetingRouter.get('/meetings', MeetingController.getMeetingsByUser);
+MeetingRouter.get('/myMeetings', MeetingController.getMeetingsByUser);
 MeetingRouter.delete('/', MeetingController.deleteAllMeetings);
 MeetingRouter.get('/:groupId', MeetingController.getMeetingsByGroup);
 MeetingRouter.get('/:meetingId', MeetingController.getMeeting);
