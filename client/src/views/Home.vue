@@ -243,7 +243,10 @@ export default {
   align-items: center;
   justify-content: center;
   transition: background-color 0.3s ease;
-  /* Add transition effect */
+
+  @media screen and (max-width: 600px) {
+    height: auto;
+  }
 }
 
 /* Add hover effect */
