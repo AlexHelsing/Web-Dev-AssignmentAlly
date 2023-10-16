@@ -36,15 +36,34 @@ passport.deserializeUser(function (user, done) {
 
 var router = express.Router();
 
-router.post(
-  '/login',
-  passport.authenticate('local', {
-    // redirect to dashboard or whatever route we got later on
-    successReturnToOrRedirect: 'http://localhost:8080/dashboard',
-    failureRedirect: 'back',
-    failureMessage: true,
-  })
-);
+router.post('/login', function (req, res, next) {
+  passport.authenticate('local', function (err, user, info) {
+    if (err) {
+      return next(err);
+    }
+
+    if (!user) {
+      // No user found or password mismatch
+      return res.status(400).json({
+        message: info.message || 'Login failed',
+      });
+    }
+
+    req.logIn(user, function (err) {
+      if (err) {
+        return next(err);
+      }
+      // Return success status and optionally any user details you want to share
+      return res.status(200).json({
+        message: 'Successfully logged in',
+        user: {
+          id: user.id,
+          username: user.username,
+        },
+      });
+    });
+  })(req, res, next); // calling the middleware function with our Express request, response & next middleware
+});
 
 router.post('/logout', function (req, res, next) {
   req.logout(function (err) {
