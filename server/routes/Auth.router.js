@@ -47,6 +47,17 @@ router.post(
   })
 );
 
+router.get('/current-user', function (req, res) {
+  // Check if the user is authenticated
+  if (req.isAuthenticated()) {
+    // Send the user information to the frontend
+    res.json({ user: req.user });
+  } else {
+    // If the user is not authenticated, send an empty object or an error message
+    return res.status(401).json({ message: 'Not authorized' });
+  }
+});
+
 router.post('/logout', function (req, res, next) {
   req.logout(function (err) {
     if (err) {
