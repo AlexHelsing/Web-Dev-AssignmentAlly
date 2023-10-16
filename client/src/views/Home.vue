@@ -140,7 +140,7 @@ export default {
         })
         const data = await response.json()
         if (response.ok) {
-          this.groups.push(data)
+          this.fetchMyGroups()
           this.$bvModal.hide('modal-1')
         } else {
           console.error('Error creating group:', data.message || 'Unknown error')
