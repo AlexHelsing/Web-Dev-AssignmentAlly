@@ -9,7 +9,10 @@
           </b-avatar>
         </template>
       </b-avatar-group>
-      <b-modal id="modal-8" title="USER INFO" centered>
+      <b-modal @hidden="handleModalHidden" id="modal-8" title="USER INFO" centered>
+        <b-alert v-model="showErrorAlert" variant="danger" dismissible fade>
+          {{ errorMessage }}
+        </b-alert>
         <div class="mb-3">
           <template v-if="activeMemberData">
             Username: {{ activeMemberData.username }}
@@ -29,7 +32,10 @@
         <button @click="deleteGroup" class="delete-group-button">Delete group</button>
         <button v-b-modal.modal-4 class="invite-button">Invite member</button>
       </span>
-      <b-modal id="modal-4" title="invite member" centered>
+      <b-modal @hidden="handleModalHidden" id="modal-4" title="invite member" centered>
+        <b-alert v-model="showErrorAlert" variant="danger" dismissible fade>
+          {{ errorMessage }}
+        </b-alert>
         <div class="mb-3">
           <label for="member-name" class="form-label">Member Name</label>
           <input type="text" id="member-name" class="form-control" v-model="memberName" placeholder="Enter member name">
@@ -50,15 +56,15 @@
             :task-status="task.Status" :task-label="task.Priority" :task-date="task.DueDate" />
         </div>
         <button v-b-modal.modal-1 class="newTaskButton"> New Task </button>
-        <b-modal size="lg" id="modal-1" title="Create a task " centered>
+        <b-modal size="lg" id="modal-1" title="Create Task " centered>
           <div class="mb-3">
-            <label for="task-name" class="form-label">Task Name, gotta specify our data better</label>
-            <input required type="text" id="task-name" class="form-control" v-model="taskName" placeholder="taskname">
+            <label for="task-name" class="form-label">Title</label>
+            <input required type="text" id="task-name" class="form-control" v-model="taskName" placeholder="Do Q4...">
           </div>
           <div class="mb-3">
-            <label for="task-description" class="form-label">description</label>
+            <label for="task-description" class="form-label">Description</label>
             <input required type="text" id="task-description" class="form-control" v-model="taskDescription"
-              placeholder="description">
+              placeholder="Complete the writeup for Q4...">
           </div>
           <div class="mb-3">
             <label for="task-priority" class="form-label">Priority</label>
@@ -144,12 +150,20 @@
 <script>
 import Task from '../components/Task.vue'
 import { EventBus } from '../event-bus'
+import { store } from '../store/store'
+import { BAlert } from 'bootstrap-vue'
 import Meeting from '../components/Meeting.vue'
 
 export default {
   components: {
     Task,
-    Meeting
+    Meeting,
+    BAlert
+  },
+  computed: {
+    user() {
+      return store.user
+    }
   },
   data() {
     return {
@@ -169,6 +183,8 @@ export default {
       meetingLocation: '',
       meetingDate: '',
       meetingTime: '',
+      showErrorAlert: false,
+      errorMessage: '',
       resources: [
         {
           name: 'Assignment file',
@@ -241,6 +257,7 @@ export default {
       console.log(data)
       this.tasks = data
     },
+
     async createGroupTask() {
       if (!this.taskName || !this.taskDescription || !this.taskPriority || !this.taskDueDate) {
         alert('Please fill out all fields')
@@ -285,6 +302,8 @@ export default {
         this.$bvModal.hide('modal-8')
       } else {
         console.error('Error removing member from group:', data.message || 'Unknown error')
+        this.errorMessage = data.message || 'Unknown error'
+        this.showErrorAlert = true
       }
     },
     async createGroupMeetings() {
@@ -332,7 +351,8 @@ export default {
         this.$bvModal.hide('modal-4')
       } else {
         console.error('Error inviting member:', data.message || 'Unknown error')
-        alert('Error inviting member: ' + data.message || 'Unknown error')
+        this.errorMessage = data.message || 'Unknown error'
+        this.showErrorAlert = true
       }
     },
     async fetchMemberData(memberId) {
@@ -362,6 +382,10 @@ export default {
     },
     cancelEditResourceLink(index) {
       this.resources[index].editing = false
+    },
+    handleModalHidden() {
+      this.showErrorAlert = false
+      this.errorMessage = ''
     },
     async updateResourceLink(index) {
       const resource = this.resources[index]

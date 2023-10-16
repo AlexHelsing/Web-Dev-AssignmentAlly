@@ -18,6 +18,16 @@ async function createGroup(req, res) {
     createdBy: currentUser.id,
   });
 
+  // Check if group already exists
+  const groupExists = await Group.findOne({
+    assignmentGroupName: assignmentGroupName,
+  });
+  if (groupExists) {
+    return res
+      .status(400)
+      .json({ message: 'Group already exists, choose another name' });
+  }
+
   try {
     newGroup.members.push(currentUser.id);
     const savedGroup = await newGroup.save();
@@ -38,7 +48,12 @@ async function getAllGroups(req, res) {
 async function getMyGroups(req, res) {
   console.log('Getting groups for user: ' + req.user.id);
   try {
-    const groups = await Group.find({ members: req.user.id });
+    // POPULATE THE MEMBERS ARRAY WITH THE USER OBJECTS but just keep the id and username
+    const groups = await Group.find({ members: req.user.id }).populate(
+      'members',
+      ['username']
+    );
+
     res.json(groups);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -46,9 +61,19 @@ async function getMyGroups(req, res) {
 }
 
 async function getGroup(req, res) {
-  // will need to check if user is in group here later but i cba right now
+  const { id } = req.user;
   try {
     const group = await Group.findById(req.params.id);
+
+    // check if group exists
+    if (!group) {
+      return res.status(404).json({ message: 'Group not found' });
+    }
+
+    // check if current user is in group
+    if (!group.members.includes(id)) {
+      return res.status(401).json({ message: 'Not authorized' });
+    }
 
     // convert the members array of ids to an array of usernames
     const members = await User.find({ _id: { $in: group.members } });
@@ -68,22 +93,28 @@ async function InviteMemberToGroup(req, res) {
   try {
     const group = await Group.findById(groupId);
 
-    console.log('Group: ' + group);
-
+    // check if group exists
     if (!group) {
       return res.status(404).json({ message: 'Group not found' });
     }
 
-    const userToInvite = await User.findOne({
-      username: usernameToInvite,
-    }).then((user) => user._id);
-    console.log('User to invite: ' + userToInvite);
+    // check if user exists
+    const userToInvite = await User.findOne({ username: usernameToInvite });
 
     if (!userToInvite) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    group.members.push(userToInvite);
+    // check if user is already in group
+    if (group.members.includes(userToInvite.id)) {
+      return res
+        .status(400)
+        .json({ message: 'User is already in this group!' });
+    }
+
+    // add user to group
+    group.members.push(userToInvite.id);
+
     await group.save();
 
     return res.status(200).json({ message: 'User added to group' });
@@ -101,7 +132,16 @@ async function joinGroup(req, res) {
     const group = await Group.findOne({ assignmentGroupName: groupName });
 
     if (!group) {
-      return res.status(404).json({ message: 'Group not found' });
+      return res
+        .status(404)
+        .json({ message: 'Group doesnt exist, try again!' });
+    }
+
+    // check if user is already in group
+    if (group.members.includes(userToJoin.id)) {
+      return res
+        .status(400)
+        .json({ message: 'You are already in this group!' });
     }
 
     group.members.push(userToJoin.id);

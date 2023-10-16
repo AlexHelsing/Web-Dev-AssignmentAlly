@@ -27,7 +27,27 @@ const router = new Router({
     {
       path: '/group/:id',
       name: 'group',
-      component: Group
+      component: Group,
+      beforeEnter: (to, from, next) => {
+        fetch(`http://localhost:3000/api/groups/${to.params.id}`, {
+          credentials: 'include'
+        })
+          // if error message says 'Not authorized', redirect to login
+          .then((res) => {
+            console.log(res)
+            if (res.status === 401) {
+              next('/dashboard')
+              alert('Not authorized')
+            } else if (res.status === 404) {
+              next('/dashboard')
+              alert('Group not found')
+            } else if (res.status === 400) {
+              next('/dashboard')
+            } else {
+              next()
+            }
+          })
+      }
     },
     {
       path: '/signup',
@@ -38,7 +58,26 @@ const router = new Router({
     {
       path: '/admin',
       name: 'admin',
-      component: AdminPageVue
+      component: AdminPageVue,
+      beforeEnter: async (to, from, next) => {
+        // ... check if user is admin
+        const currentUser = await getCurrentUser()
+        console.log(currentUser.username)
+        if (
+          currentUser.username !== 'admin' &&
+          currentUser.username !== 'Admin'
+        ) {
+          next('/dashboard')
+          alert('Not admin gtfo')
+        } else {
+          next()
+        }
+      }
+    },
+    {
+      // redirect to dashboard if on / or some random route not defined
+      path: '*',
+      redirect: '/dashboard'
     }
   ]
 })
