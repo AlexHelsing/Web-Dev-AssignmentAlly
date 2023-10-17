@@ -126,6 +126,10 @@ export default {
       this.tasks = data
     },
     async createGroup() {
+      if (this.assignmentGroupName.length >= 16 || this.course.length >= 16) {
+        alert('Group and course name must be 16 characters or less')
+        return
+      }
       try {
         const response = await fetch('http://localhost:3000/api/groups/', {
           method: 'POST',
@@ -268,6 +272,8 @@ export default {
   font-style: italic;
   font-weight: 800;
   margin-bottom: 5px;
+  white-space: nowrap;
+  word-wrap: hidden;
 }
 
 .group-course {
@@ -334,6 +340,44 @@ export default {
 
 @media (max-width: 600px) {
   .section-content-1 {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+}
+
+  @media (max-width: 1200px) {
+  .section-content-tasks {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .section-content-tasks {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .section-content-tasks {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+}
+
+  @media (max-width: 1200px) {
+  .section-content-meetings {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .section-content-meetings {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .section-content-meetings {
     grid-template-columns: 1fr;
     width: 100%;
   }

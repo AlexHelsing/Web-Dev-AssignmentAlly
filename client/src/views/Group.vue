@@ -462,6 +462,8 @@ main {
   font-weight: bold;
   flex-grow: 1;
   text-align: center;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .member-container {
