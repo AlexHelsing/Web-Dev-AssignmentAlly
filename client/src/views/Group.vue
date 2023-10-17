@@ -466,7 +466,6 @@ main {
   text-align: center;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  width: 240px;
 }
 
 .member-container {
@@ -699,7 +698,6 @@ main {
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
   overflow-y: auto;
-  padding: 10px;
 
   @media screen and (max-width: 768px) {
     grid-template-columns: repeat(1, 1fr);
@@ -771,7 +769,6 @@ main {
   align-items: center;
   justify-content: center;
   font-size: 10rem;
-  /* adjust as needed */
   background-color: #3498db;
   color: #fff;
   font-weight: bold;

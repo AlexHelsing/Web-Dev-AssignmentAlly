@@ -113,8 +113,8 @@ export default {
       this.tasks = data
     },
     async createGroup() {
-      if (this.assignmentGroupName.length >= 16 || this.course.length >= 16) {
-        alert('Group and course name must be 16 characters or less')
+      if (this.assignmentGroupName.length >= 20 || this.course.length >= 20) {
+        alert('Group and course name must be 20 characters or less')
         return
       }
       try {
@@ -201,7 +201,6 @@ export default {
 
 .section {
   max-width: 1200px;
-  /* maximum width for the content */
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -218,30 +217,11 @@ export default {
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 10px;
 }
-
-.section-content-tasks {
-  display: flex;
-  flex-direction: column;
-  row-gap: 10px;
-}
-
+.section-content-tasks,
 .section-content-meetings {
   display: flex;
   flex-direction: column;
-  row-gap: 10px;
-}
-
-/* Modified Media Queries for main component */
-@media (max-width: 1200px) {
-  .section-content-1 {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .section-content-tasks,
-  .section-content-meetings {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
+  gap: 10px;
 }
 
 @media (max-width: 900px) {
@@ -251,7 +231,7 @@ export default {
 
   .section-content-tasks,
   .section-content-meetings {
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
   }
 }
@@ -268,11 +248,7 @@ export default {
   }
 
   .section {
-    align-items: center;
     padding: 20px;
-  }
-
-  .main {
     align-items: center;
   }
 }
@@ -281,16 +257,9 @@ export default {
   color: white;
 }
 
-/* Modified Media Queries for main component */
 @media (max-width: 1200px) {
   .section-content-1 {
     grid-template-columns: repeat(3, 1fr);
-  }
-
-  .section-content-tasks,
-  .section-content-meetings {
-    flex-direction: row;
-    flex-wrap: wrap;
   }
 }
 
@@ -301,7 +270,7 @@ export default {
 
   .section-content-tasks,
   .section-content-meetings {
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
   }
 }
@@ -309,20 +278,6 @@ export default {
 @media (max-width: 600px) {
   .section-content-1 {
     grid-template-columns: 1fr;
-  }
-
-  .section-content-tasks,
-  .section-content-meetings {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .section {
-    align-items: center;
-  }
-
-  .main {
-    align-items: center;
   }
 
   .rlink {
