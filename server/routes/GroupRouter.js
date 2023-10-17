@@ -17,9 +17,6 @@ GroupRouter.delete('/:Id', GroupController.deleteGroup);
 GroupRouter.post('/:groupId/users', GroupController.InviteMemberToGroup);
 GroupRouter.get('/:groupId/users', GroupController.getUsersFromGroup);
 GroupRouter.get('/:groupId/users/:userId', GroupController.getUserFromGroup);
-GroupRouter.delete(
-  '/:groupId/users/:userId',
-  GroupController.removeUserFromGroup
-);
+GroupRouter.delete('/:groupId/users/:userId', GroupController.removeUserFromGroup);
 
 module.exports = GroupRouter;

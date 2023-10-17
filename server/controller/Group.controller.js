@@ -46,7 +46,6 @@ async function getAllGroups(req, res) {
 }
 
 async function getMyGroups(req, res) {
-  console.log('Getting groups for user: ' + req.user.id);
   try {
     // POPULATE THE MEMBERS ARRAY WITH THE USER OBJECTS but just keep the id and username
     const groups = await Group.find({ members: req.user.id }).populate(
@@ -88,8 +87,6 @@ async function getGroup(req, res) {
 async function InviteMemberToGroup(req, res) {
   const groupId = req.params.groupId;
   const usernameToInvite = req.body.username;
-
-  console.log('Inviting user ' + usernameToInvite + ' to group ' + groupId);
   try {
     const group = await Group.findById(groupId);
 
@@ -119,8 +116,7 @@ async function InviteMemberToGroup(req, res) {
 
     return res.status(200).json({ message: 'User added to group' });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: err.message });
   }
 }
 
@@ -150,7 +146,7 @@ async function joinGroup(req, res) {
     return res.status(200).json(group);
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: err.message });
   }
 }
 
@@ -206,7 +202,6 @@ async function setResource(req, res) {
     // return the updated group
     return res.status(200).json(group);
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: 'Internal server error' });
   }
 }
@@ -228,7 +223,6 @@ async function getUsersFromGroup(req, res) {
 
     return res.status(200).json(users);
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: 'Internal server error' });
   }
 }
@@ -249,7 +243,6 @@ async function getUserFromGroup(req, res) {
 
     return res.status(200).json(user);
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: 'Internal server error' });
   }
 }
@@ -277,15 +270,12 @@ async function removeUserFromGroup(req, res) {
 
     return res.status(200).json({ message: 'User removed from group' });
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: 'Internal server error' });
   }
 }
 async function deleteAllGroups(req, res) {
   // check if user is admin first then delete all groups
   const currentUser = req.user;
-
-  console.log(currentUser.username);
   // if (currentUser.username !== 'admin' && currentUser.username !== 'Admin') {
   //   return res.status(401).json({ message: 'Not admin gtfo' });
   // }

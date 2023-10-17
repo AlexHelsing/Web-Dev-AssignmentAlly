@@ -77,9 +77,6 @@ async function getTasksByGroup(req, res) {
 
 async function getUserTasks(req, res) {
   const { id } = req.user;
-
-  console.log(id);
-
   try {
     const tasks = await Task.find({ Assignee: id })
       .populate('Assignee', ['username'])
@@ -93,7 +90,7 @@ async function getUserTasks(req, res) {
 
     res.json(tasks);
   } catch (err) {
-    console.log(err);
+    res.status(400).json({message: err.message});
   }
 }
 
