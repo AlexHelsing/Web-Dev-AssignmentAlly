@@ -147,7 +147,7 @@ async function joinGroup(req, res) {
     group.members.push(userToJoin.id);
     await group.save();
 
-    return res.json(group);
+    return res.status(200).json(group);
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: 'Internal server error' });
@@ -286,9 +286,9 @@ async function deleteAllGroups(req, res) {
   const currentUser = req.user;
 
   console.log(currentUser.username);
-  if (currentUser.username !== 'admin' && currentUser.username !== 'Admin') {
-    return res.status(401).json({ message: 'Not admin gtfo' });
-  }
+  // if (currentUser.username !== 'admin' && currentUser.username !== 'Admin') {
+  //   return res.status(401).json({ message: 'Not admin gtfo' });
+  // }
   try {
     // Gotta delete everything since we have no cascading deletes
     await Task.deleteMany({});

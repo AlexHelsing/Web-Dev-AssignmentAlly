@@ -110,7 +110,7 @@ export default {
   },
   methods: {
     async fetchMyGroups() {
-      const response = await fetch('http://localhost:3000/api/groups/groups', {
+      const response = await fetch('http://localhost:3000/api/groups/myGroups', {
         credentials: 'include'
       })
       const data = await response.json()
@@ -118,7 +118,7 @@ export default {
       console.log(this.groups)
     },
     async fetchMyTasks() {
-      const response = await fetch('http://localhost:3000/api/tasks/tasks', {
+      const response = await fetch('http://localhost:3000/api/tasks/myTasks', {
         credentials: 'include'
       })
       const data = await response.json()
@@ -152,7 +152,7 @@ export default {
       }
     },
     async fetchMyMeetings() {
-      const response = await fetch('http://localhost:3000/api/meetings/meetings', {
+      const response = await fetch('http://localhost:3000/api/meetings/myMeetings', {
         credentials: 'include'
       })
       const data = await response.json()
@@ -170,7 +170,7 @@ export default {
         })
         const data = await response.json()
         if (response.ok) {
-          this.groups.push(data)
+          this.fetchMyGroups()
           this.$bvModal.hide('modal-2')
         } else {
           console.error('Error joining group:', data.message || 'Unknown error')

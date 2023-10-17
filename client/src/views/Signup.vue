@@ -1,26 +1,25 @@
 <template>
-    <div class="fullscreen-container">
-      <div class="signup-container">
-        <h1 class="signup-title">Sign up</h1>
-        <form class="form" action="http://localhost:3000/api/auth/" method="post">
-          <div class="input-group">
-            <label for="username">Username</label>
-            <input type="username" name="username" id="username">
-          </div>
-          <div class="input-group">
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password">
-          </div>
-
-          <button type="submit" class="signup-button">Sign up</button>
-          <div class="login-group">
-            <p class="loginparagraph">Already have an account?</p>
-            <span></span>
-            <router-link to="/login" tag="a">Login here!</router-link>
-          </div>
-        </form>
-      </div>
+  <div class="fullscreen-container">
+    <div class="signup-container">
+      <h1 class="signup-title">Sign up</h1>
+      <form @submit.prevent="handleSubmit">
+        <div class="input-group">
+          <label for="username">Username</label>
+          <input type="text" v-model="username" name="username" id="username">
+        </div>
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input type="password" v-model="password" name="password" id="password">
+        </div>
+        <button type="submit" class="signup-button">Sign up</button>
+        <div class="login-group">
+          <p class="loginparagraph">Already have an account?</p>
+          <span></span>
+          <router-link to="/login" tag="a">Login here!</router-link>
+        </div>
+      </form>
     </div>
+  </div>
 </template>
 
 <script>
@@ -43,7 +42,7 @@ export default {
     async handleSubmit() {
       try {
         console.log(this.username, this.password)
-        const response = await fetch('http://localhost:3000/api/auth/signup', {
+        const response = await fetch('http://localhost:3000/api/auth', {
           method: 'POST',
           credentials: 'include',
           headers: {
@@ -56,6 +55,12 @@ export default {
         })
         const data = await response.json()
         console.log('data', data)
+
+        if (response.ok) {
+          this.$router.push('/dashboard')
+        } else {
+          alert(data.message)
+        }
       } catch (error) {
         console.error('Error logging in:', error)
       }
@@ -72,6 +77,13 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 40px;
 }
 
 .signup-container {
@@ -144,7 +156,7 @@ export default {
 
 .login-group {
   display: flex;
-  flex-direction: vertical;
+  flex-direction: row;
   color: white;
 }
 

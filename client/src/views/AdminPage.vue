@@ -123,6 +123,8 @@ export default {
         console.log('data', data)
         if (response.ok) {
           this.groups = []
+          this.tasks = []
+          this.meetings = []
         } else {
           console.error('Error creating group:', data.message || 'Unknown error')
         }

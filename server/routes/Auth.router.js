@@ -3,7 +3,6 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local');
 var crypto = require('crypto');
 var User = require('../models/User.mongo');
-const { SourceTextModule } = require('vm');
 
 passport.use(
   new LocalStrategy(function (username, password, done) {
@@ -37,25 +36,33 @@ passport.deserializeUser(function (user, done) {
 
 var router = express.Router();
 
-router.post(
-  '/login',
-  passport.authenticate('local', {
-    // redirect to dashboard or whatever route we got later on
-    successReturnToOrRedirect: 'http://localhost:8080/dashboard',
-    failureRedirect: 'back',
-    failureMessage: true,
-  })
-);
+router.post('/login', function (req, res, next) {
+  passport.authenticate('local', function (err, user, info) {
+    if (err) {
+      return next(err);
+    }
 
-router.get('/current-user', function (req, res) {
-  // Check if the user is authenticated
-  if (req.isAuthenticated()) {
-    // Send the user information to the frontend
-    res.json({ user: req.user });
-  } else {
-    // If the user is not authenticated, send an empty object or an error message
-    return res.status(401).json({ message: 'Not authorized' });
-  }
+    if (!user) {
+      // No user found or password mismatch
+      return res.status(400).json({
+        message: info.message || 'Login failed',
+      });
+    }
+
+    req.logIn(user, function (err) {
+      if (err) {
+        return next(err);
+      }
+      // Return success status and optionally any user details you want to share
+      return res.status(200).json({
+        message: 'Successfully logged in',
+        user: {
+          id: user.id,
+          username: user.username,
+        },
+      });
+    });
+  })(req, res, next); // calling the middleware function with our Express request, response & next middleware
 });
 
 router.post('/logout', function (req, res, next) {
@@ -66,6 +73,17 @@ router.post('/logout', function (req, res, next) {
     // Redirect to /login after a successful logout
     res.status(200).json({ message: 'Successfully logged out' });
   });
+});
+
+router.get('/current-user', function (req, res) {
+  // Check if the user is authenticated
+  if (req.isAuthenticated()) {
+    // Send the user information to the frontend
+    res.json({ user: req.user });
+  } else {
+    // If the user is not authenticated, send an empty object or an error message
+    return res.status(401).json({ message: 'Not authorized' });
+  }
 });
 
 router.post('/', async function (req, res, next) {
@@ -90,15 +108,15 @@ router.post('/', async function (req, res, next) {
         if (err) {
           return next(err);
         }
-        // Redirect to /login after a successful registration
-        res.status(200).json({ message: 'Successfully registered' });
+        res.status(200).json({
+          message: 'Successfully registered',
+        });
       });
     } else {
       console.log('Username already exists');
-      // Send JSON response instead of redirecting
-      res
-        .status(400)
-        .json({ message: 'Username already exists', redirectTo: '/signup' });
+      res.status(400).json({
+        message: 'Username already exists',
+      });
     }
   } catch (err) {
     res.status(400).json({ message: err.message });
