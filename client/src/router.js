@@ -34,7 +34,6 @@ const router = new Router({
         })
           // if error message says 'Not authorized', redirect to login
           .then((res) => {
-            console.log(res)
             if (res.status === 401) {
               next('/dashboard')
               alert('Not authorized')
@@ -62,7 +61,6 @@ const router = new Router({
       beforeEnter: async (to, from, next) => {
         // ... check if user is admin
         const currentUser = await getCurrentUser()
-        console.log(currentUser.username)
         if (
           currentUser.username !== 'admin' &&
           currentUser.username !== 'Admin'

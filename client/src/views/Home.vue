@@ -36,11 +36,11 @@
         <div class="mb-3">
           <label for="assignment-group-name" class="form-label">Name</label>
           <input required type="text" id="assignment-group-name" class="form-control" v-model="assignmentGroupName"
-            placeholder="Web development">
+            placeholder="Course Name">
         </div>
         <div class="mb-3">
           <label for="course" class="form-label">Course Code</label>
-          <input required type="text" id="course" class="form-control" v-model="course" placeholder="DIT341">
+          <input required type="text" id="course" class="form-control" v-model="course" placeholder="Course Code">
         </div>
         <div slot="modal-footer" class="w-100 d-flex justify-content-end">
           <b-button variant="primary" @click="createGroup">Create</b-button>
@@ -115,7 +115,6 @@ export default {
       })
       const data = await response.json()
       this.groups = data
-      console.log(this.groups)
     },
     async fetchMyTasks() {
       const response = await fetch('http://localhost:3000/api/tasks/myTasks', {
@@ -123,7 +122,6 @@ export default {
       })
       const data = await response.json()
       this.tasks = data
-      console.log(this.tasks)
     },
     async createGroup() {
       try {
@@ -156,7 +154,6 @@ export default {
         credentials: 'include'
       })
       const data = await response.json()
-      console.log(data)
       this.meetings = data
     },
     async joinGroup() {

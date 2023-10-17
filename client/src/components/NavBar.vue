@@ -41,7 +41,6 @@ export default {
   methods: {
     logout: async function (event) {
       try {
-        console.log(this.username, this.password)
         const response = await fetch('http://localhost:3000/api/auth/logout', {
           method: 'POST',
           credentials: 'include',
