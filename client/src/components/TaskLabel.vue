@@ -12,7 +12,6 @@ export default {
   },
   computed: {
     labelClass() {
-      console.log('label', this.label)
       switch (this.label.toLowerCase()) {
         case 'high':
           return 'high'

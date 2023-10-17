@@ -443,12 +443,14 @@ main {
 
 .header {
   background-color: #e5e5e5;
-  padding: 20px;
+  padding-top: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 10px;
   border: 1px solid black;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 70px;
 
   @media screen and (max-width: 768px) {
     flex-direction: column;
@@ -458,12 +460,13 @@ main {
 
 .groupName {
   order: 2;
-  padding-top: 13px;
   font-weight: bold;
   flex-grow: 1;
+  padding-top: 13px;
   text-align: center;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  width: 240px;
 }
 
 .member-container {
