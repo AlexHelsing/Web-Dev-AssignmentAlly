@@ -145,7 +145,6 @@ async function joinGroup(req, res) {
 
     return res.status(200).json(group);
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: err.message });
   }
 }
@@ -170,12 +169,9 @@ function capitalizeFirstLetter(string) {
 }
 
 async function setResource(req, res) {
-  console.log('hello');
   const groupId = req.params.groupId;
   const type = req.params.type;
   const link = req.body.link;
-  console.log(type);
-  console.log(link);
 
   const allowedTypes = ['discord', 'assignment file', 'reference material'];
 

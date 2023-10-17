@@ -348,7 +348,6 @@ export default {
         })
       })
       const data = await response.json()
-      console.log(data)
 
       if (response.ok) {
         this.getUsersInGroup()
@@ -361,7 +360,6 @@ export default {
       }
     },
     async fetchMemberData(memberId) {
-      console.log('fetching member data for', memberId)
       const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}/users/${memberId}`, {
         credentials: 'include'
       })
@@ -369,8 +367,6 @@ export default {
 
       if (response.ok) {
         this.activeMemberData = data
-
-        console.log('activeMemberData', this.activeMemberData)
       } else {
         console.error('Error fetching member data:', data.message || 'Unknown error')
       }
