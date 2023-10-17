@@ -789,7 +789,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{host}}/api/tasks/tasks",
+					"raw": "{{host}}/api/tasks/myTasks",
 					"host": [
 						"{{host}}"
 					],
