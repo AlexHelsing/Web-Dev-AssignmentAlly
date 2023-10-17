@@ -77,7 +77,6 @@ export default {
     },
     async saveTask() {
       try {
-        console.log(this.localTask)
         const response = await fetch(`http://localhost:3000/api/tasks/${this.localTask.taskId}`, {
           method: 'PUT',
           credentials: 'include',

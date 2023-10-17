@@ -113,7 +113,6 @@ router.post('/', async function (req, res, next) {
         });
       });
     } else {
-      console.log('Username already exists');
       res.status(400).json({
         message: 'Username already exists',
       });

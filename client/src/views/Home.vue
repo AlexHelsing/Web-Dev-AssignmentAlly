@@ -8,47 +8,32 @@
     <div class="section">
       <h1 class="section-title">Assignment Groups</h1>
       <div class="section-content-1">
-        <router-link v-for="group in groups" :key="group.id" :to="'/group/' + group._id" tag="div"
-          class="router-link-wrapper">
-          <b-card class="group-card">
-            <div class="group-info">
-              <b-card-text class="group-title">
-                {{ group.assignmentGroupName }}
-              </b-card-text>
-              <div class="group-course">
-                <div class="course-code">{{ group.course }}</div>
-              </div>
-            </div>
-            <div v-if="group.members" class="group-members">
-              <b-avatar variant="primary" v-for="member in group.members" :key="member._id" class="avatar">
-                {{ initials(member.username).toUpperCase() }}
-              </b-avatar>
-            </div>
-          </b-card>
+        <router-link v-for="group in groups" :key="group.id" :to="'/group/' + group._id" tag="div" class="rlink">
+          <GroupCard :v-for="group in groups" :group="group" />
         </router-link>
         <b-button v-b-modal.modal-1>Create New Group</b-button>
         <b-button v-b-modal.modal-2>Join Existing Group</b-button>
       </div>
       <b-modal id="modal-1" title="Create Assignment Group" centered>
-        <b-alert v-model="showErrorAlert" variant="danger" dismissible fade>
-          {{ errorMessage }}
+        <b-alert v-model="showCreatingGroupErrorAlert" variant="danger" dismissible fade>
+          {{ errorCreatingGroupMessage }}
         </b-alert>
         <div class="mb-3">
           <label for="assignment-group-name" class="form-label">Name</label>
           <input required type="text" id="assignment-group-name" class="form-control" v-model="assignmentGroupName"
-            placeholder="Web development">
+            placeholder="Course Name">
         </div>
         <div class="mb-3">
           <label for="course" class="form-label">Course Code</label>
-          <input required type="text" id="course" class="form-control" v-model="course" placeholder="DIT341">
+          <input required type="text" id="course" class="form-control" v-model="course" placeholder="Course Code">
         </div>
         <div slot="modal-footer" class="w-100 d-flex justify-content-end">
           <b-button variant="primary" @click="createGroup">Create</b-button>
         </div>
       </b-modal>
       <b-modal id="modal-2" title="Join Existing Group" centered>
-        <b-alert v-model="showErrorAlert" variant="danger" dismissible fade>
-          {{ errorMessage }}
+        <b-alert v-model="showExistingGroupErrorAlert" variant="danger" dismissible fade>
+          {{ errorExistingGroupMessage }}
         </b-alert>
         <div class="mb-3">
           <label for="existing-group-name" class="form-label">Group Name</label>
@@ -89,6 +74,7 @@ import { EventBus } from '../event-bus'
 import { BAlert } from 'bootstrap-vue'
 import Task from '../components/Task.vue'
 import Meeting from '../components/Meeting.vue'
+import GroupCard from '../components/GroupCard.vue'
 
 export default {
   data() {
@@ -99,14 +85,17 @@ export default {
       assignmentGroupName: '',
       existingGroupName: '',
       course: '',
-      showErrorAlert: false,
-      errorMessage: ''
+      showExistingGroupErrorAlert: false,
+      showCreatingGroupErrorAlert: false,
+      errorCreatingGroupMessage: '',
+      errorExistingGroupMessage: ''
     }
   },
   components: {
     Task,
     Meeting,
-    BAlert
+    BAlert,
+    GroupCard
   },
   methods: {
     async fetchMyGroups() {
@@ -115,7 +104,6 @@ export default {
       })
       const data = await response.json()
       this.groups = data
-      console.log(this.groups)
     },
     async fetchMyTasks() {
       const response = await fetch('http://localhost:3000/api/tasks/myTasks', {
@@ -123,9 +111,12 @@ export default {
       })
       const data = await response.json()
       this.tasks = data
-      console.log(this.tasks)
     },
     async createGroup() {
+      if (this.assignmentGroupName.length >= 16 || this.course.length >= 16) {
+        alert('Group and course name must be 16 characters or less')
+        return
+      }
       try {
         const response = await fetch('http://localhost:3000/api/groups/', {
           method: 'POST',
@@ -144,8 +135,8 @@ export default {
           this.$bvModal.hide('modal-1')
         } else {
           console.error('Error creating group:', data.message || 'Unknown error')
-          this.errorMessage = data.message || 'Unknown error'
-          this.showErrorAlert = true
+          this.errorCreatingGroupMessage = data.message || 'Unknown error'
+          this.showCreatingGroupErrorAlert = true
         }
       } catch (error) {
         console.error('Error creating group:', error)
@@ -156,7 +147,6 @@ export default {
         credentials: 'include'
       })
       const data = await response.json()
-      console.log(data)
       this.meetings = data
     },
     async joinGroup() {
@@ -174,16 +164,12 @@ export default {
           this.$bvModal.hide('modal-2')
         } else {
           console.error('Error joining group:', data.message || 'Unknown error')
-          this.errorMessage = data.message || 'Unknown error'
-          this.showErrorAlert = true
+          this.errorExistingGroupMessage = data.message || 'Unknown error'
+          this.showExistingGroupErrorAlert = true
         }
       } catch (error) {
         console.error('Error joining group:', error)
       }
-    },
-    initials(member) {
-      const name = member
-      return `${name[0].charAt(0)}${name[1] ? name[1].charAt(0) : ''}`
     }
   },
 
@@ -216,8 +202,6 @@ export default {
 .section {
   max-width: 1200px;
   /* maximum width for the content */
-  width: 90%;
-  /* occupy 90% of viewport width */
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -227,79 +211,6 @@ export default {
   color: white;
   font-size: 2em;
   margin-bottom: 16px;
-}
-
-.group-card {
-  background-color: white;
-  color: black;
-  font-size: larger;
-  font-style: italic;
-  font-weight: 500;
-  border-radius: 5px;
-  height: 200px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.3s ease;
-
-  @media screen and (max-width: 600px) {
-    height: auto;
-  }
-}
-
-/* Add hover effect */
-.group-card:hover {
-  background-color: #e0f2f1;
-  /* Change the background color on hover */
-}
-
-.group-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 10px;
-}
-
-.group-title {
-  font-size: larger;
-  font-style: italic;
-  font-weight: 800;
-  margin-bottom: 5px;
-}
-
-.group-course {
-  font-size: small;
-}
-
-.course-code {
-  font-weight: bold;
-  font-size: medium;
-
-}
-
-.group-members {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 10px;
-}
-
-.avatar {
-  width: 30px;
-  height: 30px;
-  margin-right: 5px;
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-.avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
 }
 
 .section-content-1 {
@@ -320,10 +231,16 @@ export default {
   row-gap: 10px;
 }
 
-/* Responsive adjustments */
+/* Modified Media Queries for main component */
 @media (max-width: 1200px) {
   .section-content-1 {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  .section-content-tasks,
+  .section-content-meetings {
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 }
 
@@ -331,11 +248,72 @@ export default {
   .section-content-1 {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .section-content-tasks,
+  .section-content-meetings {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
 }
 
 @media (max-width: 600px) {
   .section-content-1 {
     grid-template-columns: 1fr;
+  }
+
+  .section-content-tasks,
+  .section-content-meetings {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .section {
+    align-items: center;
+    padding: 20px;
+  }
+
+  .main {
+    align-items: center;
+  }
+}
+
+.empty-list-message {
+  color: white;
+}
+
+/* Modified Media Queries for main component */
+@media (max-width: 1200px) {
+  .section-content-1 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .section-content-tasks,
+  .section-content-meetings {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 900px) {
+  .section-content-1 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .section-content-tasks,
+  .section-content-meetings {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .section-content-1 {
+    grid-template-columns: 1fr;
+  }
+
+  .section-content-tasks,
+  .section-content-meetings {
+    flex-direction: column;
     width: 100%;
   }
 
@@ -346,9 +324,9 @@ export default {
   .main {
     align-items: center;
   }
-}
 
-.empty-list-message {
-  color: white;
+  .rlink {
+    cursor: pointer;
+  }
 }
 </style>

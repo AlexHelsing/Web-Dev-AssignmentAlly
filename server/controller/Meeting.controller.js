@@ -31,7 +31,6 @@ async function createMeeting(req, res) {
     });
     res.json(populated);
   } catch (err) {
-    console.log(err);
     res.status(400).json({ message: err.message });
   }
 }

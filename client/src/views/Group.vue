@@ -216,7 +216,6 @@ export default {
         credentials: 'include'
       })
       const data = await response.json()
-      console.log('data', data)
       this.group = data
 
       if (data && data.resources) {
@@ -234,7 +233,6 @@ export default {
       })
       const data = await response.json()
       this.members = data
-      console.log(data)
     },
     async deleteGroup() {
       const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}`, {
@@ -242,7 +240,6 @@ export default {
         credentials: 'include'
       })
       const data = await response.json()
-      console.log(data)
       if (response.ok) {
         this.$router.push('/dashboard')
       } else {
@@ -254,7 +251,6 @@ export default {
         credentials: 'include'
       })
       const data = await response.json()
-      console.log(data)
       this.tasks = data
     },
 
@@ -279,7 +275,6 @@ export default {
       })
       const data = await response.json()
       this.$bvModal.hide('modal-1')
-      console.log(data)
       this.tasks.push(data)
 
       // clear the form
@@ -293,7 +288,6 @@ export default {
         credentials: 'include'
       })
       const data = await response.json()
-      console.log(data)
       this.meetings = data
     },
     async removeMemberFromGroup(memberId) {
@@ -302,7 +296,6 @@ export default {
         credentials: 'include'
       })
       const data = await response.json()
-      console.log(data)
       if (response.ok) {
         this.members = this.members.filter(member => member._id !== memberId)
         this.$bvModal.hide('modal-8')
@@ -332,7 +325,6 @@ export default {
         })
       })
       const data = await response.json()
-      console.log(data)
       this.meetings.push(data)
       this.$bvModal.hide('modal-2')
 
@@ -356,7 +348,6 @@ export default {
         })
       })
       const data = await response.json()
-      console.log(data)
 
       if (response.ok) {
         this.getUsersInGroup()
@@ -369,7 +360,6 @@ export default {
       }
     },
     async fetchMemberData(memberId) {
-      console.log('fetching member data for', memberId)
       const response = await fetch(`http://localhost:3000/api/groups/${this.groupIdParam}/users/${memberId}`, {
         credentials: 'include'
       })
@@ -377,8 +367,6 @@ export default {
 
       if (response.ok) {
         this.activeMemberData = data
-
-        console.log('activeMemberData', this.activeMemberData)
       } else {
         console.error('Error fetching member data:', data.message || 'Unknown error')
       }
@@ -455,12 +443,14 @@ main {
 
 .header {
   background-color: #e5e5e5;
-  padding: 20px;
+  padding-top: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 10px;
   border: 1px solid black;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 70px;
 
   @media screen and (max-width: 768px) {
     flex-direction: column;
@@ -470,10 +460,13 @@ main {
 
 .groupName {
   order: 2;
-  padding-top: 13px;
   font-weight: bold;
   flex-grow: 1;
+  padding-top: 13px;
   text-align: center;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  width: 240px;
 }
 
 .member-container {

@@ -73,7 +73,6 @@ export default {
         })
         const data = await response.json()
         this.groups = data
-        console.log('data', data)
       } catch (error) {
         console.error('Error creating group:', error)
       }
@@ -89,7 +88,6 @@ export default {
         })
         const data = await response.json()
         this.meetings = data
-        console.log('data', data)
       } catch (error) {
         console.error('Error creating group:', error)
       }
@@ -105,7 +103,6 @@ export default {
         })
         const data = await response.json()
         this.tasks = data
-        console.log('data', data)
       } catch (error) {
         console.error('Error creating group:', error)
       }
@@ -120,7 +117,6 @@ export default {
           }
         })
         const data = await response.json()
-        console.log('data', data)
         if (response.ok) {
           this.groups = []
           this.tasks = []
@@ -162,7 +158,6 @@ export default {
           }
         })
         const data = await response.json()
-        console.log('data', data)
         if (response.ok) {
           this.tasks = []
         } else {

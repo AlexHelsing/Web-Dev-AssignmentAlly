@@ -34,14 +34,12 @@ export default {
   },
   computed: {
     user() {
-      console.log('user', store.user)
       return store.user
     }
   },
   methods: {
     async handleSubmit() {
       try {
-        console.log(this.username, this.password)
         const response = await fetch('http://localhost:3000/api/auth', {
           method: 'POST',
           credentials: 'include',
@@ -54,7 +52,6 @@ export default {
           })
         })
         const data = await response.json()
-        console.log('data', data)
 
         if (response.ok) {
           this.$router.push('/dashboard')
