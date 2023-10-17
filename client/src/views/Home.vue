@@ -110,7 +110,7 @@ export default {
   },
   methods: {
     async fetchMyGroups() {
-      const response = await fetch('http://localhost:3000/api/groups/myGroups', {
+      const response = await fetch('http://localhost:3000/api/groups/groups', {
         credentials: 'include'
       })
       const data = await response.json()
@@ -152,7 +152,7 @@ export default {
       }
     },
     async fetchMyMeetings() {
-      const response = await fetch('http://localhost:3000/api/meetings/myMeetings', {
+      const response = await fetch('http://localhost:3000/api/meetings/meetings', {
         credentials: 'include'
       })
       const data = await response.json()
