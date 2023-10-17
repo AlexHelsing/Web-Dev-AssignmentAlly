@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "103cd03c-fd20-4e06-bde3-4ff795020b9f",
-		"name": "AssignmentAlly",
+		"_postman_id": "e05d7907-3e86-44ec-b68c-f1b173970aa0",
+		"name": "AssignmentAlly Copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "8035461"
 	},
@@ -60,12 +60,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/auth/",
-					"protocol": "http",
+					"raw": "{{host}}/api/auth/",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"auth",
@@ -109,12 +107,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/auth/current-user",
-					"protocol": "http",
+					"raw": "{{host}}/api/auth/current-user",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"auth",
@@ -130,12 +126,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/groups/",
-					"protocol": "http",
+					"raw": "{{host}}/api/groups/",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"groups",
@@ -199,12 +193,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/auth/logout",
-					"protocol": "http",
+					"raw": "{{host}}/api/auth/logout",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"auth",
@@ -229,12 +221,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/auth/",
-					"protocol": "http",
+					"raw": "{{host}}/api/auth/",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"auth",
@@ -276,12 +266,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/groups",
-					"protocol": "http",
+					"raw": "{{host}}/api/groups",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"groups"
@@ -305,12 +293,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/groups/{{GroupId}}/set-resource/discord",
-					"protocol": "http",
+					"raw": "{{host}}/api/groups/{{GroupId}}/set-resource/discord",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"groups",
@@ -328,12 +314,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/groups/{{GroupId}}",
-					"protocol": "http",
+					"raw": "{{host}}/api/groups/{{GroupId}}",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"groups",
@@ -358,12 +342,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/groups/{{GroupId}}/users",
-					"protocol": "http",
+					"raw": "{{host}}/api/groups/{{GroupId}}/users",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"groups",
@@ -380,12 +362,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/groups/{{GroupId}}/users",
-					"protocol": "http",
+					"raw": "{{host}}/api/groups/{{GroupId}}/users",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"groups",
@@ -402,12 +382,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/groups/myGroups",
-					"protocol": "http",
+					"raw": "{{host}}/api/groups/myGroups",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"groups",
@@ -435,12 +413,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/groups/{{GroupId}}/users/{{user1Id}}",
-					"protocol": "http",
+					"raw": "{{host}}/api/groups/{{GroupId}}/users/{{user1Id}}",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"groups",
@@ -467,12 +443,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/groups/{{GroupId}}/users/{{user1Id}}",
-					"protocol": "http",
+					"raw": "{{host}}/api/groups/{{GroupId}}/users/{{user1Id}}",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"groups",
@@ -538,12 +512,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/auth/logout",
-					"protocol": "http",
+					"raw": "{{host}}/api/auth/logout",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"auth",
@@ -607,12 +579,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/auth/login",
-					"protocol": "http",
+					"raw": "{{host}}/api/auth/login",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"auth",
@@ -637,12 +607,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/groups/{{GroupName}}",
-					"protocol": "http",
+					"raw": "{{host}}/api/groups/{{GroupName}}",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"groups",
@@ -669,12 +637,10 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/groups/{{GroupId}}",
-					"protocol": "http",
+					"raw": "{{host}}/api/groups/{{GroupId}}",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"groups",
@@ -718,12 +684,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/tasks/{{GroupId}}",
-					"protocol": "http",
+					"raw": "{{host}}/api/tasks/{{GroupId}}",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"tasks",
@@ -739,12 +703,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/tasks/{{taskId}}",
-					"protocol": "http",
+					"raw": "{{host}}/api/tasks/{{taskId}}",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"tasks",
@@ -760,12 +722,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/tasks/getTasksByGroup/{{GroupId}}",
-					"protocol": "http",
+					"raw": "{{host}}/api/tasks/getTasksByGroup/{{GroupId}}",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"tasks",
@@ -791,12 +751,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/tasks/{{taskId}}",
-					"protocol": "http",
+					"raw": "{{host}}/api/tasks/{{taskId}}",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"tasks",
@@ -812,12 +770,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/tasks/",
-					"protocol": "http",
+					"raw": "{{host}}/api/tasks/",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"tasks",
@@ -833,12 +789,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/tasks/tasks",
-					"protocol": "http",
+					"raw": "{{host}}/api/tasks/tasks",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"tasks",
@@ -854,12 +808,10 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/tasks/{{taskId}}",
-					"protocol": "http",
+					"raw": "{{host}}/api/tasks/{{taskId}}",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"tasks",
@@ -896,12 +848,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/meetings/{{GroupId}}",
-					"protocol": "http",
+					"raw": "{{host}}/api/meetings/{{GroupId}}",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"meetings",
@@ -917,12 +867,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/meetings/{{meetingId}}",
-					"protocol": "http",
+					"raw": "{{host}}/api/meetings/{{meetingId}}",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"meetings",
@@ -950,12 +898,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/meetings/{{GroupId}}",
-					"protocol": "http",
+					"raw": "{{host}}/api/meetings/{{GroupId}}",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"meetings",
@@ -980,12 +926,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/meetings/{{meetingId}}",
-					"protocol": "http",
+					"raw": "{{host}}/api/meetings/{{meetingId}}",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"meetings",
@@ -1001,12 +945,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/meetings/",
-					"protocol": "http",
+					"raw": "{{host}}/api/meetings/",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"meetings",
@@ -1022,12 +964,10 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/meetings/{{meetingId}}",
-					"protocol": "http",
+					"raw": "{{host}}/api/meetings/{{meetingId}}",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"meetings",
@@ -1043,12 +983,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/meetings/MyMeetings",
-					"protocol": "http",
+					"raw": "{{host}}/api/meetings/MyMeetings",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"meetings",
@@ -1073,12 +1011,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/users/changePassword",
-					"protocol": "http",
+					"raw": "{{host}}/api/users/changePassword",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"users",
@@ -1094,12 +1030,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/users/",
-					"protocol": "http",
+					"raw": "{{host}}/api/users/",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"users",
@@ -1115,12 +1049,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/users/{{user1Username}}",
-					"protocol": "http",
+					"raw": "{{host}}/api/users/{{user1Username}}",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"users",
@@ -1136,12 +1068,10 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/users/{{user1Username}}",
-					"protocol": "http",
+					"raw": "{{host}}/api/users/{{user1Username}}",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"users",
@@ -1157,12 +1087,10 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/tasks/",
-					"protocol": "http",
+					"raw": "{{host}}/api/tasks/",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"tasks",
@@ -1178,12 +1106,10 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/meetings/",
-					"protocol": "http",
+					"raw": "{{host}}/api/meetings/",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"meetings",
@@ -1199,12 +1125,10 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/groups",
-					"protocol": "http",
+					"raw": "{{host}}/api/groups",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"groups"
