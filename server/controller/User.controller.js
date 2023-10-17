@@ -45,6 +45,14 @@ async function changePassword(req, res) {
 async function deleteUser(req, res) {
   try {
     const deleteUser = req.params.username;
+
+    const user = await User.findOneAndDelete({ username: deleteUser });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    return res.status(200).json({ message: 'Successfully deleted user' });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

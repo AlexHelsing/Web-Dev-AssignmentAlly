@@ -14,6 +14,6 @@ TaskRouter.get('/getTasksByGroup/:groupId', TaskController.getTasksByGroup);
 TaskRouter.delete('/:taskId', TaskController.deleteTask);
 // TaskRouter.put('/assign-task/:taskId', TaskController.assignTaskToUser);
 TaskRouter.put('/:taskId', TaskController.updateTask);
-// TaskRouter.put('/change-task-status/:taskId', TaskController.changeTaskStatus);
+TaskRouter.put('/change-task-status/:taskId', TaskController.changeTaskStatus);
 
 module.exports = TaskRouter;

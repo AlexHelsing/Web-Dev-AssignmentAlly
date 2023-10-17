@@ -286,9 +286,9 @@ async function deleteAllGroups(req, res) {
   const currentUser = req.user;
 
   console.log(currentUser.username);
-  if (currentUser.username !== 'admin' && currentUser.username !== 'Admin') {
-    return res.status(401).json({ message: 'Not admin gtfo' });
-  }
+  // if (currentUser.username !== 'admin' && currentUser.username !== 'Admin') {
+  //   return res.status(401).json({ message: 'Not admin gtfo' });
+  // }
   try {
     // Gotta delete everything since we have no cascading deletes
     await Task.deleteMany({});
