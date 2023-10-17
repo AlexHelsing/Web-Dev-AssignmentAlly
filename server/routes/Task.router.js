@@ -5,7 +5,7 @@ const TaskController = require('../controller/Task.controller');
 //tasks/
 
 TaskRouter.get('/', TaskController.getAllTasks);
-TaskRouter.get('/tasks', TaskController.getUserTasks);
+TaskRouter.get('/myTasks', TaskController.getUserTasks);
 TaskRouter.delete('/', TaskController.deleteAllTasks);
 TaskRouter.post('/:groupId', TaskController.createTask);
 TaskRouter.get('/:taskId', TaskController.getTask);

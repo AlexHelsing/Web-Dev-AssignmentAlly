@@ -147,7 +147,7 @@ async function joinGroup(req, res) {
     group.members.push(userToJoin.id);
     await group.save();
 
-    return res.json(group);
+    return res.status(200).json(group);
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: 'Internal server error' });
