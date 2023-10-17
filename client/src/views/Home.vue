@@ -30,8 +30,8 @@
         <b-button v-b-modal.modal-2>Join Existing Group</b-button>
       </div>
       <b-modal id="modal-1" title="Create Assignment Group" centered>
-        <b-alert v-model="showErrorAlert" variant="danger" dismissible fade>
-          {{ errorMessage }}
+        <b-alert v-model="showCreatingGroupErrorAlert" variant="danger" dismissible fade>
+          {{ errorCreatingGroupMessage }}
         </b-alert>
         <div class="mb-3">
           <label for="assignment-group-name" class="form-label">Name</label>
@@ -47,8 +47,8 @@
         </div>
       </b-modal>
       <b-modal id="modal-2" title="Join Existing Group" centered>
-        <b-alert v-model="showErrorAlert" variant="danger" dismissible fade>
-          {{ errorMessage }}
+        <b-alert v-model="showExistingGroupErrorAlert" variant="danger" dismissible fade>
+          {{ errorExistingGroupMessage }}
         </b-alert>
         <div class="mb-3">
           <label for="existing-group-name" class="form-label">Group Name</label>
@@ -99,8 +99,10 @@ export default {
       assignmentGroupName: '',
       existingGroupName: '',
       course: '',
-      showErrorAlert: false,
-      errorMessage: ''
+      showExistingGroupErrorAlert: false,
+      showCreatingGroupErrorAlert: false,
+      errorCreatingGroupMessage: '',
+      errorExistingGroupMessage: ''
     }
   },
   components: {
@@ -142,8 +144,8 @@ export default {
           this.$bvModal.hide('modal-1')
         } else {
           console.error('Error creating group:', data.message || 'Unknown error')
-          this.errorMessage = data.message || 'Unknown error'
-          this.showErrorAlert = true
+          this.errorCreatingGroupMessage = data.message || 'Unknown error'
+          this.showCreatingGroupErrorAlert = true
         }
       } catch (error) {
         console.error('Error creating group:', error)
@@ -171,8 +173,8 @@ export default {
           this.$bvModal.hide('modal-2')
         } else {
           console.error('Error joining group:', data.message || 'Unknown error')
-          this.errorMessage = data.message || 'Unknown error'
-          this.showErrorAlert = true
+          this.errorExistingGroupMessage = data.message || 'Unknown error'
+          this.showExistingGroupErrorAlert = true
         }
       } catch (error) {
         console.error('Error joining group:', error)
