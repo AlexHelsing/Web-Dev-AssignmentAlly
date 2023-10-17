@@ -108,15 +108,15 @@ router.post('/', async function (req, res, next) {
         if (err) {
           return next(err);
         }
-        // Redirect to /login after a successful registration
-        res.status(200).json({ message: 'Successfully registered' });
+        res.status(200).json({
+          message: 'Successfully registered',
+        });
       });
     } else {
       console.log('Username already exists');
-      // Send JSON response instead of redirecting
-      res
-        .status(400)
-        .json({ message: 'Username already exists', redirectTo: '/signup' });
+      res.status(400).json({
+        message: 'Username already exists',
+      });
     }
   } catch (err) {
     res.status(400).json({ message: err.message });

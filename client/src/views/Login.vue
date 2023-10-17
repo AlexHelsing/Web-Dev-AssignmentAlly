@@ -1,26 +1,26 @@
 <template>
-    <div class="fullscreen-container">
-      <div class="login-container">
-        <h1 class="login-title">Welcome</h1>
-        <form class="form" action="http://localhost:3000/api/auth/login" method="post">
-          <div class="input-group">
-            <label for="username">Username</label>
-            <input type="username" name="username" id="username">
-          </div>
-          <div class="input-group">
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password">
-          </div>
+  <div class="fullscreen-container">
+    <div class="login-container">
+      <h1 class="login-title">Welcome</h1>
+      <form class="form" @submit.prevent="handleSubmit">
+        <div class="input-group">
+          <label for="username">Username</label>
+          <input type="text" v-model="username" name="username" id="username">
+        </div>
+        <div class="input-group">
+          <label for="password">Password</label>
 
-          <button type="submit" class="login-button">Login</button>
-          <div class="register-group">
-            <p class="registerparagraph">Don't have an account?</p>
-            <span></span>
-            <router-link to="/signup" tag="a">Sign up here!</router-link>
-          </div>
-        </form>
-      </div>
+          <input type="password" v-model="password" name="password" id="password">
+        </div>
+        <button type="submit" class="login-button">Login</button>
+        <div class="register-group">
+          <p class="registerparagraph">Don't have an account?</p>
+          <span></span>
+          <router-link to="/signup" tag="a">Sign up here!</router-link>
+        </div>
+      </form>
     </div>
+  </div>
 </template>
 
 <script>
@@ -56,6 +56,12 @@ export default {
         })
         const data = await response.json()
         console.log('data', data)
+
+        if (response.ok) {
+          this.$router.push('/dashboard')
+        } else {
+          alert(data.message || 'Error logging in')
+        }
       } catch (error) {
         console.error('Error logging in:', error)
       }
